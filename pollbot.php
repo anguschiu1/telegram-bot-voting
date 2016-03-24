@@ -124,7 +124,7 @@ function processMessage($message) {
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
         } else if (strpos($text, "Vote ") === 0) {
-            addRecords($message['from']['id'], $message['from']['username'], str_replace('Vote ', '', $text));
+            addRecords($message['from']['id'], $message['from']['first_name'], str_replace('Vote ', '', $text));
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => "Voted.  Thanks. \n".
                 "Use /result to display report.\n".
                 "Use /vote to add a new vote."));
