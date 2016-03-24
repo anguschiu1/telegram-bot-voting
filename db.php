@@ -12,8 +12,8 @@ function getDb(){
 function addRecords($userId, $userName, $poll){
     $db = getDb();
 	
-    $stmt = $db->prepare("INSERT INTO polling(User_ID, User_Name, Poll, Last_Modified_Date) VALUES (?, ?, ?, NOW())");
-    $stmt->execute(array($userId, $userName, $poll));
+    $stmt = $db->prepare("INSERT INTO polling(User_ID, User_Name, Poll, Last_Modified_Date, IP) VALUES (?, ?, ?, NOW(), ?)");
+    $stmt->execute(array($userId, $userName, $poll, $_SERVER['REMOTE_ADDR']));
     $insertId = $db->lastInsertId();
     
     $db = null;
