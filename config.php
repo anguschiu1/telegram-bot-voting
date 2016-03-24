@@ -8,5 +8,8 @@ define('DB_CONNECT_STR', 'PDO_DB_CONNECT_STR');
 define('DB_USER_NAME', 'Username');
 define('DB_PASSWORD', 'Password');
 
+define('DEBUG', true);
+define('DEBUG_FILE_NAME', 'debug.txt');
 
+require('db.php');
 ?>
