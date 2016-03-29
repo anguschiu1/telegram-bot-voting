@@ -12,4 +12,5 @@ define('DEBUG', true);
 define('DEBUG_FILE_NAME', 'debug.txt');
 
 require('db.php');
+require('process.php');
 ?>
