@@ -9,14 +9,51 @@ function getDb(){
     
     return $db;
 }
-function addRecords($userId, $userName, $poll){
+
+function getQuestion($userId){
+    $db = getDb();
+    $stmt = $db->prepare('SELECT q1, q2, q3, ip FROM question WHERE user_id = ?');
+    $stmt->execute(array($userId));
+    
+	$ret = null;
+    if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$ret['user_id'] = $userId;
+        $ret['q1'] = $row['q1'];
+        $ret['q2'] = $row['q2'];
+        $ret['q3'] = $row['q3'];
+        $ret['ip'] = $row['ip'];
+    }
+    
+    return $ret;
+}
+
+function createQuestion($userId, $q1, $q2, $q3){
     $db = getDb();
 
-    $stmt = $db->prepare("INSERT INTO polling(User_ID, User_Name, Poll, Last_Modified_Date, IP) VALUES (?, ?, ?, NOW(), ?)");
-    $stmt->execute(array($userId, $userName, $poll, $_SERVER['REMOTE_ADDR']));
-    $insertId = $db->lastInsertId();
+    $stmt = $db->prepare("INSERT INTO question(user_id, q1, q2, q3, ip, create_date, last_modified_date) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+    $stmt->execute(array($userId, $q1, $q2, $q3, $_SERVER['REMOTE_ADDR']));
     
     $db = null;
+}
+
+function isQuestionChanged($questionArray, $userId, $q1, $q2, $q3, $ip){
+    return ($questionArray['q1'] !== $q1 ||
+        $questionArray['q2'] !== $q2 ||
+        $questionArray['q3'] !== $q3 ||
+        $questionArray['ip'] !== $ip
+        );
+}
+
+function updateQuestion($questionArray, $userId, $q1, $q2, $q3){
+    $ip =  $_SERVER['REMOTE_ADDR'];
+    if(isQuestionChanged($questionArray, $userId, $q1, $q2, $q3, $ip)){
+        $db = getDb();
+
+        $stmt = $db->prepare("update question set q1 = ? , q2 = ?, q3 = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
+        $stmt->execute(array($q1, $q2, $q3, $ip, $userId,));
+        
+        $db = null;
+    }
 }
 
 function getUser($userId){
@@ -24,9 +61,11 @@ function getUser($userId){
     $stmt = $db->prepare('SELECT id, user_Id, user_name, first_name, last_name, ip FROM voter WHERE user_id = ?');
     $stmt->execute(array($userId));
     
-    $ret['user_id'] = $userId;
+    $ret = null;
     if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$ret = new array();
         $ret['id'] = $row['id'];
+		$ret['user_id'] = $userId;
         $ret['user_name'] = $row['user_name'];
         $ret['first_name'] = $row['first_name'];
         $ret['last_name'] = $row['last_name'];
@@ -44,6 +83,8 @@ function createUser($userId, $userName, $firstName, $lastName){
     $insertId = $db->lastInsertId();
     
     $db = null;
+    
+    return $insertId;
 }
 
 function isUserChanged($userArray, $userId, $userName, $firstName, $lastName, $ip){
@@ -62,13 +103,9 @@ function updateUser($userArray, $userId, $userName, $firstName, $lastName){
 
         $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, last_name = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
         $stmt->execute(array($userName, $firstName, $lastName, $ip, $userId,));
-        $insertId = $db->lastInsertId();
         
         $db = null;
-        return $insertId;
     }
-    
-    return -1;
 }
 
 
