@@ -39,6 +39,7 @@ function processMessage($message) {
         
         if(null == $user){
             $user = createUser($userId, $userName, $firstName, $lastName);
+            $question = null;
         }
         else{
             $question = getQuestion($userId);
@@ -47,21 +48,18 @@ function processMessage($message) {
         
         if (strpos($text, "/start") === 0 || strpos($text, "/vote") === 0) {
             apiRequestJson("sendMessage", 
-                array('chat_id' => $chat_id, "text" => 'Who do you vote?', 
-                'reply_markup' => array('keyboard' => array(array('Vote 1', 'Vote 2'), array('Vote 3', 'Vote 4'), array('Vote 5', 'Vote 6')), 
-                'one_time_keyboard' => true, 
-                'resize_keyboard' => true)));
+                    array('chat_id' => $chat_id, 
+                    "text" => '同意我們的使用條款? ', 
+                    'reply_markup' => array('keyboard' => array(array_values($aryQ1)), 
+                                            'one_time_keyboard' => true, 
+                                            'resize_keyboard' => true))
+                          );
         } else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
         } else if (strpos($text, "Vote ") === 0) {
             addRecords($message['from']['id'], $message['from']['first_name'], str_replace('Vote ', '', $text));
-            apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => "Voted.  Thanks. \n".
-                "Use /result to display report.\n".
-                "Use /vote to add a new vote."));
-        } else if(strpos($text, '/in ') === 0){
-            addQ1($message['from']['id'], $message['from']['first_name'], str_replace('Vote ', '', $text));
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => "Voted.  Thanks. \n".
                 "Use /result to display report.\n".
                 "Use /vote to add a new vote."));
@@ -73,17 +71,42 @@ function processMessage($message) {
             }
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $res));
         }  else if (in_array($text, $aryQ1)){
-            addQ1($user, $question, $text);
+            if(addQ1($user, $question, $text)){
+                if ($text == $aryQ1['Y']){
+                    //reply with Q2
+                    apiRequestJson("sendMessage", 
+                            array('chat_id' => $chat_id, 
+                            "text" => 'Q2: 那一區?', 
+                            'reply_markup' => array('keyboard' => array(array_keys($aryQ2)), 
+                                                    'one_time_keyboard' => true, 
+                                                    'resize_keyboard' => true))
+                                  );
+                }
+                else{
+                    //tell them not agree can't do anything
+                    apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => "We can do nothing if you do not agree."));
+                }
+            }
         }  else if (array_key_exists($text, $aryQ2)){
             if(!addQ2($user, $question, $text)){
                 //Ask Q1 again if no answer found
-                print 'reply with q1';
+            }
+            else{
+                $option = $aryQ2[$text];
+                apiRequestJson("sendMessage", 
+                            array('chat_id' => $chat_id, 
+                            "text" => 'Q3: 名單是?', 
+                            'reply_markup' => array('keyboard' => array($option), 
+                                                    'one_time_keyboard' => true, 
+                                                    'resize_keyboard' => true))
+                                  );
             }
         } else if (null != $question && in_array($text, $aryQ2[$question['q2']])){
-            print 'add Q3<br>';
-            addQ3($user, $question, $text);
+            if(addQ3($user, $question, $text)){
+                apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Thanks'));
+            }
         } else {
-            apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Cool'));
+            apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Cool.  But I do not understand.'));
         }
     } else {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
@@ -120,10 +143,7 @@ function addQ2($user, $question, $text){
     $result = false;
     
     if(null != $user){
-        global $aryQ2;
         $answer = $text;
-        
-        print "$answer\n";
         
         if(null != $question){
             updateSingleQuestion($question, $user['user_id'], 2, $answer);
@@ -140,10 +160,7 @@ function addQ3($user, $question, $text){
     $result = false;
     
     if(null != $user){
-        global $aryQ2;
         $answer = $text;
-        
-        print "$answer\n";
         
         if(null != $question){
             updateSingleQuestion($question, $user['user_id'], 3, $answer);
