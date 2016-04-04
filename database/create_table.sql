@@ -1,11 +1,25 @@
--- for MySQL
+-- for mysql
 
-CREATE TABLE IF NOT EXISTS `polling` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `User_ID` bigint(20) NOT NULL,
-  `User_Name` varchar(255) NOT NULL,
-  `Poll` int(11) NOT NULL,
-  `Last_Modified_Date` datetime NOT NULL,
-  `IP` varchar(46),
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+create table question (
+  user_id int(11) not null,
+  q1 varchar(255),
+  q2 varchar(255),
+  q3 varchar(255),
+  ip varchar(46),
+  create_date timestamp not null,
+  last_modified_date timestamp not null,
+  primary key (user_id)
+) default charset=utf8;
+
+
+
+create table voter (
+  user_id int(11) not null,
+  user_name varchar(255),
+  first_name varchar(255) not null,
+  last_name varchar(255) ,
+  ip varchar(46),
+  create_date timestamp not null,
+  last_modified_date timestamp not null,
+  primary key (user_id)
+) default charset=utf8;
