@@ -1,8 +1,8 @@
 <?php
 
 function getDb(){
-    //$db = new PDO(DB_CONNECT_STR, DB_USERNAME, DB_PASSWORD);  //for mysql
-    $db = new PDO(DB_CONNECT_STR);  //for postgresql
+    $db = new PDO(DB_CONNECT_STR, DB_USER_NAME, DB_PASSWORD);  //for mysql
+    //$db = new PDO(DB_CONNECT_STR);  //for postgresql
     
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -15,9 +15,9 @@ function getQuestion($userId){
     $stmt = $db->prepare('SELECT q1, q2, q3, ip FROM question WHERE user_id = ?');
     $stmt->execute(array($userId));
     
-	$ret = null;
+    $ret = null;
     if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		$ret['user_id'] = $userId;
+        $ret['user_id'] = $userId;
         $ret['q1'] = $row['q1'];
         $ret['q2'] = $row['q2'];
         $ret['q3'] = $row['q3'];
@@ -55,17 +55,40 @@ function updateQuestion($questionArray, $userId, $q1, $q2, $q3){
         $db = null;
     }
 }
+function updateSingleQuestion($questionArray, $userId, $question, $answer){
+    $ip =  $_SERVER['REMOTE_ADDR'];
+    $q1 = $questionArray['q1'];
+    $q2 = $questionArray['q2'];
+    $q3 = $questionArray['q3'];
+    switch($question){
+        case 1:
+            $q1 = $answer;
+            break;
+        case 2:
+            $q2 = $answer;
+            break;
+        default:
+            $q3 = $answer;
+            break;
+    }
+    if(isQuestionChanged($questionArray, $userId, $q1, $q2, $q3, $ip)){
+        $db = getDb();
+
+        $stmt = $db->prepare("update question set q1 = ? , q2 = ?, q3 = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
+        $stmt->execute(array($q1, $q2, $q3, $ip, $userId,));
+        
+        $db = null;
+    }
+}
 
 function getUser($userId){
     $db = getDb();
-    $stmt = $db->prepare('SELECT id, user_Id, user_name, first_name, last_name, ip FROM voter WHERE user_id = ?');
+    $stmt = $db->prepare('SELECT user_Id, user_name, first_name, last_name, ip FROM voter WHERE user_id = ?');
     $stmt->execute(array($userId));
     
     $ret = null;
     if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		$ret = new array();
-        $ret['id'] = $row['id'];
-		$ret['user_id'] = $userId;
+        $ret['user_id'] = $userId;
         $ret['user_name'] = $row['user_name'];
         $ret['first_name'] = $row['first_name'];
         $ret['last_name'] = $row['last_name'];
@@ -84,7 +107,13 @@ function createUser($userId, $userName, $firstName, $lastName){
     
     $db = null;
     
-    return $insertId;
+    $ret['user_id'] = $userId;
+    $ret['user_name'] = $userName;
+    $ret['first_name'] = $firstName;
+    $ret['last_name'] = $lastName;
+    $ret['ip'] = $_SERVER['REMOTE_ADDR'];
+    
+    return $ret;
 }
 
 function isUserChanged($userArray, $userId, $userName, $firstName, $lastName, $ip){
