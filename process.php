@@ -61,21 +61,10 @@ function processMessage($message) {
             // stop now, do nothing
         } else if (strpos($text, "/result") === 0) {
             if(null == $question['q2']){
-                apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "You have not yet voted."));
+                respondWithQuote($chat_id, $message_id, "You have not yet voted. /start to start voting.");
             }
             else{
-				$q2Index = $question['q2'];
-                $arr = getResult($q2Index);
-                $res = '*「'. $q2Index."*」 選區的結果：\n\n";
-				
-				$q2Key = array_keys($aryQ2);
-				$q2Array = $aryQ2[$q2Key[$q2Index]];
-                foreach($arr as $key => $val) {
-                    $res .= $q2Array[$key].": $val\n";
-                }
-                $res .= "\n".'[詳細的結果](http://civic-data.hk/result-graph/)';
-                $res .= "\n如要更改你的投票，請使用 /start 重新開始";
-                apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $res, 'parse_mode' => 'Markdown'));
+				respondPollingResult($chat_id, $question['q2']);
             }
         }  else if (in_array($text, $aryQ1)){
             if(addQ1($user, $question, $text)){
@@ -91,7 +80,7 @@ function processMessage($message) {
                 }
                 else{
                     //tell them not agree can't do anything
-                    apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "We can do nothing if you do not agree."));
+                    respondWithQuote($chat_id, $message_id, "We can do nothing if you do not agree.");
                 }
             }
         }  else if (array_key_exists($text, $aryQ2)){
@@ -110,23 +99,51 @@ function processMessage($message) {
             }
         } else {
             if (null != $question && null != $question['q2']){
-                 
                 $q2 = $question['q2'];
                 $q2Key = array_keys($aryQ2);
                 
                 if(in_array($text, $aryQ2[$q2Key[$q2]])){
                     if(addQ3($user, $question, array_search($text, $aryQ2[$q2Key[$q2]]))){
-                        apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Thanks.'));
+                        respondWithQuote($chat_id, $message_id, 'Thanks.');
+						respondPollingResult($chat_id, $q2);
                     }
                 }
+				else{
+					respondInvalidRequest($chat_id, $message_id);
+				}
             } 
             else {
-                apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Cool.  But I do not understand.'));
+				respondInvalidRequest($chat_id, $message_id);
             }
         }
     } else {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
     }
+}
+
+function respondPollingResult($chat_id, $q2Index){
+	global $aryQ2;
+	
+	$arr = getResult($q2Index);
+	
+	$q2Key = array_keys($aryQ2);
+	$q2Array = $aryQ2[$q2Key[$q2Index]];
+	
+	$res = '*「'. $q2Key[$q2Index]."*」 選區的結果：\n\n";
+	foreach($arr as $key => $val) {
+		$res .= $q2Array[$key].": $val\n";
+	}
+	$res .= "\n".'[詳細的結果](http://civic-data.hk/result-graph/)';
+	$res .= "\n如要更改你的投票，請使用 /start 重新開始";
+	apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $res, 'parse_mode' => 'Markdown'));
+}
+
+function respondInvalidRequest($chat_id, $message_id){
+	respondWithQuote($chat_id, $message_id, 'Cool.  But I do not understand.');
+}
+
+function respondWithQuote($chat_id, $message_id, $message){
+	apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => $message));
 }
 
 function logDebug($msg) {
