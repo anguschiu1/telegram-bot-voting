@@ -64,10 +64,14 @@ function processMessage($message) {
                 apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "You have not yet voted."));
             }
             else{
-                $arr = getResult($question['q2']);
-                $res = '*「'. $question['q2']."*」 選區的結果：\n\n";
+				$q2Index = $question['q2'];
+                $arr = getResult($q2Index);
+                $res = '*「'. $q2Index."*」 選區的結果：\n\n";
+				
+				$q2Key = array_keys($aryQ2);
+				$q2Array = $aryQ2[$q2Key[$q2Index]];
                 foreach($arr as $key => $val) {
-                    $res .= "*$key* : $val\n";
+                    $res .= $q2Array[$key].": $val\n";
                 }
                 $res .= "\n".'[詳細的結果](http://civic-data.hk/result-graph/)';
                 $res .= "\n如要更改你的投票，請使用 /start 重新開始";
@@ -104,12 +108,21 @@ function processMessage($message) {
                                                     'resize_keyboard' => true))
                                   );
             }
-        } else if (null != $question && in_array($text, $aryQ2[$question['q2']])){
-            if(addQ3($user, $question, $text)){
-                apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Thanks'));
-            }
         } else {
-            apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Cool.  But I do not understand.'));
+            if (null != $question && null != $question['q2']){
+                 
+                $q2 = $question['q2'];
+                $q2Key = array_keys($aryQ2);
+                
+                if(in_array($text, $aryQ2[$q2Key[$q2]])){
+                    if(addQ3($user, $question, array_search($text, $aryQ2[$q2Key[$q2]]))){
+                        apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Thanks.'));
+                    }
+                }
+            } 
+            else {
+                apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Cool.  But I do not understand.'));
+            }
         }
     } else {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
@@ -146,7 +159,8 @@ function addQ2($user, $question, $text){
     $result = false;
     
     if(null != $user){
-        $answer = $text;
+        global $aryQ2;
+        $answer = array_search($text, array_keys($aryQ2));
         
         if(null != $question){
             updateSingleQuestion($question, $user['user_id'], 2, $answer);
