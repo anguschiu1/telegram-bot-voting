@@ -58,11 +58,6 @@ function processMessage($message) {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
-        } else if (strpos($text, "Vote ") === 0) {
-            addRecords($message['from']['id'], $message['from']['first_name'], str_replace('Vote ', '', $text));
-            apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => "Voted.  Thanks. \n".
-                "Use /result to display report.\n".
-                "Use /vote to add a new vote."));
         } else if (strpos($text, "/result") === 0) {
             $arr = getResult();
             $res = '';
@@ -84,7 +79,7 @@ function processMessage($message) {
                 }
                 else{
                     //tell them not agree can't do anything
-                    apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => "We can do nothing if you do not agree."));
+                    apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "We can do nothing if you do not agree."));
                 }
             }
         }  else if (array_key_exists($text, $aryQ2)){
