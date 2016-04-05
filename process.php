@@ -9,7 +9,7 @@ $aryQ2 = array(
    '5. 新界西' => array('新界西 1', '新界西 2', '新界西 3', '新界西 4', '新界西 5', '新界西 6', '新界西 7', '新界西 8', '新界西 9', '新界西 10', '新界西 11', '新界西 12', '新界西 13', '新界西 14', '新界西 15', '新界西 16', '新界西 17', '新界西 18', '新界西 19')
 );
 
-$Q1Agree = '👌 Agree';
+$Q1Agree = '👌 同意';
 $Q1Disagree = '🚫 No!';
 
 $aryQ1 = array('Y' => $Q1Agree, 'N' => $Q1Disagree);
@@ -48,13 +48,7 @@ function processMessage($message) {
         
         
         if (strpos($text, "/start") === 0 || strpos($text, "/vote") === 0) {
-            apiRequestJson("sendMessage", 
-                    array('chat_id' => $chat_id, 
-                    "text" => '同意我們的使用條款? ', 
-                    'reply_markup' => array('keyboard' => array(array_values($aryQ1)), 
-                                            'one_time_keyboard' => true, 
-                                            'resize_keyboard' => true))
-                          );
+			respondWithKeyboard($chat_id, '同意我們的使用條款?', array(array_values($aryQ1)));
         } else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/stop") === 0) {
@@ -70,13 +64,7 @@ function processMessage($message) {
             if(addQ1($user, $question, $text)){
                 if ($text == $aryQ1['Y']){
                     //reply with Q2
-                    apiRequestJson("sendMessage", 
-                            array('chat_id' => $chat_id, 
-                            "text" => 'Q2: 那一區?', 
-                            'reply_markup' => array('keyboard' => array_chunk(array_keys($aryQ2), 2), 
-                                                    'one_time_keyboard' => true, 
-                                                    'resize_keyboard' => true))
-                                  );
+					respondWithKeyboard($chat_id, 'Q2: 那一區?', array_chunk(array_keys($aryQ2), 2));
                 }
                 else{
                     //tell them not agree can't do anything
@@ -89,13 +77,7 @@ function processMessage($message) {
             }
             else{
                 $option = $aryQ2[$text];
-                apiRequestJson("sendMessage", 
-                            array('chat_id' => $chat_id, 
-                            "text" => 'Q3: 名單是?', 
-                            'reply_markup' => array('keyboard' => array_chunk($option, 2), 
-                                                    'one_time_keyboard' => true, 
-                                                    'resize_keyboard' => true))
-                                  );
+				respondWithKeyboard($chat_id, 'Q3: 名單是?', array_chunk($option, 2));
             }
         } else {
             if (null != $question && null != $question['q2']){
@@ -144,6 +126,16 @@ function respondInvalidRequest($chat_id, $message_id){
 
 function respondWithQuote($chat_id, $message_id, $message){
 	apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => $message));
+}
+
+function respondWithKeyboard($chat_id, $message, $keyboardOptions){
+	apiRequestJson("sendMessage", 
+				array('chat_id' => $chat_id, 
+				"text" => $message, 
+				'reply_markup' => array('keyboard' => $keyboardOptions, 
+										'one_time_keyboard' => true, 
+										'resize_keyboard' => true))
+					  );
 }
 
 function logDebug($msg) {
