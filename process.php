@@ -77,7 +77,7 @@ function processMessage($message) {
                     apiRequestJson("sendMessage", 
                             array('chat_id' => $chat_id, 
                             "text" => 'Q2: 那一區?', 
-                            'reply_markup' => array('keyboard' => array(array_keys($aryQ2)), 
+                            'reply_markup' => array('keyboard' => array_chunk(array_keys($aryQ2), 2), 
                                                     'one_time_keyboard' => true, 
                                                     'resize_keyboard' => true))
                                   );
@@ -96,7 +96,7 @@ function processMessage($message) {
                 apiRequestJson("sendMessage", 
                             array('chat_id' => $chat_id, 
                             "text" => 'Q3: 名單是?', 
-                            'reply_markup' => array('keyboard' => array($option), 
+                            'reply_markup' => array('keyboard' => array_chunk($option, 2), 
                                                     'one_time_keyboard' => true, 
                                                     'resize_keyboard' => true))
                                   );
