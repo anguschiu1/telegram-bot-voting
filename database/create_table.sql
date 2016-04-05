@@ -2,9 +2,9 @@
 
 create table question (
   user_id int(11) not null,
-  q1 varchar(255),
-  q2 varchar(255),
-  q3 varchar(255),
+  q1 varchar(1),
+  q2 int,
+  q3 int,
   ip varchar(46),
   create_date timestamp not null,
   last_modified_date timestamp not null,
