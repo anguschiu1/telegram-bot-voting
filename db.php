@@ -134,26 +134,29 @@ function updateUser($userArray, $userId, $userName, $firstName, $lastName){
         $stmt->execute(array($userName, $firstName, $lastName, $ip, $userId,));
         
         $db = null;
+        
+        $userArray['user_name'] = $userName;
+        $userArray['first_name'] = $firstName;
+        $userArray['last_name'] = $lastName;
+        $userArray['ip'] = $ip;
     }
+    
+    return $userArray;
 }
 
 
-function getResult(){
+function getResult($q2){
     $db = getDb();
-    $stmt = $db->query('SELECT poll, count(1) AS total FROM polling GROUP BY poll ORDER BY poll');
- 
-    $ret['1'] = 0;
-    $ret['2'] = 0;
-    $ret['3'] = 0;
-    $ret['4'] = 0;
-    $ret['5'] = 0;
-    $ret['6'] = 0;
+    $stmt = $db->prepare('SELECT q3, count(1) AS total FROM question WHERE q2 = ? GROUP BY q3 ORDER BY q3');
+    $stmt->execute(array($q2));
+
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $ret[$row['poll']] = $row['total'];
+        $ret[$row['q3']] = $row['total'];
     }
     
     $db = null;
     
+    print_r($ret);
     return $ret;
 }
 ?>

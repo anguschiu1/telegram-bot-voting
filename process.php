@@ -42,6 +42,7 @@ function processMessage($message) {
             $question = null;
         }
         else{
+            $user = updateUser($user, $userId, $userName, $firstName, $lastName);
             $question = getQuestion($userId);
         }
         
@@ -59,12 +60,19 @@ function processMessage($message) {
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
         } else if (strpos($text, "/result") === 0) {
-            $arr = getResult();
-            $res = '';
-            foreach($arr as $key => $val) {
-                $res .= "Poll $key : $val\n";
+            if(null == $question['q2']){
+                apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "You have not yet voted."));
             }
-            apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $res));
+            else{
+                $arr = getResult($question['q2']);
+                $res = '*「'. $question['q2']."*」 選區的結果：\n\n";
+                foreach($arr as $key => $val) {
+                    $res .= "*$key* : $val\n";
+                }
+                $res .= "\n".'[詳細的結果](http://civic-data.hk/result-graph/)';
+                $res .= "\n如要更改你的投票，請使用 /start 重新開始";
+                apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $res, 'parse_mode' => 'Markdown'));
+            }
         }  else if (in_array($text, $aryQ1)){
             if(addQ1($user, $question, $text)){
                 if ($text == $aryQ1['Y']){
