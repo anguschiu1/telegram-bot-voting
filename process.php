@@ -98,9 +98,11 @@ function processMessage($message) {
                 //Ask Q1 again if no answer found
             }
             else{
-                $option = $aryQ2[$text];
                 $q2Key = array_keys($aryQ2);
                 $q2 = $q2Key[$question['q2']];
+                
+                $option = $aryQ2[$text];
+                shuffle($option);
 				respondWithKeyboard($chat_id, '2016 年立會選舉你`現時`傾向投給'.$q2.'中的哪個政黨？', array_chunk($option, 3));
             }
         } else {
