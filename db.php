@@ -83,7 +83,7 @@ function updateSingleQuestion($questionArray, $userId, $question, $answer){
 
 function getUser($userId){
     $db = getDb();
-    $stmt = $db->prepare('SELECT user_Id, user_name, first_name, last_name, ip FROM voter WHERE user_id = ?');
+    $stmt = $db->prepare('SELECT user_Id, user_name, first_name, last_name, chat_id, ip FROM voter WHERE user_id = ?');
     $stmt->execute(array($userId));
     
     $ret = null;
@@ -92,17 +92,18 @@ function getUser($userId){
         $ret['user_name'] = $row['user_name'];
         $ret['first_name'] = $row['first_name'];
         $ret['last_name'] = $row['last_name'];
+        $ret['chat_id'] = $row['chat_id'];
         $ret['ip'] = $row['ip'];
     }
     
     return $ret;
 }
 
-function createUser($userId, $userName, $firstName, $lastName){
+function createUser($userId, $userName, $firstName, $lastName, $chat_id){
     $db = getDb();
 
-    $stmt = $db->prepare("INSERT INTO voter(user_id, user_name, first_name, last_name, ip, create_date, last_modified_date) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
-    $stmt->execute(array($userId, $userName, $firstName, $lastName, $_SERVER['REMOTE_ADDR']));
+    $stmt = $db->prepare("INSERT INTO voter(user_id, user_name, first_name, last_name, chat_id, ip, create_date, last_modified_date) VALUES (?, ?, ?,?, ?, ?, NOW(), NOW())");
+    $stmt->execute(array($userId, $userName, $firstName, $lastName, $chat_id, $_SERVER['REMOTE_ADDR']));
     $insertId = $db->lastInsertId();
     
     $db = null;
@@ -111,33 +112,36 @@ function createUser($userId, $userName, $firstName, $lastName){
     $ret['user_name'] = $userName;
     $ret['first_name'] = $firstName;
     $ret['last_name'] = $lastName;
+    $ret['chat_id'] = $chat_id;
     $ret['ip'] = $_SERVER['REMOTE_ADDR'];
     
     return $ret;
 }
 
-function isUserChanged($userArray, $userId, $userName, $firstName, $lastName, $ip){
+function isUserChanged($userArray, $userId, $userName, $firstName, $lastName, $chat_id, $ip){
     return ($userArray['user_id'] != $userId ||
         $userArray['user_name'] !== $userName ||
         $userArray['first_name'] !== $firstName ||
         $userArray['last_name'] !== $lastName ||
+        $userArray['chat_id'] = $chat_id ||
         $userArray['ip'] !== $ip
         );
 }
 
-function updateUser($userArray, $userId, $userName, $firstName, $lastName){
+function updateUser($userArray, $userId, $userName, $firstName, $lastName, $chat_id){
     $ip =  $_SERVER['REMOTE_ADDR'];
-    if(isUserChanged($userArray, $userId, $userName, $firstName, $lastName, $ip)){
+    if(isUserChanged($userArray, $userId, $userName, $firstName, $lastName, $chat_id, $ip)){
         $db = getDb();
 
-        $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, last_name = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
-        $stmt->execute(array($userName, $firstName, $lastName, $ip, $userId,));
+        $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, last_name = ?, chat_id = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
+        $stmt->execute(array($userName, $firstName, $lastName, $chat_id, $ip, $userId,));
         
         $db = null;
         
         $userArray['user_name'] = $userName;
         $userArray['first_name'] = $firstName;
         $userArray['last_name'] = $lastName;
+        $userArray['chat_id'] = $chat_id;
         $userArray['ip'] = $ip;
     }
     

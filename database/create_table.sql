@@ -18,6 +18,7 @@ create table voter (
   user_name varchar(255),
   first_name varchar(255) not null,
   last_name varchar(255) ,
+  chat_id int not null,
   ip varchar(46),
   create_date timestamp not null,
   last_modified_date timestamp not null,

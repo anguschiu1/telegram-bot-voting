@@ -60,11 +60,11 @@ function processMessage($message) {
         $user = getUser($userId);
         
         if(null == $user){
-            $user = createUser($userId, $userName, $firstName, $lastName);
+            $user = createUser($userId, $userName, $firstName, $lastName, $chat_id);
             $question = null;
         }
         else{
-            $user = updateUser($user, $userId, $userName, $firstName, $lastName);
+            $user = updateUser($user, $userId, $userName, $firstName, $lastName, $chat_id);
             $question = getQuestion($userId);
         }
         
