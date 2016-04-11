@@ -7,6 +7,8 @@ class Invitation{
     public $expire_date;
     public $create_date;
     public $last_modified_date;
+    
+    public $originalQuota;
 
     function __construct(){
         $a = func_get_args();
@@ -24,6 +26,12 @@ class Invitation{
        $this->expire_date = $array['expire_date'];
        $this->create_date = $array['create_date'];
        $this->last_modified_date = $array['last_modified_date'];
+       
+       $this->originalQuota = $this->quota;
+    }
+    
+    public function useQuota(){
+        $this->quota--;
     }
 }
 ?>
