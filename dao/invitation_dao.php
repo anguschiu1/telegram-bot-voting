@@ -35,11 +35,8 @@ class InvitationDao{
         $stmt = $db->prepare("update invitation set link = ? , quota = ?, create_user_id = ?, expire_date = FROM_UNIXTIME(?), last_modified_date = NOW() where id = ? and quota = ?");
         $updated = $stmt->execute(array($obj->link, $obj->quota, $obj->create_user_id, $obj->expire_date, $obj->id, $obj->originalQuota));
         
-        $count = $stmt->rowCount;
-        $affected = $count?"T":"F";
-        print "Affected row: $updated, $count, $affected. Quota : $obj->quota, original: $obj->originalQuota<BR>";
-        if(false){
-            print "Reloading<BR>";
+        $count = $stmt->rowCount();
+        if(0 == $count){
             $invitation = self::get($obj->id);
             $invitation->link = $obj->link;
             $invitation->create_user_id = $obj->create_user_id;
