@@ -18,8 +18,12 @@ class InvitationDao{
     public static function create($obj){
         $db = getDb();
 
-        $stmt = $db->prepare("INSERT INTO invitation(link, quota, create_user_id, expire_date, create_date, last_modified_date) VALUES (?, ?, ?, FROM_UNIXTIME(?), NOW(), NOW())");
-        $stmt->execute(array($obj->link, $obj->quota, $obj->create_user_id, $obj->expire_date));
+        $stmt = $db->prepare("INSERT INTO invitation(link, quota, create_user_id, expire_date, create_date, last_modified_date) VALUES (:link, :quota, :create_user_id, :expire_date, NOW(), NOW())");
+        $stmt->bindValue(':link', $obj->link);
+        $stmt->bindValue(':quota', $obj->quota);
+        $stmt->bindValue(':create_user_id', $obj->create_user_id);
+        $stmt->bindValue(':expire_date', $obj->expire_date, PDO::PARAM_INT);
+        $stmt->execute();
         $insertId = $db->lastInsertId();
         
         $db = null;
@@ -32,8 +36,14 @@ class InvitationDao{
     public static function update($obj){
         $db = getDb();
 
-        $stmt = $db->prepare("update invitation set link = ? , quota = ?, create_user_id = ?, expire_date = FROM_UNIXTIME(?), last_modified_date = NOW() where id = ? and quota = ?");
-        $updated = $stmt->execute(array($obj->link, $obj->quota, $obj->create_user_id, $obj->expire_date, $obj->id, $obj->originalQuota));
+        $stmt = $db->prepare("update invitation set link = :link , quota = :quota, create_user_id = :create_user_id, expire_date = :expire_date, last_modified_date = NOW() where id = :id and quota = :original_quota");
+        $stmt->bindValue(':link', $obj->link);
+        $stmt->bindValue(':quota', $obj->quota);
+        $stmt->bindValue(':create_user_id', $obj->create_user_id);
+        $stmt->bindValue(':expire_date', $obj->expire_date, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $obj->id, PDO::PARAM_INT);
+        $stmt->bindValue(':original_quota', $obj->originalQuota, PDO::PARAM_INT);
+        $updated = $stmt->execute();
         
         $count = $stmt->rowCount();
         if(0 == $count){
