@@ -20,20 +20,62 @@ function processMessage($message) {
         logDebug("Text is: $text\n");
         
         
-        $user = getUser($userId);
+        $user = UserDao::get($userId);
         
         if(null == $user){
-            $user = createUser($userId, $userName, $firstName, $lastName, $chat_id);
             $question = null;
+            
+            $user = new User();
+            $user->user_id = $userId;
+            $user->user_name = $userName;
+            $user->first_name = $firstName;
+            $user->last_name = $lastName;
+            $user->chat_id = $chat_id;
+            $user->authorized = 'N';
+            $user = UserDao::save($user);
         }
         else{
-            $user = updateUser($user, $userId, $userName, $firstName, $lastName, $chat_id);
             $question = getQuestion($userId);
+            
+            $user->user_name = $userName;
+            $user->first_name = $firstName;
+            $user->last_name = $lastName;
+            $user->chat_id = $chat_id;
+            $user = UserDao::save($user);
         }
         
         
-        if (strpos($text, "/start") === 0 || strpos($text, "/vote") === 0) {
-            respondWithKeyboard($chat_id, '同意我們的使用條款?', array(array_values($aryQ1)));
+        if (strpos($text, "/start") === 0) {
+            if('Y' === $user->authorized){
+                respondWithKeyboard($chat_id, '同意我們的使用條款?', array(array_values($aryQ1)));
+            }
+            else{
+                $args = explode(' ', $text);
+                if (count($args) > 1){
+                    $invitation = InvitationDao::getByLink($args[1]);
+                    if(null != $invitation){
+                        $invitation->useQuota();
+                        
+                        $invitationUser = new InvitationUser();
+                        $invitationUser->invitation_id = $invitation->id;
+                        $invitationUser->user_id = $user->user_id;
+                        
+                        InvitationDao::save($invitation);
+                        InvitationUserDao::save($invitationUser);
+                        
+                        $user->authorized = 'Y';
+                        $user = UserDao::save($user);
+                        
+                        respondWithKeyboard($chat_id, '同意我們的使用條款?', array(array_values($aryQ1)));
+                    }
+                    else{
+                        respondWithMessage($chat_id, 'Not authorized');
+                    }
+                }
+                else{
+                    respondWithMessage($chat_id, 'Not authorized');
+                }
+            }
         } else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/stop") === 0) {
@@ -128,6 +170,7 @@ function respondPollingResult($chat_id, $q2Index){
 
 function respondWithMessage($chat_id, $message){
     apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $message, 'parse_mode' => 'Markdown'));
+    print "$chat_id, $message";
 }
 
 function respondInvalidRequest($chat_id, $message_id){
@@ -164,10 +207,10 @@ function addQ1($user, $question, $text){
         $answer = array_search($text, $aryQ1);
         
         if(null != $question){
-            updateSingleQuestion($question, $user['user_id'], 1, $answer);
+            updateSingleQuestion($question, $user->user_id, 1, $answer);
         }
         else{
-            createQuestion($user['user_id'], $answer, null, null);
+            createQuestion($user->user_id, $answer, null, null);
         }
         $result = true;
     }
@@ -183,7 +226,7 @@ function addQ2($user, $question, $text){
         $answer = array_search($text, array_keys($aryQ2));
         
         if(null != $question){
-            updateSingleQuestion($question, $user['user_id'], 2, $answer);
+            updateSingleQuestion($question, $user->user_id, 2, $answer);
             $result = true;
         }
     }
@@ -200,7 +243,7 @@ function addQ3($user, $question, $text){
         $answer = $text;
         
         if(null != $question){
-            updateSingleQuestion($question, $user['user_id'], 3, $answer);
+            updateSingleQuestion($question, $user->user_id, 3, $answer);
             $result = true;
         }
     }

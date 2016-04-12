@@ -3,6 +3,13 @@
 require 'config.php';
 require('db.php');
 require('api.php');
+require('dao/invitation_dao.php');
+require('dao/invitation_user_dao.php');
+require('dao/user_dao.php');
+require('model/invitation_model.php');
+require('model/invitation_user_model.php');
+require('model/question_model.php');
+require('model/user_model.php');
 require('process.php');
 
 
