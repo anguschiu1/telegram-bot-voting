@@ -9,6 +9,8 @@ define('DB_CONNECT_STR', 'mysql:host=localhost;dbname=bot;charset=utf8mb4');
 define('DB_USER_NAME', 'root');
 define('DB_PASSWORD', '');
 
+define ('INVITATION_LINK_PREFIX', 'https://telegram.me/CivicDataHK2Bot?start=');
+
 define('DEBUG', true);
 define('DEBUG_FILE_NAME', 'debug.txt');
 
