@@ -6,9 +6,9 @@ function processMessage($message) {
     $chat_id = $message['chat']['id'];
     
     $userId = $message['from']['id'];
-    $firstName = $message['from']['first_name'];
-    $lastName = $message['from']['last_name'];
-    $userName = $message['from']['username'];
+    $firstName = isset($message['from']['first_name'])?$message['from']['first_name']:'';
+    $lastName = isset($message['from']['last_name'])?$message['from']['last_name']:'';
+    $userName = isset($message['from']['username'])?$message['from']['username']:'';
     
     global $aryQ1;
     global $aryQ2;
@@ -32,6 +32,7 @@ function processMessage($message) {
             $user->last_name = $lastName;
             $user->chat_id = $chat_id;
             $user->authorized = 'N';
+            $user->level = 99;
             $user = UserDao::save($user);
         }
         else{
@@ -55,6 +56,9 @@ function processMessage($message) {
                     $invitation = InvitationDao::getByLink($args[1]);
                     if(null != $invitation){
                         $user->authorized = 'Y';
+                        $createUser = UserDao::get($invitation->create_user_id);
+                        $user->level = $createUser->level + 1;
+                        
                         $user = UserDao::save($user);
                         
                         $invitation->useQuota();
@@ -79,24 +83,20 @@ function processMessage($message) {
         } else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/invite") === 0) {
-            $args = explode(' ', $text);
-            if (count($args) > 1){
-                $quotaStr = $args[1];
-                if(is_numeric($quotaStr)){
-                    $quota = intval($quotaStr);
-                    if($quota > 0){
-                        replyInvitation($user, $quota, $chat_id);
-                    }
-                    else{
-                        respondWithMessage($chat_id, 'Please use "`/invite <NUM>`" to generate invitation link, where <NUM> is a positive number.');
-                    }
-                }
-                else{
-                    respondWithMessage($chat_id, 'Please use "`/invite <NUM>`" to generate invitation link, where <NUM> is a positive number.');
-                }
+            $invitationService = new InvitationService($user);
+            
+            if($invitationService->hasGenerated()){
+                $invitation = $invitationService->getInvitation();
+                respondWithMessage($chat_id, "You have already generated a link. \n ".formatInvitationMessage($invitation));
             }
             else{
-                respondWithMessage($chat_id, 'Please use "`/invite <NUM>`" to generate invitation link, where <NUM> is a positive number.');
+                if($invitationService->canGenerate()){
+                    $invitation = $invitationService->getInvitation();
+                    respondWithMessage($chat_id, formatInvitationMessage($invitation));
+                }
+                else{
+                    respondWithMessage($chat_id, 'No privileges');
+                }
             }
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
@@ -190,6 +190,7 @@ function respondPollingResult($chat_id, $q2Index){
 
 function respondWithMessage($chat_id, $message){
     apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $message, 'parse_mode' => 'Markdown'));
+    print "API: $message.<BR>\n";
 }
 
 function respondInvalidRequest($chat_id, $message_id){
@@ -270,31 +271,9 @@ function addQ3($user, $question, $text){
 }
 
 
-function generateInvitation($user, $quota){
-    $invitation = new Invitation();
-    $invitation->link = generateRandomString();
-    $invitation->quota = $quota;
-    $invitation->create_user_id = $user->user_id;
-    $invitation->expire_date = date('Y-m-d', strtotime('+1 month')) ; //time() * 1000 + (31 + 24 * 60 * 60); // expire after 1 month
-    
-    $invitaiton = InvitationDao::save($invitation);
-    
-    return $invitaiton;
-}
-
-function generateRandomString($length = 14) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
-
-function replyInvitation($user, $quota, $chat_id){
-    $invitation = generateInvitation($user, $quota);
+function formatInvitationMessage($invitation){
     $url = INVITATION_LINK_PREFIX.$invitation->link;
-    respondWithMessage($chat_id, "Invitation link is $url .");
+    
+    return "Invitation link is $url .";
 }
 ?>
