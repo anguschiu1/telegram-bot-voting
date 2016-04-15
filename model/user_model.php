@@ -6,6 +6,7 @@ class User{
     public $last_name;
     public $chat_id;
     public $authorized;
+    public $level;
     public $ip;
     public $create_date;
     public $last_modified_date;
@@ -25,6 +26,7 @@ class User{
        $this->last_name = $array['last_name'];
        $this->chat_id = $array['chat_id'];
        $this->authorized = $array['authorized'];
+       $this->level = $array['level'];
        $this->ip = $array['ip'];
        $this->create_date = $array['create_date'];
        $this->last_modified_date = $array['last_modified_date'];

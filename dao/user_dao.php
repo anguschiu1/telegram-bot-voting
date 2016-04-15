@@ -3,7 +3,7 @@ class UserDao{
     
     public static function get($id){
         $db = getDb();
-        $stmt = $db->prepare('SELECT user_id, user_name, first_name, last_name, chat_id, ip, authorized, create_date, last_modified_date FROM voter WHERE user_id = ?');
+        $stmt = $db->prepare('SELECT user_id, user_name, first_name, last_name, chat_id, level, ip, authorized, create_date, last_modified_date FROM voter WHERE user_id = ?');
         $stmt->execute(array($id));
         
         $ret = null;
@@ -18,13 +18,13 @@ class UserDao{
     public static function create($obj){
         $db = getDb();
         
-        $stmt = $db->prepare("INSERT INTO voter(user_id, user_name, first_name, last_name, chat_id, authorized, ip, create_date, last_modified_date) VALUES (?, ?, ?,?, ?, ?, ?, NOW(), NOW())");
-        $stmt->execute(array($obj->user_id, $obj->user_name, $obj->first_name, $obj->last_name, $obj->chat_id, $obj->authorized, $_SERVER['REMOTE_ADDR']));
-        $insertId = $db->lastInsertId();
+        $stmt = $db->prepare("INSERT INTO voter(user_id, user_name, first_name, last_name, chat_id, level, authorized, ip, create_date, last_modified_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmt->execute(array($obj->user_id, $obj->user_name, $obj->first_name, $obj->last_name, 
+                $obj->chat_id, $obj->level, $obj->authorized, $_SERVER['REMOTE_ADDR']));
+                
+        $obj->create_date = time();
         
         $db = null;
-        
-        $obj->user_id = $insertId;
         
         return $obj;
     }
@@ -32,9 +32,9 @@ class UserDao{
     public static function update($obj){
         $db = getDb();
 
-
-        $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, last_name = ?, chat_id = ?, authorized = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
-        $stmt->execute(array($obj->user_name, $obj->first_name, $obj->last_name, $obj->chat_id, $obj->authorized, $_SERVER['REMOTE_ADDR'], $obj->user_id));
+        $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, last_name = ?, chat_id = ?, level = ? , authorized = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
+        $stmt->execute(array($obj->user_name, $obj->first_name, $obj->last_name, $obj->chat_id, 
+            $obj->level, $obj->authorized, $_SERVER['REMOTE_ADDR'], $obj->user_id));
         
         $db = null;
         
