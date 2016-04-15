@@ -56,7 +56,7 @@ function processMessage($message) {
                     $invitation = InvitationDao::getByLink($args[1]);
                     if(null != $invitation){
                         $user->authorized = 'Y';
-                        $user->member_type = MemberType::getNextType($invitation->member_type);
+                        $user->member_type = $invitation->member_type;
                         
                         $user = UserDao::save($user);
                         
@@ -81,8 +81,19 @@ function processMessage($message) {
             }
         } else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
+        } else if (strpos($text, "/invite new") === 0 && MemberType::canCreateMutli($user->member_type)) {
+            $invitationService = new InvitationService($user);
+            if($invitationService->canGenerate()){
+                $invitationService->createInvitation();
+                $invitation = $invitationService->getInvitation();
+                respondWithMessage($chat_id, formatInvitationMessage($invitation));
+            }
+            else{
+                respondWithMessage($chat_id, 'No privileges');
+            }
         } else if (strpos($text, "/invite") === 0) {
             $invitationService = new InvitationService($user);
+            
             
             if($invitationService->hasGenerated()){
                 $invitation = $invitationService->getInvitation();

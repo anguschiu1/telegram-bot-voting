@@ -1,6 +1,6 @@
 <?php
 class InvitationService{
-    private $invitation;
+    public $invitation;
     private $user;
     
     function __construct($user){
@@ -22,6 +22,9 @@ class InvitationService{
     private static function getQuota($member_type){
         $ret = 0;
         switch($member_type){
+            case MemberType::SUPER_ADMIN:
+                $ret = 1;
+                break;
             case MemberType::L0:
                 $ret = 100;
                 break;
@@ -51,10 +54,10 @@ class InvitationService{
         return $randomString;
     }
     
-    private function createInvitation(){
+    public function createInvitation(){
         $quota = self::getQuota($this->user->member_type);
         if($quota > 0){
-            $this->invitation = self::generateInvitation($this->user->user_id, $this->user->member_type, $quota);
+            $this->invitation = self::generateInvitation($this->user->user_id, MemberType::getChildType($this->user->member_type), $quota);
             
             $this->invitaiton = InvitationDao::save($this->invitation);
         }
@@ -72,7 +75,9 @@ class InvitationService{
     }
     
     public function canGenerate(){
-        return $this->user->member_type == 0 || (self::getQuota($this->user->member_type) > 0 && !$this->hasGenerated());
+        return $this->user->member_type == MemberType::SUPER_ADMIN ||
+            $this->user->member_type == MemberType::L0 || 
+            (self::getQuota($this->user->member_type) > 0 && !$this->hasGenerated());
     }
 }
 ?>

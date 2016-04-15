@@ -9,7 +9,7 @@ abstract class MemberType{
     const L3 = 500;
     const L4 = 600;
     
-    public static function getNextType($type){
+    public static function getChildType($type){
         $ret = MemberType::UNAUTHORIZED;
         switch($type){
             case MemberType::SUPER_ADMIN:
@@ -41,6 +41,11 @@ abstract class MemberType{
                 break;
         }
         return $ret;
+    }
+    
+    public static function canCreateMutli($member_type){
+        return $member_type == Self::L0 ||
+            $member_type == Self::SUPER_ADMIN;
     }
 }
 ?>

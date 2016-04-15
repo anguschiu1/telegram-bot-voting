@@ -92,7 +92,10 @@ class InvitationDao{
     
     public static function getByCreateUser($user_id){
         $db = getDb();
-        $stmt = $db->prepare('SELECT id, link, quota, create_user_id, member_type, expire_date, create_date, last_modified_date FROM invitation WHERE create_user_id = ?');
+        $stmt = $db->prepare('SELECT id, link, quota, create_user_id, 
+                    member_type, expire_date, create_date, last_modified_date 
+                    FROM invitation 
+                    WHERE create_user_id = ?');
         $stmt->execute(array($user_id));
         
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
