@@ -54,10 +54,10 @@ class InvitationService{
         return $randomString;
     }
     
-    public function createInvitation(){
-        $quota = self::getQuota($this->user->member_type);
+    public function createInvitation($member_type){
+        $quota = self::getQuota($member_type);
         if($quota > 0){
-            $this->invitation = self::generateInvitation($this->user->user_id, MemberType::getChildType($this->user->member_type), $quota);
+            $this->invitation = self::generateInvitation($this->user->user_id, MemberType::getChildType($member_type), $quota);
             
             $this->invitaiton = InvitationDao::save($this->invitation);
         }
@@ -65,7 +65,7 @@ class InvitationService{
 
     public function getInvitation(){
         if(null == $this->invitation){
-            $this->createInvitation();
+            $this->createInvitation($this->user->member_type);
         }
         return $this->invitation;
     }

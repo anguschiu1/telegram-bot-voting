@@ -84,7 +84,17 @@ function processMessage($message) {
         } else if (strpos($text, "/invite new") === 0 && MemberType::canCreateMutli($user->member_type)) {
             $invitationService = new InvitationService($user);
             if($invitationService->canGenerate()){
-                $invitationService->createInvitation();
+                $invitationService->createInvitation($user->member_type);
+                $invitation = $invitationService->getInvitation();
+                respondWithMessage($chat_id, formatInvitationMessage($invitation));
+            }
+            else{
+                respondWithMessage($chat_id, 'No privileges');
+            }
+        } else if (strpos($text, "/invite c") === 0 && MemberType::canCreateMutli($user->member_type)) {
+            $invitationService = new InvitationService($user);
+            if($invitationService->canGenerate()){
+                $invitationService->createInvitation(MemberType::CELEBRITIES);
                 $invitation = $invitationService->getInvitation();
                 respondWithMessage($chat_id, formatInvitationMessage($invitation));
             }
