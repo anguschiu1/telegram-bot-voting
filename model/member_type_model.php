@@ -44,8 +44,8 @@ abstract class MemberType{
     }
     
     public static function canCreateMutli($member_type){
-        return $member_type == Self::L0 ||
-            $member_type == Self::SUPER_ADMIN;
+        return $member_type == MemberType::L0 ||
+            $member_type == MemberType::SUPER_ADMIN;
     }
 }
 ?>
