@@ -4,6 +4,7 @@ class Invitation{
     public $link;
     public $quota;
     public $create_user_id;
+    public $member_type;
     public $expire_date;
     public $create_date;
     public $last_modified_date;
@@ -25,6 +26,7 @@ class Invitation{
        $this->create_user_id = $array['create_user_id'];
        $this->expire_date = $array['expire_date'];
        $this->create_date = $array['create_date'];
+       $this->member_type = $array['member_type'];
        $this->last_modified_date = $array['last_modified_date'];
        
        $this->originalQuota = $this->quota;

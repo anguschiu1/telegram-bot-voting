@@ -8,19 +8,20 @@ class InvitationService{
         $this->invitation = InvitationDao::getByCreateUser($this->user->user_id);
     }
     
-    private static function generateInvitation($create_user_id, $quota){
+    private static function generateInvitation($create_user_id, $member_type, $quota){
         $invitation = new Invitation();
         $invitation->link = self::generateRandomString();
         $invitation->quota = $quota;
         $invitation->create_user_id = $create_user_id;
+        $invitation->member_type = $member_type;
         $invitation->expire_date = date('Y-m-d', strtotime('+1 month')) ; //time() * 1000 + (31 + 24 * 60 * 60); // expire after 1 month
         
         return $invitation;
     }
 
-    private static function getQuota($level){
+    private static function getQuota($member_type){
         $ret = 0;
-        switch($level){
+        switch($member_type){
             case MemberType::L0:
                 $ret = 100;
                 break;
@@ -51,9 +52,9 @@ class InvitationService{
     }
     
     private function createInvitation(){
-        $quota = self::getQuota($this->user->level);
+        $quota = self::getQuota($this->user->member_type);
         if($quota > 0){
-            $this->invitation = self::generateInvitation($this->user->user_id, $quota);
+            $this->invitation = self::generateInvitation($this->user->user_id, $this->user->member_type, $quota);
             
             $this->invitaiton = InvitationDao::save($this->invitation);
         }
@@ -71,7 +72,7 @@ class InvitationService{
     }
     
     public function canGenerate(){
-        return $this->user->level == 0 || (self::getQuota($this->user->level) > 0 && !$this->hasGenerated());
+        return $this->user->member_type == 0 || (self::getQuota($this->user->member_type) > 0 && !$this->hasGenerated());
     }
 }
 ?>

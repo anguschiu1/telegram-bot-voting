@@ -36,6 +36,9 @@ abstract class MemberType{
             case MemberType::UNAUTHORIZED:
                 $ret = MemberType::L4;
                 break;
+            default:
+                $ret = MemberType::L4;
+                break;
         }
         return $ret;
     }

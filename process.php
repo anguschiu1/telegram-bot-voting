@@ -32,7 +32,7 @@ function processMessage($message) {
             $user->last_name = $lastName;
             $user->chat_id = $chat_id;
             $user->authorized = 'N';
-            $user->level = MemberType::L4;
+            $user->member_type = MemberType::L4;
             $user = UserDao::save($user);
         }
         else{
@@ -56,8 +56,7 @@ function processMessage($message) {
                     $invitation = InvitationDao::getByLink($args[1]);
                     if(null != $invitation){
                         $user->authorized = 'Y';
-                        $createUser = UserDao::get($invitation->create_user_id);
-                        $user->level = MemberType::getNextType($createUser->level);
+                        $user->member_type = MemberType::getNextType($invitation->member_type);
                         
                         $user = UserDao::save($user);
                         
