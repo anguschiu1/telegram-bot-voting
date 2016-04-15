@@ -20,15 +20,21 @@ class InvitationService{
 
     private static function getQuota($level){
         $ret = 0;
-        switch(intval($level)){
-            case 1:
+        switch($level){
+            case MemberType::L0:
                 $ret = 100;
                 break;
-            case 2:
+            case MemberType::L1:
                 $ret = 30;
                 break;
-            case 3:
+            case MemberType::L2:
                 $ret = 10;
+                break;
+            case MemberType::L3:
+                $ret = 3;
+                break;
+            case MemberType::CELEBRITIES:
+                $ret = 50;
                 break;
         }
         return $ret;

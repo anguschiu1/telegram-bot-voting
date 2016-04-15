@@ -1,4 +1,5 @@
 <?php
+
 require('config.php');
 require('db.php');
 require('api.php');
@@ -9,5 +10,8 @@ require('model/invitation_model.php');
 require('model/invitation_user_model.php');
 require('model/question_model.php');
 require('model/user_model.php');
+require('model/member_type_model.php');
+require('invitation_service.php');
 require('process.php');
+
 ?>

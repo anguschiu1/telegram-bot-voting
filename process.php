@@ -32,7 +32,7 @@ function processMessage($message) {
             $user->last_name = $lastName;
             $user->chat_id = $chat_id;
             $user->authorized = 'N';
-            $user->level = 99;
+            $user->level = MemberType::L4;
             $user = UserDao::save($user);
         }
         else{
@@ -57,7 +57,7 @@ function processMessage($message) {
                     if(null != $invitation){
                         $user->authorized = 'Y';
                         $createUser = UserDao::get($invitation->create_user_id);
-                        $user->level = $createUser->level + 1;
+                        $user->level = MemberType::getNextType($createUser->level);
                         
                         $user = UserDao::save($user);
                         
@@ -274,6 +274,6 @@ function addQ3($user, $question, $text){
 function formatInvitationMessage($invitation){
     $url = INVITATION_LINK_PREFIX.$invitation->link;
     
-    return "Invitation link is $url .";
+    return "Your invitation link is $url . Your can share it with $invitation->quota peoples.";
 }
 ?>
