@@ -13,12 +13,3 @@ by other means (e.g. `curl -i -X POST -H "Content-Type: multipart/form-data" -F
 "certificate=@PUBLIC_KEY.pem" -F "url=https://MY_DOMAIN.COM/pollbot.php" 
 https://api.telegram.org/BOT_TOKEN/setWebhook`)
 4. Run
-
-## TODO
-
-- [x] One record for one user only
-- [x] Input validation
-- [ ] Error handling (DB failed, )
-- [ ] Support English & Chinese
-- [x] More questions? (e.g. When do you vote?  Which district? etc)
-- [ ] Additional user validation / checking
