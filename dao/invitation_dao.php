@@ -74,13 +74,25 @@ class InvitationDao{
         $stmt = $db->prepare('SELECT id, link, quota, create_user_id, expire_date, create_date, last_modified_date FROM invitation WHERE link = ? and quota > 0');
         $stmt->execute(array($link));
         
-        $ret = null;
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $invitation = new Invitation($row);
             return $invitation;
         }
         
         $db = null;
+        return null;
+    }
+    
+    public static function getByCreateUser($user_id){
+        $db = getDb();
+        $stmt = $db->prepare('SELECT id, link, quota, create_user_id, expire_date, create_date, last_modified_date FROM invitation WHERE create_user_id = ?');
+        $stmt->execute(array($user_id));
+        
+        if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $invitation = new Invitation($row);
+            return $invitation;
+        }
+        
         return null;
     }
 }
