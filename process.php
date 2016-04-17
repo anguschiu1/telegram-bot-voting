@@ -48,7 +48,7 @@ function processMessage($message) {
         
         if (strpos($text, "/start") === 0) {
             if('Y' === $user->authorized){
-                respondWithKeyboard($chat_id, "歡迎\n\n同意我們的使用條款?", array(array_values($aryQ1)));
+                respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME'], array(array_values($aryQ1)));
             }
             else{
                 $args = explode(' ', $text);
@@ -69,7 +69,7 @@ function processMessage($message) {
                         InvitationDao::save($invitation);
                         InvitationUserDao::save($invitationUser);
                         
-                        respondWithKeyboard($chat_id, "歡迎\n\n同意我們的使用條款?", array(array_values($aryQ1)));
+                        respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME'], array(array_values($aryQ1)));
                     }
                     else{
                         respondWithMessage($chat_id, 'Not authorized');
@@ -89,7 +89,7 @@ function processMessage($message) {
                 respondWithMessage($chat_id, formatInvitationMessage($invitation));
             }
             else{
-                respondWithMessage($chat_id, 'No privileges');
+                respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
             }
         } else if (strpos($text, "/invite c") === 0 && MemberType::canCreateMutli($user->member_type)) {
             $invitationService = new InvitationService($user);
@@ -99,7 +99,7 @@ function processMessage($message) {
                 respondWithMessage($chat_id, formatInvitationMessage($invitation));
             }
             else{
-                respondWithMessage($chat_id, 'No privileges');
+                respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
             }
         } else if (strpos($text, "/invite") === 0) {
             $invitationService = new InvitationService($user);
@@ -107,7 +107,7 @@ function processMessage($message) {
             
             if($invitationService->hasGenerated()){
                 $invitation = $invitationService->getInvitation();
-                respondWithMessage($chat_id, "You have already generated a link. \n ".formatInvitationMessage($invitation));
+                respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_ALREAY_GENERATED'].formatInvitationMessage($invitation));
             }
             else{
                 if($invitationService->canGenerate()){
@@ -115,14 +115,14 @@ function processMessage($message) {
                     respondWithMessage($chat_id, formatInvitationMessage($invitation));
                 }
                 else{
-                    respondWithMessage($chat_id, 'No privileges');
+                    respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
                 }
             }
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
         } else if (strpos($text, "/result") === 0) {
             if(null == $question['q2']){
-                respondWithQuote($chat_id, $message_id, "You have not yet voted. /start to start voting.");
+                respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_NOT_START']);
             }
             else{
                 respondPollingResult($chat_id, $question['q2']);
@@ -131,11 +131,11 @@ function processMessage($message) {
             if(addQ1($user, $question, $text)){
                 if ($text == $aryQ1['Y']){
                     //reply with Q2
-                    respondWithKeyboard($chat_id, '你的選民登記屬於那個選區？', array_chunk(array_keys($aryQ2), 3));
+                    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q1'], array_chunk(array_keys($aryQ2), 3));
                 }
                 else{
                     //tell them not agree can't do anything
-                    respondWithQuote($chat_id, $message_id, "We can do nothing if you do not agree.");
+                    respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_Q1_NOT_AGREE']);
                 }
             }
         }  else if (array_key_exists($text, $aryQ2)){
@@ -148,7 +148,7 @@ function processMessage($message) {
                 
                 $option = $aryQ2[$text];
                 shuffle($option);
-                respondWithKeyboard($chat_id, '2016 年立會選舉你`現時`傾向投給'.$q2.'中的哪個政黨？', array_chunk($option, 3));
+                respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $q2), array_chunk($option, 3));
             }
         } else {
             if (null != $question && null != $question['q2']){
@@ -157,9 +157,9 @@ function processMessage($message) {
                 
                 if(in_array($text, $aryQ2[$q2Key[$q2]])){
                     if(addQ3($user, $question, array_search($text, $aryQ2[$q2Key[$q2]]))){
-                        respondWithQuote($chat_id, $message_id, '多謝投票。');
+                        respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_THANKS']);
                         respondPollingResult($chat_id, $q2);
-                        respondWithMessage($chat_id, '請於下個月再投票，到時我們會再提醒你，謝謝');
+                        respondWithMessage($chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
                     }
                 }
                 else{
@@ -185,7 +185,7 @@ function respondPollingResult($chat_id, $q2Index){
     
     $total = array_sum($result);
     
-    $res = '「`'. $q2Key[$q2Index]."`」 選區的結果 (共 $total 票)：\n\n";
+    $res = sprintf($GLOBALS['WORD']['SURVEY_RESULT'], $q2Key[$q2Index], $total);
     
     arsort($result);
     $row = 0;
@@ -199,12 +199,12 @@ function respondPollingResult($chat_id, $q2Index){
         $res .= ' *'.floor($count * 10)."%*\n\n";
         $row++;
         if($row == 5){
-            $res .= '還有其他 ';
+            $res .= $GLOBALS['WORD']['SURVEY_RESULT_MORE'];
             break;
         }
     }
-    $res .= '([詳細的結果](http://civic-data.hk/result-graph/))';
-    $res .= "\n如要更改你的投票，請使用 /start 重新開始";
+    $res .= $GLOBALS['WORD']['SURVEY_RESULT_LINK'];
+    $res .= $GLOBALS['WORD']['SURVEY_RESULT_RESTART_INSTRUCTION'];
     apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $res, 'parse_mode' => 'Markdown'));
 }
 
@@ -294,6 +294,6 @@ function addQ3($user, $question, $text){
 function formatInvitationMessage($invitation){
     $url = INVITATION_LINK_PREFIX.$invitation->link;
     
-    return "Your invitation link is $url . Your can share it with $invitation->quota peoples.";
+    return sprintf($GLOBALS['WORD']['INVITATION_LINK'], $url, $invitation->quota);
 }
 ?>
