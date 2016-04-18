@@ -36,7 +36,7 @@ function processMessage($message) {
             $user = UserDao::save($user);
         }
         else{
-            $question = getQuestion($userId);
+            $question = QuestionDao::get($userId);
             
             $user->user_name = $userName;
             $user->first_name = $firstName;
@@ -121,11 +121,11 @@ function processMessage($message) {
         } else if (strpos($text, "/stop") === 0) {
             // stop now, do nothing
         } else if (strpos($text, "/result") === 0) {
-            if(null == $question['q2']){
+            if(null == $question->q2){
                 respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_NOT_START']);
             }
             else{
-                respondPollingResult($chat_id, $question['q2']);
+                respondPollingResult($chat_id, $question->q2);
             }
         }  else if (in_array($text, $aryQ1)){
             if(addQ1($user, $question, $text)){
@@ -144,15 +144,15 @@ function processMessage($message) {
             }
             else{
                 $q2Key = array_keys($aryQ2);
-                $q2 = $q2Key[$question['q2']];
+                $q2 = $q2Key[$question->q2];
                 
                 $option = $aryQ2[$text];
                 shuffle($option);
                 respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $q2), array_chunk($option, 3));
             }
         } else {
-            if (null != $question && null != $question['q2']){
-                $q2 = $question['q2'];
+            if (null != $question && null != $question->q2){
+                $q2 = $question->q2;
                 $q2Key = array_keys($aryQ2);
                 
                 if(in_array($text, $aryQ2[$q2Key[$q2]])){
@@ -247,11 +247,15 @@ function addQ1($user, $question, $text){
         $answer = array_search($text, $aryQ1);
         
         if(null != $question){
-            updateSingleQuestion($question, $user->user_id, 1, $answer);
+            $i = QuestionDao::updateSingle($question, 1, $answer);
         }
         else{
-            createQuestion($user->user_id, $answer, null, null);
+            $question = new Question();
+            $question->user_id = $user->user_id;
+            $question->q1 = $answer;
+            $i = QuestionDao::save($question);
         }
+        print_r($i);
         $result = true;
     }
     return $result;
@@ -266,7 +270,7 @@ function addQ2($user, $question, $text){
         $answer = array_search($text, array_keys($aryQ2));
         
         if(null != $question){
-            updateSingleQuestion($question, $user->user_id, 2, $answer);
+            QuestionDao::updateSingle($question, 2, $answer);
             $result = true;
         }
     }
@@ -283,7 +287,7 @@ function addQ3($user, $question, $text){
         $answer = $text;
         
         if(null != $question){
-            updateSingleQuestion($question, $user->user_id, 3, $answer);
+            QuestionDao::updateSingle($question, 3, $answer);
             $result = true;
         }
     }
