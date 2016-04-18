@@ -13,6 +13,7 @@ require('model/question_model.php');
 require('model/user_model.php');
 require('model/member_type_model.php');
 require('invitation_service.php');
+require('question_service.php');
 require('lang_zh.php');
 require('process.php');
 
