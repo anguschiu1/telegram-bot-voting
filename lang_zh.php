@@ -1,5 +1,5 @@
 <?php
-    $GLOBALS['WORD']['WELCOME'] = '歡迎\n\n同意我們的使用條款?';
+    $GLOBALS['WORD']['WELCOME'] = "歡迎\n\n同意我們的使用條款?";
     $GLOBALS['WORD']['INVITE_NO_PRIVILEGE'] = '沒有權限';
     $GLOBALS['WORD']['INVITE_ALREAY_GENERATED'] = "你已有邀請連結。\n";
     $GLOBALS['WORD']['INVITATION_LINK'] = '你的邀請連結為 %s 。你可以分享給 %d 個人。';
