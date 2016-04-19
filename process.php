@@ -1,14 +1,39 @@
 <?php
 
+function processUser($message, $user){
+    $chat_id = $message['chat']['id'];
+    $userId = $message['from']['id'];
+    $firstName = isset($message['from']['first_name'])?$message['from']['first_name']:'';
+    $lastName = isset($message['from']['last_name'])?$message['from']['last_name']:'';
+    $userName = isset($message['from']['username'])?$message['from']['username']:'';
+    
+    if(null == $user){
+        $user = new User();
+        $user->user_id = $userId;
+        $user->user_name = $userName;
+        $user->first_name = $firstName;
+        $user->last_name = $lastName;
+        $user->chat_id = $chat_id;
+        $user->authorized = 'N';
+        $user->member_type = MemberType::L4;
+        $user->stage = Stage::UNAUTHORIZED;
+    }
+    else{
+        $user->user_name = $userName;
+        $user->first_name = $firstName;
+        $user->last_name = $lastName;
+        $user->chat_id = $chat_id;
+    }
+    
+    return $user;
+}
+
 function processMessage($message) {
     // process incoming message
     $message_id = $message['message_id'];
     $chat_id = $message['chat']['id'];
     
     $userId = $message['from']['id'];
-    $firstName = isset($message['from']['first_name'])?$message['from']['first_name']:'';
-    $lastName = isset($message['from']['last_name'])?$message['from']['last_name']:'';
-    $userName = isset($message['from']['username'])?$message['from']['username']:'';
     
     global $aryQ1;
     global $aryQ2;
@@ -24,26 +49,12 @@ function processMessage($message) {
         
         if(null == $user){
             $question = null;
-            
-            $user = new User();
-            $user->user_id = $userId;
-            $user->user_name = $userName;
-            $user->first_name = $firstName;
-            $user->last_name = $lastName;
-            $user->chat_id = $chat_id;
-            $user->authorized = 'N';
-            $user->member_type = MemberType::L4;
-            $user = UserDao::save($user);
         }
         else{
             $question = QuestionDao::get($userId);
-            
-            $user->user_name = $userName;
-            $user->first_name = $firstName;
-            $user->last_name = $lastName;
-            $user->chat_id = $chat_id;
-            $user = UserDao::save($user);
         }
+        
+        $user = processUser($message, $user);
         
         
         if (strpos($text, "/start") === 0) {
@@ -57,6 +68,7 @@ function processMessage($message) {
                     if(null != $invitation){
                         $user->authorized = 'Y';
                         $user->member_type = $invitation->member_type;
+                        $user->stage = Stage::AUTHORIZED;
                         
                         $user = UserDao::save($user);
                         
@@ -170,9 +182,12 @@ function processMessage($message) {
                 respondInvalidRequest($chat_id, $message_id);
             }
         }
+        
+        $user = UserDao::save($user);
     } else {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
     }
+    
 }
 
 function respondPollingResult($chat_id, $q2Index){
