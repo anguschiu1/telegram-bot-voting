@@ -17,6 +17,7 @@ function processUser($message, $user){
         $user->authorized = 'N';
         $user->member_type = MemberType::L4;
         $user->stage = Stage::UNAUTHORIZED;
+        $user->lang = 'tc';
     }
     else{
         $user->user_name = $userName;
@@ -55,11 +56,42 @@ function processMessage($message) {
         }
         
         $user = processUser($message, $user);
+        if('en' === $user->lang ){
+            require('lang_en.php');
+        }
+        else{
+            require('lang_zh.php');
+        }
         
+        /*
+        switch($user->stage){
+            case Stage::UNAUTHORIZED:
+                stageUnauthorized($user, $text, $chat_id);
+                break;
+            case Stage::AUTHORIZED:
+                break;
+            case Stage::Q1:
+                break;
+            case Stage::Q2:
+                break;
+            case Stage::Q3:
+                break;
+            case Stage::RESTART:
+                break;
+            case Stage::DELETED:
+                break;
+            default:
+                break;
+        }
+        */
         
         if (strpos($text, "/start") === 0) {
             commandStart($user, $text, $chat_id);
-        } else if ($text === "Hello" || $text === "Hi") {
+        } else if ($text === "/en") {
+            $user->lang = 'en';
+            require('lang_en.php');
+            respondWelcomeMessage($chat_id);
+        }  else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/invite new") === 0 && MemberType::canCreateMutli($user->member_type)) {
             $invitationService = new InvitationService($user);
@@ -131,7 +163,7 @@ function processMessage($message) {
                 respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $q2), array_chunk($option, 3));
             }
         } else {
-            if (null != $question && null != $question->q2){
+            if (null !== $question && null !== $question->q2){
                 $q2 = $question->q2;
                 $q2Key = array_keys($aryQ2);
                 
@@ -205,6 +237,7 @@ function respondWithQuote($chat_id, $message_id, $message){
 }
 
 function respondWithKeyboard($chat_id, $message, $keyboardOptions){
+    print "API: $message.<BR>\n";
     apiRequestJson("sendMessage", 
                 array('chat_id' => $chat_id, 
                 "text" => $message, 
@@ -247,13 +280,8 @@ function commandStart($user, $text, $chat_id){
         if (count($args) > 1){
             $invitation = InvitationDao::getByLink($args[1]);
             if(null != $invitation){
-                $user->authorized = 'Y';
-                $user->member_type = $invitation->member_type;
-                $user->stage = Stage::AUTHORIZED;
-                
+                $invitation->useQuota($user);
                 $user = UserDao::save($user);
-                
-                $invitation->useQuota();
                 
                 $invitationUser = new InvitationUser();
                 $invitationUser->invitation_id = $invitation->id;
@@ -272,5 +300,30 @@ function commandStart($user, $text, $chat_id){
             respondNotAuthorized($chat_id);
         }
     }    
+}
+
+function stageUnauthorized($user, $text, $chat_id){
+    //authorize the user
+    $args = explode(' ', $text);
+    if (count($args) > 1){
+        $invitation = InvitationDao::getByLink($args[1]);
+        if(null != $invitation){
+            
+            
+            $invitationUser = $invitation->useQuota($user);
+            
+            UserDao::save($user);
+            InvitationDao::save($invitation);
+            InvitationUserDao::save($invitationUser);
+            
+            respondWelcomeMessage($chat_id);
+        }
+        else{
+            respondNotAuthorized($chat_id);
+        }
+    }
+    else{
+        respondNotAuthorized($chat_id);
+    }
 }
 ?>
