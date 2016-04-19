@@ -3,7 +3,10 @@ class UserDao{
     
     public static function get($id){
         $db = getDb();
-        $stmt = $db->prepare('SELECT user_id, user_name, first_name, last_name, chat_id, member_type, ip, authorized, create_date, last_modified_date FROM voter WHERE user_id = ?');
+        $stmt = $db->prepare('SELECT user_id, user_name, first_name, last_name, 
+                chat_id, member_type, ip, authorized, stage,
+                create_date, last_modified_date 
+                FROM voter WHERE user_id = ?');
         $stmt->execute(array($id));
         
         $ret = null;
@@ -18,9 +21,12 @@ class UserDao{
     public static function create($obj){
         $db = getDb();
         
-        $stmt = $db->prepare("INSERT INTO voter(user_id, user_name, first_name, last_name, chat_id, member_type, authorized, ip, create_date, last_modified_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmt = $db->prepare("INSERT INTO voter(user_id, user_name, first_name, last_name, 
+                chat_id, member_type, authorized, stage, ip, create_date, last_modified_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         $stmt->execute(array($obj->user_id, $obj->user_name, $obj->first_name, $obj->last_name, 
-                $obj->chat_id, $obj->member_type, $obj->authorized, $_SERVER['REMOTE_ADDR']));
+                $obj->chat_id, $obj->member_type, $obj->authorized, $obj->stage,
+                $_SERVER['REMOTE_ADDR']));
                 
         $obj->create_date = time();
         
@@ -32,9 +38,12 @@ class UserDao{
     public static function update($obj){
         $db = getDb();
 
-        $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, last_name = ?, chat_id = ?, member_type = ? , authorized = ?, ip = ?, last_modified_date = NOW() where user_id = ?");
+        $stmt = $db->prepare("update voter set user_name = ? , first_name = ?, 
+                last_name = ?, chat_id = ?, member_type = ? , authorized = ?, 
+                stage = ? , ip = ?, last_modified_date = NOW() where user_id = ?");
         $stmt->execute(array($obj->user_name, $obj->first_name, $obj->last_name, $obj->chat_id, 
-            $obj->member_type, $obj->authorized, $_SERVER['REMOTE_ADDR'], $obj->user_id));
+            $obj->member_type, $obj->authorized, $obj->stage,
+            $_SERVER['REMOTE_ADDR'], $obj->user_id));
         
         $db = null;
         

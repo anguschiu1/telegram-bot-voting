@@ -12,6 +12,7 @@ require('model/invitation_user_model.php');
 require('model/question_model.php');
 require('model/user_model.php');
 require('model/member_type_model.php');
+require('model/stage_enum.php');
 require('invitation_service.php');
 require('question_service.php');
 require('lang_zh.php');

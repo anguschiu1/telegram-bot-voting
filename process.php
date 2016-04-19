@@ -58,39 +58,7 @@ function processMessage($message) {
         
         
         if (strpos($text, "/start") === 0) {
-            if('Y' === $user->authorized){
-                respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME'], array(array_values($aryQ1)));
-            }
-            else{
-                $args = explode(' ', $text);
-                if (count($args) > 1){
-                    $invitation = InvitationDao::getByLink($args[1]);
-                    if(null != $invitation){
-                        $user->authorized = 'Y';
-                        $user->member_type = $invitation->member_type;
-                        $user->stage = Stage::AUTHORIZED;
-                        
-                        $user = UserDao::save($user);
-                        
-                        $invitation->useQuota();
-                        
-                        $invitationUser = new InvitationUser();
-                        $invitationUser->invitation_id = $invitation->id;
-                        $invitationUser->user_id = $user->user_id;
-                        
-                        InvitationDao::save($invitation);
-                        InvitationUserDao::save($invitationUser);
-                        
-                        respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME'], array(array_values($aryQ1)));
-                    }
-                    else{
-                        respondWithMessage($chat_id, 'Not authorized');
-                    }
-                }
-                else{
-                    respondWithMessage($chat_id, 'Not authorized');
-                }
-            }
+            commandStart($user, $text, $chat_id);
         } else if ($text === "Hello" || $text === "Hi") {
             apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
         } else if (strpos($text, "/invite new") === 0 && MemberType::canCreateMutli($user->member_type)) {
@@ -259,5 +227,50 @@ function formatInvitationMessage($invitation){
     $url = INVITATION_LINK_PREFIX.$invitation->link;
     
     return sprintf($GLOBALS['WORD']['INVITATION_LINK'], $url, $invitation->quota);
+}
+
+function respondWelcomeMessage($chat_id){
+    global $aryQ1;
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME'], array(array_values($aryQ1)));
+}
+
+function respondNotAuthorized($chat_id){
+    respondWithMessage($chat_id, 'Not authorized');
+}
+
+function commandStart($user, $text, $chat_id){
+    if('Y' === $user->authorized){
+        respondWelcomeMessage($chat_id);
+    }
+    else{
+        $args = explode(' ', $text);
+        if (count($args) > 1){
+            $invitation = InvitationDao::getByLink($args[1]);
+            if(null != $invitation){
+                $user->authorized = 'Y';
+                $user->member_type = $invitation->member_type;
+                $user->stage = Stage::AUTHORIZED;
+                
+                $user = UserDao::save($user);
+                
+                $invitation->useQuota();
+                
+                $invitationUser = new InvitationUser();
+                $invitationUser->invitation_id = $invitation->id;
+                $invitationUser->user_id = $user->user_id;
+                
+                InvitationDao::save($invitation);
+                InvitationUserDao::save($invitationUser);
+                
+                respondWelcomeMessage($chat_id);
+            }
+            else{
+                respondNotAuthorized($chat_id);
+            }
+        }
+        else{
+            respondNotAuthorized($chat_id);
+        }
+    }    
 }
 ?>
