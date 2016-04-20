@@ -21,6 +21,7 @@ create table voter (
     chat_id int not null,
     member_type int not null default -100,
     authorized varchar(1) not null default 'N',
+    lang varchar(2) not null default 'tc',
     stage varchar(50) not null default 'UNAUTHORIZED',
     ip varchar(46),
     create_date timestamp not null,
