@@ -29,6 +29,41 @@ function processUser($message, $user){
     return $user;
 }
 
+function processLang($lang){
+    global $aryQ1;
+    global $aryQ1Tc;
+    global $aryQ1En;
+    global $aryQ2;
+    global $aryQ2Tc;
+    global $aryQ2En;
+    global $aryParty;
+    global $aryPartyTc;
+    global $aryPartyEn;
+    global $Q1Agree;
+    global $Q1AgreeTc;
+    global $Q1AgreeEn;
+    global $Q1Disagree;
+    global $Q1DisagreeTc;
+    global $Q1DisagreeEn;
+    
+    if('en' === $lang ){
+        $aryQ1 = $aryQ1En;
+        $aryQ2 = $aryQ2En;
+        $aryParty = $aryPartyEn;
+        $Q1Agree = $Q1AgreeEn;
+        $Q1Disagree = $Q1DisagreeEn;
+        $GLOBALS['WORD'] = $GLOBALS['WORD_EN'];
+    }
+    else{
+        $aryQ1 = $aryQ1Tc;
+        $aryQ2 = $aryQ2Tc;
+        $aryParty = $aryPartyTc;
+        $Q1Agree = $Q1AgreeTc;
+        $Q1Disagree = $Q1DisagreeTc;
+        $GLOBALS['WORD'] = $GLOBALS['WORD_TC'];
+    }
+}
+
 function processMessage($message) {
     // process incoming message
     $message_id = $message['message_id'];
@@ -58,16 +93,8 @@ function processMessage($message) {
         $user = processUser($message, $user);
         $questionService = new QuestionService($user, $question);
         
-        if('en' === $user->lang ){
-            require('lang_en.php');
-        }
-        else{
-            require('lang_zh.php');
-        }
+        processLang($user->lang);
         
-    
-    
-        print "Stage: $user->stage<br>";
         switch($user->stage){
             case Stage::UNAUTHORIZED:
                 handleStageUnauthorized($user, $text);
@@ -96,115 +123,6 @@ function processMessage($message) {
             default:
                 break;
         }
-        
-        /*
-        if (strpos($text, "/start") === 0) {
-            commandStart($user, $text, $chat_id);
-        } else if ($text === "/en") {
-            $user->lang = 'en';
-            require('lang_en.php');
-            respondWelcomeMessage($chat_id);
-        }  else if ($text === "Hello" || $text === "Hi") {
-            apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
-        } else if (strpos($text, "/invite new") === 0 && MemberType::canCreateMutli($user->member_type)) {
-            $invitationService = new InvitationService($user);
-            if($invitationService->canGenerate()){
-                $invitationService->createInvitation($user->member_type);
-                $invitation = $invitationService->getInvitation();
-                respondWithMessage($chat_id, formatInvitationMessage($invitation));
-            }
-            else{
-                respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
-            }
-        } else if (strpos($text, "/invite c") === 0 && MemberType::canCreateMutli($user->member_type)) {
-            $invitationService = new InvitationService($user);
-            if($invitationService->canGenerate()){
-                $invitationService->createInvitation(MemberType::CELEBRITIES);
-                $invitation = $invitationService->getInvitation();
-                respondWithMessage($chat_id, formatInvitationMessage($invitation));
-            }
-            else{
-                respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
-            }
-        } else if (strpos($text, "/invite") === 0) {
-            $invitationService = new InvitationService($user);
-            
-            
-            if($invitationService->hasGenerated()){
-                $invitation = $invitationService->getInvitation();
-                respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_ALREAY_GENERATED'].formatInvitationMessage($invitation));
-            }
-            else{
-                if($invitationService->canGenerate()){
-                    $invitation = $invitationService->getInvitation();
-                    respondWithMessage($chat_id, formatInvitationMessage($invitation));
-                }
-                else{
-                    respondWithMessage($chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
-                }
-            }
-        } else if (strpos($text, "/stop") === 0) {
-            // stop now, do nothing
-        } else if (strpos($text, "/result") === 0) {
-            if(null == $question->q2){
-                respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_NOT_START']);
-            }
-            else{
-                respondPollingResult($chat_id, $question->q2);
-            }
-        }  else if (in_array($text, $aryQ1)){
-            if(addQ1($user, $question, $text)){
-                if ($text == $aryQ1['Y']){
-                    //reply with Q2
-                    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q1'], array_chunk(array_keys($aryQ2), 3));
-                }
-                else{
-                    //tell them not agree can't do anything
-                    respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_Q1_NOT_AGREE']);
-                }
-            }
-        }  else if (array_key_exists($text, $aryQ2)){
-            if(!addQ2($user, $question, $text)){
-                //Ask Q1 again if no answer found
-            }
-            else{
-                $q2Key = array_keys($aryQ2);
-                $q2 = $q2Key[$question->q2];
-                
-                $option = $aryQ2[$text];
-                shuffle($option);
-                respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $q2), array_chunk($option, 3));
-            }
-        } else {
-            if (null !== $question && null !== $question->q2){
-                $q2 = $question->q2;
-                $q2Key = array_keys($aryQ2);
-                
-                if(in_array($text, $aryQ2[$q2Key[$q2]])){
-                    if(addQ3($user, $question, array_search($text, $aryQ2[$q2Key[$q2]]))){
-                        respondWithQuote($chat_id, $message_id, $GLOBALS['WORD']['SURVEY_THANKS']);
-                        respondPollingResult($chat_id, $q2);
-                        respondWithMessage($chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
-                        
-            
-                        $invitationService = new InvitationService($user);
-                        if(!$invitationService->hasGenerated() && $invitationService->canGenerate()){
-                            $invitation = $invitationService->getInvitation();
-                            respondWithMessage($chat_id, formatInvitationMessage($invitation));
-                        }
-                    }
-                }
-                else{
-                    respondInvalidRequest($chat_id, $message_id);
-                }
-            } 
-            else {
-                respondInvalidRequest($chat_id, $message_id);
-            }
-        }
-        
-        $user = UserDao::save($user);
-        */
     } else {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
     }
@@ -280,7 +198,7 @@ function logDebug($msg) {
 function formatInvitationMessage($invitation){
     $url = INVITATION_LINK_PREFIX.$invitation->link;
     
-    return sprintf($GLOBALS['WORD']['INVITATION_LINK'], $url, $invitation->quota);
+    return sprintf($GLOBALS['WORD']['INVITATION_LINK'], $url);
 }
 
 function respondWelcomeMessage($chat_id){
@@ -309,9 +227,9 @@ function respondQ2($chat_id, $question){
     respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $district), array_chunk($option, 3));
 }
 
-function respondQ2Confirm($chat_id){
+function respondQ2Confirm($chat_id, $choice){
     $confirmArray = array( 'yes', 'no');
-    respondWithKeyboard($chat_id, "COnfirm? ", array($confirmArray));
+    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2_CONFIRM'], $choice), array($confirmArray));
 }
 
 function handleStageUnauthorized($user, $text){
@@ -349,6 +267,7 @@ function handleStageAuthorized($user, $questionService, $text){
     
     $aryAgreeText = array('agree', 'ok', 'yes', $Q1Agree);
     $aryDisagreeText = array('not agree', 'no', 'nope', $Q1Disagree);
+    logDebug("In array? ".in_array($text, $aryAgreeText));
     
     if(in_array($text, $aryAgreeText)){
         if($user->changeStageToQ1()){
@@ -362,10 +281,11 @@ function handleStageAuthorized($user, $questionService, $text){
         if($questionService->addQ1(ANSWER_NO)){
             //tell them not agree can't do anything
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_Q1_NOT_AGREE']);
+            respondWelcomeMessage($user->chat_id);   
         }
     }
     else{
-        respondWithMessage($user->chat_id, "No no no.  Sorry, I don't understand. ");
+        respondWithMessage($user->chat_id, "No no no.1  Sorry, I don't understand. ");
         respondWelcomeMessage($user->chat_id);   
     }
 }
@@ -396,7 +316,7 @@ function handleStageQ2($user, $questionService, $text, $message_id){
     if(in_array($text, $aryQ2[$q2Key[$q2]])){
         if($user->changeStageToQ2Confirm()){
             if($questionService->addQ3(array_search($text, $aryQ2[$q2Key[$q2]]))){
-                respondQ2Confirm($user->chat_id);
+                respondQ2Confirm($user->chat_id, $text);
                 UserDao::save($user);
             }
         }
@@ -419,8 +339,10 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
             
 
             $invitationService = new InvitationService($user);
+            
             if(!$invitationService->hasGenerated() && $invitationService->canGenerate()){
                 $invitation = $invitationService->getInvitation();
+                respondWithMessage($user->chat_id, sprintf($GLOBALS['WORD']['INVITATION_MSG'], $invitation->quota));
                 respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
             }
             UserDao::save($user);
@@ -467,7 +389,7 @@ function handleStageDeleted($user, $questionService, $text){
 function handleShowResult($user, $question, $text){
     $aryResult = array('/result', 'show result');
     if(in_array($text, $aryResult)){
-        if(null == $question->q2){
+        if(null === $question->q2){
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_NOT_START']);
         }
         else{
@@ -513,6 +435,7 @@ function handleInvite($user , $text){
         else{
             if($invitationService->canGenerate()){
                 $invitation = $invitationService->getInvitation();
+                respondWithMessage($user->chat_id, sprintf($GLOBALS['WORD']['INVITATION_MSG'], $invitation->quota));
                 respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
             }
             else{

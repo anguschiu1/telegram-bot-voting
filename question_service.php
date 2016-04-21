@@ -8,13 +8,11 @@ class QuestionService{
         $this->question = $question;
     }
     
-    public function addQ1($text){
+    public function addQ1($answer){
         $result = false;
         
         if(null != $this->user){
             global $aryQ1;
-            
-            $answer = array_search($text, $aryQ1);
             
             if(null != $this->question){
                 $this->question = QuestionDao::updateSingle($this->question, 1, $answer);

@@ -2,6 +2,8 @@
 
 require('config.php');
 require('constants.php');
+require('lang_zh.php');
+require('lang_en.php');
 require('db.php');
 require('api.php');
 require('dao/invitation_dao.php');
