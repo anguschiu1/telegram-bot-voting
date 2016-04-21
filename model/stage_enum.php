@@ -4,6 +4,7 @@ abstract class Stage{
     const AUTHORIZED = 'AUTHORIZED';
     const Q1 = 'Q1';
     const Q2 = 'Q2';
+    const Q2_CONFIRM = 'Q2_CONFIRM';
     const Q3 = 'Q3';
     const RESTART = 'RESTART';
     const DELETED = 'DELETED';
@@ -18,10 +19,13 @@ abstract class Stage{
                 $okay = ($current == Stage::AUTHORIZED);
                 break;
             case Stage::Q2:
-                $okay = ($current == Stage::Q1 || $current == Stage::RESTART);
+                $okay = ($current == Stage::Q1 || $current == Stage::Q2_CONFIRM);
+                break;
+            case Stage::Q2_CONFIRM:
+                $okay = ($current == Stage::Q2 || $current == Stage::RESTART);
                 break;
             case Stage::Q3:
-                $okay = ($current == Stage::Q2);
+                $okay = ($current == Stage::Q2_CONFIRM);
                 break;
             case Stage::RESTART:
                 $okay = ($current == Stage::Q3);
