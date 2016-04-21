@@ -203,7 +203,9 @@ function formatInvitationMessage($invitation){
 
 function respondWelcomeMessage($chat_id){
     global $aryQ1;
-    respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME'], array(array_values($aryQ1)));
+    respondWithMessage($chat_id, $GLOBALS['WORD']['WELCOME']);
+    respondWithMessage($chat_id, $GLOBALS['WORD']['WELCOME_TERMS']);
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME_TERMS_AGREE'], array(array_values($aryQ1)));
 }
 
 function respondNotAuthorized($chat_id){
@@ -285,7 +287,7 @@ function handleStageAuthorized($user, $questionService, $text){
         }
     }
     else{
-        respondWithMessage($user->chat_id, "No no no.1  Sorry, I don't understand. ");
+        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
         respondWelcomeMessage($user->chat_id);   
     }
 }
@@ -303,7 +305,7 @@ function handleStageQ1($user, $questionService, $text){
         }
     }
     else{
-        respondWithMessage($user->chat_id, "No no no.  Sorry, I don't understand. ");
+        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
         respondQ1($user->chat_id);
     }
 }
@@ -322,7 +324,7 @@ function handleStageQ2($user, $questionService, $text, $message_id){
         }
     }
     else{
-        respondWithMessage($user->chat_id, "No no no.  Sorry, I don't understand. ");
+        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
         respondQ2($user->chat_id, $questionService->question);
     }
 }
@@ -355,7 +357,7 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
         }
     }
     else{
-        respondWithMessage($user->chat_id, "No no no.  Sorry, I don't understand. ");
+        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
         respondQ2Confirm($user->chat_id);
     }
 }
