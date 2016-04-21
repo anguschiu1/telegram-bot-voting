@@ -1,58 +1,59 @@
 <?php
-
-function addQ1($user, $question, $text){
-    $result = false;
+class QuestionService{
+    private $user;
+    public $question;
     
-    if(null != $user){
-        global $aryQ1;
-        
-        $answer = array_search($text, $aryQ1);
-        
-        if(null != $question){
-            $i = QuestionDao::updateSingle($question, 1, $answer);
-        }
-        else{
-            $question = new Question();
-            $question->user_id = $user->user_id;
-            $question->q1 = $answer;
-            $i = QuestionDao::save($question);
-        }
-        print_r($i);
-        $result = true;
+    function __construct($user, $question){
+        $this->user = $user;
+        $this->question = $question;
     }
-    return $result;
-}
-
-
-function addQ2($user, $question, $text){
-    $result = false;
     
-    if(null != $user){
+    public function addQ1($answer){
+        $result = false;
+        
+        if(null != $this->user){
+            global $aryQ1;
+            
+            if(null != $this->question){
+                $this->question = QuestionDao::updateSingle($this->question, 1, $answer);
+            }
+            else{
+                $this->question = new Question();
+                $this->question->user_id = $this->user->user_id;
+                $this->question->q1 = $answer;
+                $this->question = QuestionDao::save($this->question);
+            }
+            
+            $result = true;
+        }
+        return $result;
+    }
+
+    public function addQ2($text){
+        $result = false;
+        
         global $aryQ2;
         $answer = array_search($text, array_keys($aryQ2));
         
-        if(null != $question){
-            QuestionDao::updateSingle($question, 2, $answer);
+        if(null !== $this->question){
+            QuestionDao::updateSingle($this->question, 2, $answer);
             $result = true;
         }
+        return $result;
     }
-    return $result;
-}
 
-
-
-
-function addQ3($user, $question, $text){
-    $result = false;
-    
-    if(null != $user){
-        $answer = $text;
+    public function addQ3($text){
+        $result = false;
         
-        if(null != $question){
-            QuestionDao::updateSingle($question, 3, $answer);
-            $result = true;
+        if(null != $this->user){
+            $answer = $text;
+            
+            if(null != $this->question){
+                QuestionDao::updateSingle($this->question, 3, $answer);
+                $result = true;
+            }
         }
+        return $result;
     }
-    return $result;
 }
 ?>
