@@ -287,7 +287,7 @@ function handleStageAuthorized($user, $questionService, $text){
         }
     }
     else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
         respondWelcomeMessage($user->chat_id);   
     }
 }
@@ -305,7 +305,7 @@ function handleStageQ1($user, $questionService, $text){
         }
     }
     else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
         respondQ1($user->chat_id);
     }
 }
@@ -324,7 +324,7 @@ function handleStageQ2($user, $questionService, $text, $message_id){
         }
     }
     else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
         respondQ2($user->chat_id, $questionService->question);
     }
 }
@@ -357,7 +357,7 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
         }
     }
     else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['INVALID_INPUT']);
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
         respondQ2Confirm($user->chat_id);
     }
 }
@@ -376,7 +376,7 @@ function handleStageQ3($user, $questionService, $text){
         
     }
     else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['ALREADY_VOTE']);
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['ALREADY_VOTE']);
     }
 }
 
