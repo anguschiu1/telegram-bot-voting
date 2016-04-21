@@ -36,11 +36,11 @@ class Invitation{
         $this->quota--;
         
         $user->authorized = 'Y';
-        $user->member_type = $invitation->member_type;
+        $user->member_type = $this->member_type;
         $user->stage = Stage::AUTHORIZED;
             
         $invitationUser = new InvitationUser();
-        $invitationUser->invitation_id = $invitation->id;
+        $invitationUser->invitation_id = $this->id;
         $invitationUser->user_id = $user->user_id;
         
         return $invitationUser;
