@@ -35,5 +35,43 @@ class User{
        $this->create_date = $array['create_date'];
        $this->last_modified_date = $array['last_modified_date'];
     }
+    
+    private function changeStage($newStage){
+        if(Stage::canChangeStage($this->stage, $newStage)){
+            $this->stage = $newStage;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public function changeStageToAuthorized(){
+        return $this->changeStage(Stage::AUTHORIZED);
+    }
+    
+    public function changeStageToQ1(){
+        return $this->changeStage(Stage::Q1);
+    }
+    
+    public function changeStageToQ2(){
+        return $this->changeStage(Stage::Q2);
+    }
+    
+    public function changeStageToQ2Confirm(){
+        return $this->changeStage(Stage::Q2_CONFIRM);
+    }
+    
+    public function changeStageToQ3(){
+        return $this->changeStage(Stage::Q3);
+    }
+    
+    public function changeStageToRestart(){
+        return $this->changeStage(Stage::RESTART);
+    }
+    
+    public function changeStageToDeleted(){
+        return $this->changeStage(Stage::DELETED);
+    }
 }
 ?>
