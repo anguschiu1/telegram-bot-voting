@@ -19,7 +19,7 @@
     $GLOBALS['WORD_TC']['SURVEY_THANKS_REMIND'] = '請於下個月一號回來再投票，同時看最新投票結果。到時我們會再提醒你，謝謝。';
     $GLOBALS['WORD_TC']['SURVEY_RESULT'] = "「`%s`」 選區的結果 (共 %d 票)：\n\n";
     $GLOBALS['WORD_TC']['SURVEY_RESULT_MORE'] = '還有其他 ';
-    $GLOBALS['WORD_TC']['SURVEY_RESULT_LINK'] = '([詳細的結果](http://votsonar.civicdata.hk/result/))';
+    $GLOBALS['WORD_TC']['SURVEY_RESULT_LINK'] = '([詳細的結果](http://votsonar.civicdata.hk/result.html))';
     $GLOBALS['WORD_TC']['SURVEY_RESULT_RESTART_INSTRUCTION'] = "\n";
     $GLOBALS['WORD_TC']['INVALID_INPUT'] = '對不起，我不明白';
     $GLOBALS['WORD_TC']['ALREADY_VOTE'] = "你已投票了。你可以用 /result 查看投票結果。";
