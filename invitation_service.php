@@ -26,16 +26,19 @@ class InvitationService{
                 $ret = 1;
                 break;
             case MemberType::L0:
-                $ret = 100;
+                $ret = 1;
                 break;
             case MemberType::L1:
-                $ret = 30;
+                $ret = 100;
                 break;
             case MemberType::L2:
-                $ret = 10;
+                $ret = 30;
                 break;
             case MemberType::L3:
-                $ret = 3;
+                $ret = 10;
+                break;
+            case MemberType::L4:
+                //$ret = 3;
                 break;
             case MemberType::CELEBRITIES:
                 $ret = 50;

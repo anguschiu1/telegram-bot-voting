@@ -8,6 +8,7 @@ abstract class MemberType{
     const L2 = 400;
     const L3 = 500;
     const L4 = 600;
+    const L5 = 700;
     
     public static function getChildType($type){
         $ret = MemberType::UNAUTHORIZED;
@@ -31,13 +32,13 @@ abstract class MemberType{
                 $ret = MemberType::L3;
                 break;
             case MemberType::L4:
-                $ret = MemberType::L4;
+                $ret = MemberType::L5;
                 break;
             case MemberType::UNAUTHORIZED:
                 $ret = MemberType::L4;
                 break;
             default:
-                $ret = MemberType::L4;
+                $ret = MemberType::L5;
                 break;
         }
         return $ret;

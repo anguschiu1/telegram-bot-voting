@@ -335,7 +335,8 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
     
     if(in_array($text, $aryAgreeText)){
         if($user->changeStageToQ3()){
-            respondWithQuote($user->chat_id, $message_id, $GLOBALS['WORD']['SURVEY_THANKS']);
+            UserDao::save($user); //save user first, for calculate the result correctly
+            respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
             respondPollingResult($user->chat_id, $questionService->question->q2);
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
             
@@ -347,7 +348,6 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
                 respondWithMessage($user->chat_id, sprintf($GLOBALS['WORD']['INVITATION_MSG'], $invitation->quota));
                 respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
             }
-            UserDao::save($user);
         }
     }
     else if(in_array($text, $aryDisagreeText)){

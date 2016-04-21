@@ -13,7 +13,7 @@ function getDb(){
 
 function getResult($q2){
     $db = getDb();
-    $stmt = $db->prepare('SELECT q3, count(1) AS total FROM question WHERE q2 = ? and q3 is not null GROUP BY q3 ORDER BY q3');
+    $stmt = $db->prepare("SELECT q3, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage ='Q3' and q2 = ? and q3 is not null GROUP BY q3 ORDER BY q3");
     $stmt->execute(array($q2));
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
