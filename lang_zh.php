@@ -22,6 +22,7 @@
     $GLOBALS['WORD_TC']['SURVEY_RESULT_LINK'] = '([詳細的結果](http://votsonar.civicdata.hk/result/))';
     $GLOBALS['WORD_TC']['SURVEY_RESULT_RESTART_INSTRUCTION'] = "\n";
     $GLOBALS['WORD_TC']['INVALID_INPUT'] = '對不起，我不明白';
+    $GLOBALS['WORD_TC']['ALREADY_VOTE'] = "你已投票了。你可以用 /result 查看投票結果。";
     
     
     

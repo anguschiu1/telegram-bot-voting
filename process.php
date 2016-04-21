@@ -376,8 +376,7 @@ function handleStageQ3($user, $questionService, $text){
         
     }
     else{
-        
-        respondWithMessage($user->chat_id, "You have already voted.");
+        respondWithMessage($user->chat_id, $GLOBALS['WORD_TC']['ALREADY_VOTE']);
     }
 }
 
