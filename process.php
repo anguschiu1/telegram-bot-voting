@@ -30,37 +30,14 @@ function processUser($message, $user){
 }
 
 function processLang($lang){
-    global $aryQ1;
-    global $aryQ1Tc;
-    global $aryQ1En;
-    global $aryQ2;
-    global $aryQ2Tc;
-    global $aryQ2En;
-    global $aryParty;
-    global $aryPartyTc;
-    global $aryPartyEn;
-    global $Q1Agree;
-    global $Q1AgreeTc;
-    global $Q1AgreeEn;
-    global $Q1Disagree;
-    global $Q1DisagreeTc;
-    global $Q1DisagreeEn;
     
     if('en' === $lang ){
-        $aryQ1 = $aryQ1En;
-        $aryQ2 = $aryQ2En;
-        $aryParty = $aryPartyEn;
-        $Q1Agree = $Q1AgreeEn;
-        $Q1Disagree = $Q1DisagreeEn;
         $GLOBALS['WORD'] = $GLOBALS['WORD_EN'];
+        $GLOBALS['ANSWER_KEYBOARD'] = $GLOBALS['ANSWER_KEYBOARD_EN'];
     }
     else{
-        $aryQ1 = $aryQ1Tc;
-        $aryQ2 = $aryQ2Tc;
-        $aryParty = $aryPartyTc;
-        $Q1Agree = $Q1AgreeTc;
-        $Q1Disagree = $Q1DisagreeTc;
         $GLOBALS['WORD'] = $GLOBALS['WORD_TC'];
+        $GLOBALS['ANSWER_KEYBOARD'] = $GLOBALS['ANSWER_KEYBOARD_TC'];
     }
 }
 
@@ -70,10 +47,6 @@ function processMessage($message) {
     $chat_id = $message['chat']['id'];
     
     $userId = $message['from']['id'];
-    
-    global $aryQ1;
-    global $aryQ2;
-    
     
     if (isset($message['text'])) {
         // incoming text message
@@ -129,22 +102,20 @@ function processMessage($message) {
     
 }
 
-function respondPollingResult($chat_id, $q2Index){
-    global $aryQ2;
-    
-    $result = getResult($q2Index);
-    
-    $q2Key = array_keys($aryQ2);
-    $q2Array = $aryQ2[$q2Key[$q2Index]];
+function respondPollingResult($chat_id, $districtIndex){
+    $result = getResult($districtIndex);
     
     $total = array_sum($result);
     
-    $res = sprintf($GLOBALS['WORD']['SURVEY_RESULT'], $q2Key[$q2Index], $total);
+    $district = $GLOBALS['ANSWER_KEYBOARD']['Q2'][$districtIndex];
+    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$districtIndex];
+    
+    $res = sprintf($GLOBALS['WORD']['SURVEY_RESULT'], $district, $total);
     
     arsort($result);
     $row = 0;
     foreach($result as $key => $val) {
-        $res .= $q2Array[$key].": $val\n";
+        $res .= $partyArray[$key].": $val\n";
         $count = ($val/$total * 10);
         
         for($i=0; $i < $count; $i++){
@@ -163,7 +134,7 @@ function respondPollingResult($chat_id, $q2Index){
 }
 
 function respondWithMessage($chat_id, $message){
-    apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $message, 'parse_mode' => 'Markdown'));
+    apiRequestJson("sendMessage", array('chat_id' => $chat_id, "text" => $message, 'parse_mode' => 'Markdown', 'reply_markup' => array('hide_keyboard' => true)));
     print "API: $message.<BR>\n";
 }
 
@@ -176,7 +147,8 @@ function respondWithQuote($chat_id, $message_id, $message){
 }
 
 function respondWithKeyboard($chat_id, $message, $keyboardOptions){
-    print "API: $message.<BR>\n";
+    print "API Keyboard: $message.<BR>\n";
+    print_r($keyboardOptions);
     apiRequestJson("sendMessage", 
                 array('chat_id' => $chat_id, 
                 "text" => $message, 
@@ -202,10 +174,9 @@ function formatInvitationMessage($invitation){
 }
 
 function respondWelcomeMessage($chat_id){
-    global $aryQ1;
     respondWithMessage($chat_id, $GLOBALS['WORD']['WELCOME']);
     respondWithMessage($chat_id, $GLOBALS['WORD']['WELCOME_TERMS']);
-    respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME_TERMS_AGREE'], array(array_values($aryQ1)));
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME_TERMS_AGREE'], array(array_values($GLOBALS['ANSWER_KEYBOARD']['Q1'])));
 }
 
 function respondNotAuthorized($chat_id){
@@ -213,25 +184,21 @@ function respondNotAuthorized($chat_id){
 }
 
 function respondQ1($chat_id){
-    global $aryQ2;
     //which district?
-    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q1'], array_chunk(array_keys($aryQ2), 3));
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q1'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 3));
 }
 
 function respondQ2($chat_id, $question){
-    global $aryQ2;
+    //which party?
+    $district = $GLOBALS['ANSWER_KEYBOARD']['Q2'][$question->q2];
     
-    $q2Key = array_keys($aryQ2);
-    $district = $q2Key[$question->q2];
-    
-    $option = $aryQ2[$district];
+    $option = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$question->q2];
     shuffle($option);
-    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $district), array_chunk($option, 3));
+    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $district), array_chunk($option, 1));
 }
 
 function respondQ2Confirm($chat_id, $choice){
-    $confirmArray = array( 'yes', 'no');
-    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2_CONFIRM'], $choice), array($confirmArray));
+    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2_CONFIRM'], $choice), array($GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM']));
 }
 
 function handleStageUnauthorized($user, $text){
@@ -246,7 +213,6 @@ function handleStageUnauthorized($user, $text){
             if(null != $invitation){
                 $invitationUser = $invitation->useQuota($user);
                 
-                print_r($invitationUser);
                 UserDao::save($user);
                 InvitationDao::save($invitation);
                 InvitationUserDao::save($invitationUser);
@@ -264,12 +230,8 @@ function handleStageUnauthorized($user, $text){
 }
 
 function handleStageAuthorized($user, $questionService, $text){
-    global $Q1Agree;
-    global $Q1Disagree;
-    
-    $aryAgreeText = array('agree', 'ok', 'yes', $Q1Agree);
-    $aryDisagreeText = array('not agree', 'no', 'nope', $Q1Disagree);
-    logDebug("In array? ".in_array($text, $aryAgreeText));
+    $aryAgreeText = array('agree', 'ok', 'yes', $GLOBALS['ANSWER_KEYBOARD']['Q1_AGREE']);
+    $aryDisagreeText = array('not agree', 'no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q1_DISAGREE']);
     
     if(in_array($text, $aryAgreeText)){
         if($user->changeStageToQ1()){
@@ -293,11 +255,11 @@ function handleStageAuthorized($user, $questionService, $text){
 }
 
 function handleStageQ1($user, $questionService, $text){
-    global $aryQ2;
-    
-    if (array_key_exists($text, $aryQ2)){
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q2']);
+    print 'key: ' . $key;
+    if (false !== $key){
         if($user->changeStageToQ2()){
-            if($questionService->addQ2($text)){
+            if($questionService->addQ2($key)){
                 respondQ2($user->chat_id, $questionService->question);
                 
                 UserDao::save($user);
@@ -311,13 +273,12 @@ function handleStageQ1($user, $questionService, $text){
 }
 
 function handleStageQ2($user, $questionService, $text, $message_id){
-    global $aryQ2;
-    $q2 = $questionService->question->q2;
-    $q2Key = array_keys($aryQ2);
+    $districtKey = $questionService->question->q2;
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q3'][$districtKey]);
     
-    if(in_array($text, $aryQ2[$q2Key[$q2]])){
+    if($key){
         if($user->changeStageToQ2Confirm()){
-            if($questionService->addQ3(array_search($text, $aryQ2[$q2Key[$q2]]))){
+            if($questionService->addQ3($key)){
                 respondQ2Confirm($user->chat_id, $text);
                 UserDao::save($user);
             }
@@ -330,8 +291,8 @@ function handleStageQ2($user, $questionService, $text, $message_id){
 }
 
 function handleStageQ2Confirm($user, $questionService, $text, $message_id){
-    $aryAgreeText = array('confirm', 'ok', 'yes');
-    $aryDisagreeText = array('no', 'nope');
+    $aryAgreeText = array('confirm', 'ok', $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_YES']);
+    $aryDisagreeText = array('no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_NO']);
     
     if(in_array($text, $aryAgreeText)){
         if($user->changeStageToQ3()){
@@ -358,7 +319,8 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
     }
     else{
         respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        respondQ2Confirm($user->chat_id);
+        $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$questionService->question->q2];
+        respondQ2Confirm($user->chat_id, $partyArray[$questionService->question->q3]);
     }
 }
 function handleStageQ3($user, $questionService, $text){
