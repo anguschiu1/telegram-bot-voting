@@ -389,7 +389,7 @@ function handleStageDeleted($user, $questionService, $text){
 function handleShowResult($user, $question, $text){
     $aryResult = array('/result', 'show result');
     if(in_array($text, $aryResult)){
-        if(null == $question->q2){
+        if(null === $question->q2){
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_NOT_START']);
         }
         else{
