@@ -35,7 +35,7 @@ class InvitationService{
                 $ret = 10;
                 break;
             case MemberType::L3:
-                $ret = 3;
+                //$ret = 3;
                 break;
             case MemberType::CELEBRITIES:
                 $ret = 50;
