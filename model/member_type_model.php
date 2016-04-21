@@ -29,7 +29,7 @@ abstract class MemberType{
                 $ret = MemberType::L4;
                 break;
             case MemberType::CELEBRITIES:
-                $ret = MemberType::L3;
+                $ret = MemberType::L4;
                 break;
             case MemberType::L4:
                 $ret = MemberType::L5;
