@@ -73,5 +73,15 @@ class User{
     public function changeStageToDeleted(){
         return $this->changeStage(Stage::DELETED);
     }
+
+    public function getName(){
+        $name = $this->first_name;
+
+        if($this->last_name){
+            $name .= " ".$this->last_name;
+        }
+
+        return $name;
+    }
 }
 ?>
