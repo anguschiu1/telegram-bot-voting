@@ -1,4 +1,9 @@
 <?php
+function handleInvitationUsedNotification($user, $invitation){
+    $originalUser = UserDao::get($invitation->create_user_id);
+    respondWithMessage($originalUser->chat_id, 
+        sprintf($GLOBALS['WORD']['INVITATION_LINK_USED_NOTIFICATION'], $user->getName(), InvitationService::getFullLink($invitation), $invitation->quota));
+}
 
 function handleStageUnauthorized($user, $text){
     //authorize the user
@@ -17,6 +22,7 @@ function handleStageUnauthorized($user, $text){
                 InvitationUserDao::save($invitationUser);
                 
                 respondWelcomeMessage($user->chat_id);
+                handleInvitationUsedNotification($user, $invitation);
             }
             else{
                 respondNotAuthorized($user->chat_id);
