@@ -112,9 +112,7 @@ function logDebug($msg) {
 
 
 function formatInvitationMessage($invitation){
-    $url = INVITATION_LINK_PREFIX.$invitation->link;
-    
-    return sprintf($GLOBALS['WORD']['INVITATION_LINK'], $url);
+    return sprintf($GLOBALS['WORD']['INVITATION_LINK'], InvitationService::getFullLink($invitation));
 }
 
 ?>

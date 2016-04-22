@@ -56,6 +56,10 @@ class InvitationService{
         }
         return $randomString;
     }
+
+    public static function getFullLink($invitation){
+        return INVITATION_LINK_PREFIX.$invitation->link;
+    }
     
     public function createInvitation($member_type){
         $quota = self::getQuota($member_type);
