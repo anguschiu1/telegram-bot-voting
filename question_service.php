@@ -29,11 +29,8 @@ class QuestionService{
         return $result;
     }
 
-    public function addQ2($text){
+    public function addQ2($answer){
         $result = false;
-        
-        global $aryQ2;
-        $answer = array_search($text, array_keys($aryQ2));
         
         if(null !== $this->question){
             QuestionDao::updateSingle($this->question, 2, $answer);
@@ -42,12 +39,10 @@ class QuestionService{
         return $result;
     }
 
-    public function addQ3($text){
+    public function addQ3($answer){
         $result = false;
         
         if(null != $this->user){
-            $answer = $text;
-            
             if(null != $this->question){
                 QuestionDao::updateSingle($this->question, 3, $answer);
                 $result = true;
