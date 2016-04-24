@@ -170,21 +170,24 @@ function handleShowResult($user, $question, $text){
 
 function handleInvite($user , $text){
     $ret = false;
-    if (strpos($text, "/invite new") === 0 && MemberType::canCreateMutli($user->member_type)) {
-        $invitationService = new InvitationService($user);
+    if(MemberType::canCreateMutli($user->member_type)){
+         $invitationService = new InvitationService($user);
         if($invitationService->canGenerate()){
-            $invitationService->createInvitation($user->member_type);
-            $invitation = $invitationService->getInvitation();
-            respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
-        }
-        else{
-            respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVITE_NO_PRIVILEGE']);
-        }
-        $ret = true;
-    } else if (strpos($text, "/invite c") === 0 && MemberType::canCreateMutli($user->member_type)) {
-        $invitationService = new InvitationService($user);
-        if($invitationService->canGenerate()){
-            $invitationService->createInvitation(MemberType::CELEBRITIES);
+            $memberType = MemberType::L5;
+            if(strpos($text, '/invite new') === 0){
+                $memberType = MemberType::L1;
+            } else if(strpos($text, '/invite c') === 0){
+                $memberType = MemberType::CELEBRITIES;
+            } else if(strpos($text, '/invite 1st') === 0){
+                $memberType = MemberType::L2;
+            } else if(strpos($text, '/invite 2nd') === 0){
+                $memberType = MemberType::L3;
+            } else if(strpos($text, '/invite pan') === 0){
+                $memberType = MemberType::L4;
+            } else if(strpos($text, '/invite general') === 0){
+                $memberType = MemberType::L5;
+            } 
+            $invitationService->createOneInivitationLink($memberType);
             $invitation = $invitationService->getInvitation();
             respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
         }
