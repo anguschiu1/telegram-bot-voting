@@ -71,4 +71,5 @@ create table media_content (
         --      APPROVED - Available for bulk sending
         --      DISABLED - Bulk sending job will ignore the record, any status can change to DISABLED
         -- Media Lifecycle: INIT --> SAMPLE --> APPROVED
+        -- Testing
 );
