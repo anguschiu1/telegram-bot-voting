@@ -12,6 +12,7 @@ function sendMessage($chatID, $textMessage, $token) {
     curl_setopt_array($ch, $optArray);
     $result = curl_exec($ch);
     curl_close($ch);
+    return $result;
 }
 
 ?>
