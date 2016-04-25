@@ -15,5 +15,11 @@ function sendMessage($chatID, $textMessage, $token) {
     return $result;
 }
 
+function bind_vars($format_string, $values) {
+    extract($values);
+    $result = $format_string;
+    eval('$result = "' . $format_string . '";');
+    return $result;
+}
 ?>
 
