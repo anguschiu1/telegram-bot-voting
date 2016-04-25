@@ -6,6 +6,7 @@ class Question{
     public $q1;
     public $q2;
     public $q3;
+    public $round;
     public $ip;
     public $create_date;
     public $last_modified_date;
@@ -23,6 +24,7 @@ class Question{
        $this->q1 = $array['q1'];
        $this->q2 = $array['q2'];
        $this->q3 = $array['q3'];
+       $this->round = $array['round'];
        $this->ip = $array['ip'];
        $this->create_date = $array['create_date'];
        $this->last_modified_date = $array['last_modified_date'];

@@ -5,6 +5,7 @@ create table question (
     q1 varchar(1),
     q2 int,
     q3 int,
+    round int not null default 1,
     ip varchar(46),
     create_date timestamp not null,
     last_modified_date timestamp not null,
