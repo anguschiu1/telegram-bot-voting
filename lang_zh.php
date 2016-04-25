@@ -36,9 +36,11 @@
         'Q1_DISAGREE' => '🚫 不!',
         'Q1' => array('👌 我同意', '🚫 不!'),
         'Q2' => getQ2Keyboard(),
-        'Q2_CONFIRM_YES' => 'Yes',
-        'Q2_CONFIRM_NO' => 'No',
-        'Q2_CONFIRM' => array ('Yes', 'No'),
+        'Q2_CONFIRM_YES' => '✔ 確定',
+        'Q2_CONFIRM_NO' => '❌ 選錯了',
+        'Q2_CONFIRM_YES_ANSWERS' => array('yes', 'confirm', 'ok', '✔ 確定', '確定'),
+        'Q2_CONFIRM_NO_ANSWERS' => array('no', 'nope', '❌ 選錯了', '否', '不'),
+        'Q2_CONFIRM' => array ('✔ 確定', '❌ 選錯了'),
         'Q3' => getQ3Keyboard()
     );
     

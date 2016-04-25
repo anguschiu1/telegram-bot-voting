@@ -96,8 +96,8 @@ function handleStageQ2($user, $questionService, $text, $message_id){
 }
 
 function handleStageQ2Confirm($user, $questionService, $text, $message_id){
-    $aryAgreeText = array('confirm', 'ok', $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_YES']);
-    $aryDisagreeText = array('no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_NO']);
+    $aryAgreeText = $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_YES_ANSWERS'];
+    $aryDisagreeText = $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_NO_ANSWERS'];
     
     if(in_array($text, $aryAgreeText)){
         if($user->changeStageToQ3()){
