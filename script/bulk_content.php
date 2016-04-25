@@ -20,8 +20,8 @@ while($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
         if ( $row["bulk_id"] != $i_bulk_id || $row["lang"] != i_lang ) {
                 $stmt2 = $db->prepare("select * from media_content where bulk_id=:bulk_id and lang in ('*', :lang) order by lang desc limit 1");
 
-                $stmt2.bindValue(1, $row["bulk_id"]);
-                $stmt2.bindParam(2, $row["lang"], PDO::PARAM_STR);
+                $stmt2->bindValue(1, $row["bulk_id"]);
+                $stmt2->bindParam(2, $row["lang"], PDO::PARAM_STR);
                 $stmt2->execute();
                 $media = $stmt2->fetch(PDO::FETCH_ASSOC);
                 echo "bulk_id=". $media["bulk_id"]. " media_type=". $media["media_type"]. " lang=". $media["lang"]. " media_status=". $media["media_status"]. "\n";
