@@ -61,7 +61,6 @@ function handleStageAuthorized($user, $questionService, $text){
 
 function handleStageQ1($user, $questionService, $text){
     $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q2']);
-    print 'key: ' . $key;
     if (false !== $key){
         if($user->changeStageToQ2()){
             if($questionService->addQ2($key)){
