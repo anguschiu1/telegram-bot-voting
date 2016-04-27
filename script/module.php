@@ -1,9 +1,13 @@
 <?php
 
-function sendMessage($chatID, $textMessage, $token) {
+function sendMessage($chatID, $textMessage, $token, $notification = true) {
 
     $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
     $url = $url . "&text=" . urlencode($textMessage);
+    if (!$notification) {
+        $url = $url . "&disable_notification=true";
+    }
+
     $ch = curl_init();
     $optArray = array(
             CURLOPT_URL => $url,
@@ -21,5 +25,12 @@ function bind_vars($format_string, $values) {
     eval('$result = "' . $format_string . '";');
     return $result;
 }
+
+function midnight() {
+        $t=new DateTime();
+        $h->format("H");
+        return ($h < "09");
+}
+
 ?>
 

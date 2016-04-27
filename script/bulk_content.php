@@ -9,6 +9,8 @@ $batch_count=$batch_volumn;
 require('../php/inc.php');
 require('module.php');
 
+// if (midnight()) return;
+
 $db = getDb();
 $stmt1 = $db->prepare("select * from bulk where status = 1 order by bulk_id, lang limit :cycle_volume");
 $stmt1->execute(array($cycle_volume));
@@ -40,7 +42,7 @@ while($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
 
                 $content = bind_vars($media["media_content"], array('count'=>$batch_count));
 
-                $response=sendMessage($row["chat_id"], $content, BOT_TOKEN);
+                $response=sendMessage($row["chat_id"], $content, BOT_TOKEN, !midnight());
                 $stmt3->bindValue(2, $response);
                 $result = json_decode($response, true);
                 if ( $result["ok"] ) {
