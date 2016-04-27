@@ -27,10 +27,12 @@ function handleStageUnauthorized($user, $text){
                 handleInvitationUsedNotification($user, $invitation);
             }
             else{
+                UserDao::save($user);
                 respondNotAuthorized($user->chat_id);
             }
         }
         else{
+            UserDao::save($user);
             respondNotAuthorized($user->chat_id);
         }
     }
