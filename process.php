@@ -54,13 +54,12 @@ function processMessage($message) {
         logDebug("Text is: $text\n");
         
         
-        $user = UserDao::get($userId);
-        
-        if(null == $user){
-            $question = null;
-        }
-        else{
-            $question = QuestionDao::get($userId);
+        $user = UserDao::get($userId);        
+        $question = QuestionDao::get($userId);
+
+        if(null === $user || null === $question){
+            $question = new Question();
+            $question->round = CURRENT_ROUND_NUM;
         }
         
         $user = processUser($message, $user);

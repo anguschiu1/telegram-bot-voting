@@ -41,7 +41,7 @@ class QuestionDao{
                 $obj->q3 = $answer;
                 break;
         }
-        return self::update($obj);
+        return self::save($obj);
     }
 
     public static function update($obj){

@@ -12,17 +12,10 @@ class QuestionService{
         $result = false;
         
         if(null != $this->user){
-            global $aryQ1;
-            
-            if(null != $this->question){
-                $this->question = QuestionDao::updateSingle($this->question, 1, $answer);
-            }
-            else{
-                $this->question = new Question();
+            if(null === $this->question->user_id){
                 $this->question->user_id = $this->user->user_id;
-                $this->question->q1 = $answer;
-                $this->question = QuestionDao::save($this->question);
             }
+            $this->question = QuestionDao::updateSingle($this->question, 1, $answer);
             
             $result = true;
         }
