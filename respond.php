@@ -64,7 +64,7 @@ function respondWelcomeMessage($chat_id){
 }
 
 function respondNotAuthorized($chat_id){
-    respondWithMessage($chat_id, 'Not authorized');
+    respondWithMessage($chat_id, $GLOBALS['WORD']['NOT_AUTHORIZED']);
 }
 
 function respondQ1($chat_id){
