@@ -14,4 +14,6 @@ define ('INVITATION_LINK_PREFIX', 'https://telegram.me/CivicDataHK2Bot?start=');
 define('DEBUG', true);
 define('DEBUG_FILE_NAME', 'debug.txt');
 
+ini_set('date.timezone', 'Asia/Hong_Kong');
+
 ?>
