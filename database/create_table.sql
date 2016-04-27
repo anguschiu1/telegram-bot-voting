@@ -54,6 +54,7 @@ create table bulk (
     chat_id int not null,
     lang varchar(2) not null default 'tc',
     status int(1) not null default 1, -- 0=Done, 1=Create, 2=Processing, 3=Error
+    response varchar(500), -- Storing telegram response message
     last_modified_date timestamp not null default CURRENT_TIMESTAMP
 );
 
