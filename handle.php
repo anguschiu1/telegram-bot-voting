@@ -142,7 +142,7 @@ function handleStageQ3($user, $questionService, $text){
     else if(handleShowResult($user, $questionService->question, $text)){
         
     }
-    else if(handleInvite($user, $text)){
+    else if(strpos($text, "/invite") === 0 && handleInvite($user, $text)){
         
     }
     else{
