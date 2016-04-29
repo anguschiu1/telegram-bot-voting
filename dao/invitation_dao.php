@@ -78,7 +78,7 @@ class InvitationDao{
     
     public static function getByLink($link){
         $db = getDb();
-        $stmt = $db->prepare('SELECT id, link, quota, create_user_id, member_type, expire_date, create_date, last_modified_date FROM invitation WHERE link = ? and quota > 0');
+        $stmt = $db->prepare('SELECT id, link, quota, create_user_id, member_type, expire_date, create_date, last_modified_date FROM invitation WHERE link = ?');
         $stmt->execute(array($link));
         
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

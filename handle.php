@@ -16,15 +16,21 @@ function handleStageUnauthorized($user, $text){
     else{
         if (count($args) > 1){
             $invitation = InvitationDao::getByLink($args[1]);
-            if(null != $invitation){
-                $invitationUser = $invitation->useQuota($user);
-                
-                UserDao::save($user);
-                InvitationDao::save($invitation);
-                InvitationUserDao::save($invitationUser);
-                
-                respondWelcomeMessage($user->chat_id);
-                handleInvitationUsedNotification($user, $invitation);
+            if(null !== $invitation){
+                if($invitation->quota > 0){
+                    $invitationUser = $invitation->useQuota($user);
+                    
+                    UserDao::save($user);
+                    InvitationDao::save($invitation);
+                    InvitationUserDao::save($invitationUser);
+                    
+                    respondWelcomeMessage($user->chat_id);
+                    handleInvitationUsedNotification($user, $invitation);
+                }
+                else{
+                    UserDao::save($user);
+                    respondLinkQuotaUsedUp($user->chat_id);
+                }
             }
             else{
                 UserDao::save($user);

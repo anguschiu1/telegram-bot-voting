@@ -67,6 +67,10 @@ function respondNotAuthorized($chat_id){
     respondWithMessage($chat_id, $GLOBALS['WORD']['NOT_AUTHORIZED']);
 }
 
+function respondLinkQuotaUsedUp($chat_id){
+    respondWithMessage($chat_id, $GLOBALS['WORD']['LINK_QUOTA_USED_UP']);
+}
+
 function respondQ1($chat_id){
     //which district?
     respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q1'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 3));
