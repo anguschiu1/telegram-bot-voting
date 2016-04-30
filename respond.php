@@ -6,8 +6,10 @@ function respondPollingResult($chat_id, $questionObj){
     
     $total = array_sum($result);
     
-    $district = $GLOBALS['ANSWER_KEYBOARD']['Q2'][$districtIndex];
-    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$districtIndex];
+    $district = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$districtIndex];
+    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtIndex];
+
+    array_push($partyArray, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
     
     $res = sprintf($GLOBALS['WORD']['SURVEY_RESULT'], $district, $total);
     
@@ -77,7 +79,7 @@ function respondLinkQuotaUsedUp($chat_id){
 }
 
 function respondQ2($chat_id){
-    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q2'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 3));
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q2'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 1));
 }
 
 
@@ -92,10 +94,11 @@ function respondQ4($chat_id){
 
 function respondQ5($chat_id, $questionObj){
     //which party?
-    $district = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$questionObj->q2];
+    $district = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$questionObj->q4];
     
-    $option = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$questionObj->q2];
+    $option = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$questionObj->q4];
     shuffle($option);
+    array_push($option, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE']);
     respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q5'], $district), array_chunk($option, 1));
 }
 
@@ -104,7 +107,7 @@ function respondQ3Confirm($chat_id, $choice){
 }
 
 function respondQ6($chat_id, $questionObj){
-    $name = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$questionObj->q2][$questionObj->q5];
+    $name = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$questionObj->q4][$questionObj->q5];
 
     $question = sprintf($GLOBALS['WORD']['SURVEY_Q6'], $name);
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q6'];
@@ -114,19 +117,25 @@ function respondQ6($chat_id, $questionObj){
 
 function respondQ7($chat_id, $questionObj){
     $question = $GLOBALS['WORD']['SURVEY_Q7'];
-    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$questionObj->q2];
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$questionObj->q4];
 
+    shuffle($keyboard);
+    array_push($keyboard, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
     respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
 }
 
 
 function respondQ8($chat_id, $questionObj){
-    $districtKey = $questionObj->q2;
-    $q3answer = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$districtKey][$questionObj->q5];
-    $q4answer = $GLOBALS['ANSWER_KEYBOARD']['Q6'][$questionObj->q6];
-    $q5answer = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey][$questionObj->q7];
+    $districtKey = $questionObj->q4;
+    $partyOption = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$districtKey];
+    array_push($partyOption, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
 
-    $question = sprintf($GLOBALS['WORD']['SURVEY_Q8'], $q3answer, $q4answer, $q5answer);
+    $q2answer = $GLOBALS['ANSWER_KEYBOARD']['Q2'][$questionObj->q2];
+    $q3answer = $partyOption[$questionObj->q5];
+    $q4answer = $GLOBALS['ANSWER_KEYBOARD']['Q6'][$questionObj->q6];
+    $q5answer = $partyOption[$questionObj->q7];
+
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q8'], $q2answer, $q3answer, $q4answer, $q5answer);
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q8'];
 
     respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 2));
@@ -134,17 +143,18 @@ function respondQ8($chat_id, $questionObj){
 
 
 function respondQ9($chat_id, $questionObj){
-    $districtKey = $questionObj->q2;
     $question = $GLOBALS['WORD']['SURVEY_Q9'];
-    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q9'][$districtKey];
+    $partyOption = $GLOBALS['ANSWER_KEYBOARD']['Q9'];
 
-    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+    shuffle($partyOption);
+    array_push($partyOption, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE']);
+
+    respondWithKeyboard($chat_id, $question, array_chunk($partyOption, 1));
 }
 
 
 function respondQ10($chat_id, $questionObj){
-    $districtKey = $questionObj->q2;
-    $name = $GLOBALS['ANSWER_KEYBOARD']['Q9'][$districtKey][$questionObj->q9];
+    $name = $GLOBALS['ANSWER_KEYBOARD']['Q9'][$questionObj->q9];
 
     $question = sprintf($GLOBALS['WORD']['SURVEY_Q10'], $name);
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q10'];
@@ -154,19 +164,23 @@ function respondQ10($chat_id, $questionObj){
 
 
 function respondQ11($chat_id, $questionObj){
-    $districtKey = $questionObj->q2;
     $question = $GLOBALS['WORD']['SURVEY_Q11'];
-    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q11'][$districtKey];
+    $partyOption = $GLOBALS['ANSWER_KEYBOARD']['Q11'];
 
-    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+    shuffle($partyOption);
+    array_push($partyOption, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
+
+    respondWithKeyboard($chat_id, $question, array_chunk($partyOption, 1));
 }
 
 
 function respondQ12($chat_id, $questionObj){
-    $districtKey = $questionObj->q2;
-    $q7answer = $GLOBALS['ANSWER_KEYBOARD']['Q9'][$districtKey][$questionObj->q9];
+    $partyOption = $GLOBALS['ANSWER_KEYBOARD']['Q9'];
+    array_push($partyOption, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
+    
+    $q7answer = $partyOption[$questionObj->q9];
     $q8answer = $GLOBALS['ANSWER_KEYBOARD']['Q10'][$questionObj->q10];
-    $q9answer = $GLOBALS['ANSWER_KEYBOARD']['Q11'][$districtKey][$questionObj->q11];
+    $q9answer = $partyOption[$questionObj->q11];
 
     $question = sprintf($GLOBALS['WORD']['SURVEY_Q12'], $q7answer, $q8answer, $q9answer);
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q12'];

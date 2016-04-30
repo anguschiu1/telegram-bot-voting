@@ -55,7 +55,7 @@ Please come back and vote again on 1st of June, and you can also check out the l
         'Q1_AGREE' => '👌 I agree',
         'Q1_DISAGREE' => '🚫 I do not agree',
         'Q1' => array('👌 I agree', '🚫 I do not agree'),
-        'Q2' => array('I was not a voter', 'I was a voter but did not vote'),
+        'Q2' => getVoter2012KeyboardAllEn(),
         'Q3' => array('👌 Yes', '🚫 No'),
         'Q4' => getQ2KeyboardEn(),
         'Q4_CONFIRM_YES' => '✔ Yes',
@@ -201,5 +201,102 @@ function getSuperPartyKeyboardEn(){
                 'NeoDemocrats (KWAN Wing-yip)',
                 'Neighbourhood and Workers Services Centre (LEUNG Yiu-chung)',
                 'Paul Zimmerman');
+}
+
+function getVoter2012KeyboardAllEn(){
+    $ret = array();
+    $voter2012 = getVoter2012KeyboardEn();
+    foreach (getQ2KeyboardEn() as $districtKey => $district){
+        foreach($voter2012[$districtKey] as $voter){
+            array_push($ret, "[$district] $voter");
+        }
+    }
+    return $ret;
+}
+function getVoter2012KeyboardEn(){
+    return array(
+        0 => array(
+            'HUI CHING ON',
+            'SIN CHUNG KAI',
+            'LO WING LOK',
+            'LAU GAR HUNG CHRISTOPHER',
+            'CHUNG SHU KUN CHRISTOPHER',
+            'NG WING CHUN',
+            'HO SAU LAN CYD',
+            'IP LAU SUK YEE REGINA',
+            'WONG KWOK HING',
+            'CHAN KA LOK',
+            'HO KAR TAI',
+            'TSANG YOK SING JASPER',
+            'LAU KIN YEE MIRIAM',
+            'NG MAN YUEN AVERY',
+            'I was not a voter', 'I was a voter but did not vote'
+        ),
+        1 => array(
+            'LEONG KAH KIT ALAN',
+            'WONG KWOK KIN',
+            'TO KWAN HANG ANDREW',
+            'YIM FUNG CHI KAY',
+            'WU CHI WAI',
+            'CHAN KAM LAM',
+            'TSE WAI CHUN PAUL',
+            'WONG YEUNG TAT',
+            'TAM HEUNG MAN',
+            'I was not a voter', 'I was a voter but did not vote'
+        ),
+        2 => array(
+            'WONG YEE HIM',
+            'WONG PIK WAN',
+            'TAM KWOK KIU',
+            'WONG YAT YUK',
+            'CHIANG LAI WAN',
+            'WONG YUK MAN',
+            'LAM YI LAI',
+            'LEUNG MEI FUN',
+            'MO MAN CHING CLAUDIA',
+            'I was not a voter', 'I was a voter but did not vote'
+        ),
+        3 => array(
+            'LEUNG KWOK HUNG',
+            'IP WAI MING',
+            'LAU WAI HING EMILY',
+            'LEUNG ON KAY ANGEL',
+            'PONG SCARLETT OI LAN',
+            'QUAT ELIZABETH',
+            'CHAN CHI CHUEN RAYMOND',
+            'YAU WING KWONG',
+            'CHAN HAK KAN',
+            'CHEUNG CHIU HUNG',
+            'TSOI YIU CHEONG RICHARD',
+            'FAN GARY KWOK WAI',
+            'TIEN PEI CHUN JAMES',
+            'WONG SING CHI',
+            'TONG KA WAH RONNY',
+            'HO MAN KIT RAYMOND',
+            'PONG YAT MING',
+            'FONG KWOK SHAN CHRISTINE',
+            'CHAN KWOK KEUNG',
+            'I was not a voter', 'I was a voter but did not vote'
+        ),
+        4 => array(
+            'LEUNG CHE CHEUNG',
+            'MAK MEI KUEN ALICE',
+            'CHAN SHU YING JOSEPHINE',
+            'CHAN WAI YIP ALBERT',
+            'MAK IP SING',
+            'TSANG KIN SHING',
+            'KWOK KA KI',
+            'TIEN MICHAEL PUK SUN',
+            'HO KWAN YIU',
+            'CHAN YUT WAH',
+            'LEUNG YIU CHUNG',
+            'CHAN HAN PAN',
+            'CHAN KEUNG',
+            'LEE WING TAT',
+            'LEE CHEUK YAN',
+            'TAM YIU CHUNG',
+            'I was not a voter', 'I was a voter but did not vote'
+        )
+        );
 }
 ?>
