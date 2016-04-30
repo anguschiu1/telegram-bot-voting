@@ -16,6 +16,8 @@ class Question{
     public $q11;
     public $q12;
     public $q13;
+    public $q14;
+    public $q15;
     public $round;
     public $ip;
     public $create_date;
@@ -44,6 +46,8 @@ class Question{
        $this->q11 = $array['q11'];
        $this->q12 = $array['q12'];
        $this->q13 = $array['q13'];
+       $this->q14 = $array['q14'];
+       $this->q15 = $array['q15'];
        $this->round = $array['round'];
        $this->ip = $array['ip'];
        $this->create_date = $array['create_date'];

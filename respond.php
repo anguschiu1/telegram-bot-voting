@@ -1,6 +1,7 @@
 <?php
 
-function respondPollingResult($chat_id, $districtIndex){
+function respondPollingResult($chat_id, $questionObj){
+    $districtIndex = $questionObj->q4;
     $result = getResult($districtIndex);
     
     $total = array_sum($result);

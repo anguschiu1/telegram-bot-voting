@@ -102,8 +102,9 @@ function handleStageQ1($user, $questionService, $text){
     $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q2']);
     if (false !== $key){
         if($user->changeStageToQ2()){
+            $user->voter2012 = $key;
             if($questionService->addQ2($key)){
-                UserDao::save($user);
+                $user = UserDao::save($user);
                 respondQ3($user->chat_id, $questionService->question);
             }
         }
@@ -118,6 +119,7 @@ function handleStageQ2($user, $questionService, $text){
     $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q3']);
     if (false !== $key){
         if($user->changeStageToQ3()){
+            $user->is_voter = $key;
             if($questionService->addQ3($key)){
                 UserDao::save($user);
                 respondQ4($user->chat_id, $questionService->question);
@@ -341,28 +343,12 @@ function handleStageQ13($user, $questionService, $text){
     
     if(false !== $key){
         if($user->changeStageToQ14()){
+            $user->age = $key;
             if($questionService->addQ14($key)){
-                UserDao::save($user);
-                respondQ15($user->chat_id, $questionService->question);
-            }
-        }
-    }
-    else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        respondQ14($user->chat_id, $questionService->question);
-    }
-}
-
-function handleStageQ14($user, $questionService, $text){
-    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q15']);
-    
-    if(false !== $key){
-        if($user->changeStageToQ15()){
-            if($questionService->addQ15($key)){
                 UserDao::save($user);
                 //end, show result and invitation
                 respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
-                respondPollingResult($user->chat_id, $questionService->question->q4);
+                respondPollingResult($user->chat_id, $questionService->question);
                 respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
                 
 
@@ -378,7 +364,7 @@ function handleStageQ14($user, $questionService, $text){
     }
     else{
         respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        respondQ13($user->chat_id, $questionService->question);
+        respondQ14($user->chat_id, $questionService->question);
     }
 }
 
@@ -390,7 +376,7 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
         if($user->changeStageToQ3()){
             UserDao::save($user); //save user first, for calculate the result correctly
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
-            respondPollingResult($user->chat_id, $questionService->question->q2);
+            respondPollingResult($user->chat_id, $questionService->question);
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
             
 
@@ -415,7 +401,7 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
         respondQ2Confirm($user->chat_id, $partyArray[$questionService->question->q3]);
     }
 }
-function handleStageQ15($user, $questionService, $text){
+function handleStageQ14($user, $questionService, $text){
     $ary = array('/vote');
     if(in_array($text, $ary)){
         if($user->changeStageToRestart()){
@@ -448,7 +434,7 @@ function handleShowResult($user, $question, $text){
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_NOT_START']);
         }
         else{
-            respondPollingResult($user->chat_id, $question->q4);
+            respondPollingResult($user->chat_id, $question);
         }
         return true;
     }

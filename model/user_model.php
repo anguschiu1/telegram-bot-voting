@@ -9,6 +9,10 @@ class User{
     public $stage;
     public $lang;
     public $member_type;
+    public $voter2012;
+    public $is_voter;
+    public $age;
+    public $job;
     public $ip;
     public $create_date;
     public $last_modified_date;
@@ -22,18 +26,22 @@ class User{
     }
 
     function __construct1($array) {
-       $this->user_id = $array['user_id'];
-       $this->user_name = $array['user_name'];
-       $this->first_name = $array['first_name'];
-       $this->last_name = $array['last_name'];
-       $this->chat_id = $array['chat_id'];
-       $this->authorized = $array['authorized'];
-       $this->lang = $array['lang'];
-       $this->stage = $array['stage'];
-       $this->member_type = $array['member_type'];
-       $this->ip = $array['ip'];
-       $this->create_date = $array['create_date'];
-       $this->last_modified_date = $array['last_modified_date'];
+        $this->user_id = $array['user_id'];
+        $this->user_name = $array['user_name'];
+        $this->first_name = $array['first_name'];
+        $this->last_name = $array['last_name'];
+        $this->chat_id = $array['chat_id'];
+        $this->authorized = $array['authorized'];
+        $this->lang = $array['lang'];
+        $this->stage = $array['stage'];
+        $this->member_type = $array['member_type'];
+        $this->voter2012 = $array['voter2012'];
+        $this->is_voter = $array['is_voter'];
+        $this->age = $array['age'];
+        $this->job = $array['job'];
+        $this->ip = $array['ip'];
+        $this->create_date = $array['create_date'];
+        $this->last_modified_date = $array['last_modified_date'];
     }
     
     private function changeStage($newStage){
