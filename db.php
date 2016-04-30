@@ -13,16 +13,16 @@ function getDb(){
 
 function getResult($q2){
     $db = getDb();
-    $stmt = $db->prepare("SELECT q3, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage ='Q3' and q2 = ? and q3 is not null GROUP BY q3 ORDER BY q3");
+    $stmt = $db->prepare("SELECT q5 as party, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage in ('Q12', 'Q13', 'Q14')
+                         and q4 = ? and q12 is not null GROUP BY q5 ORDER BY q5");
     $stmt->execute(array($q2));
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $ret[$row['q3']] = $row['total'];
+        $ret[$row['party']] = $row['total'];
     }
     
     $db = null;
     
-    print_r($ret);
     return $ret;
 }
 ?>
