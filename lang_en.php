@@ -57,19 +57,19 @@ Please come back and vote again on 1st of June, and you can also check out the l
         'Q1' => array('👌 I agree', '🚫 I do not agree'),
         'Q2' => array('I was not a voter', 'I was a voter but did not vote'),
         'Q3' => array('👌 Yes', '🚫 No'),
-        'Q4' => getQ2Keyboard(),
+        'Q4' => getQ2KeyboardEn(),
         'Q4_CONFIRM_YES' => '✔ Yes',
         'Q4_CONFIRM_NO' => '❌ No',
         'Q4_CONFIRM_YES_ANSWERS' => array('yes', 'confirm', 'ok', '✔ Yes', '確定'),
         'Q4_CONFIRM_NO_ANSWERS' => array('no', 'nope', '❌ No', '否', '不'),
         'Q4_CONFIRM' => array ('✔ Yes', '❌ No'),
-        'Q5' => getQ3Keyboard(),
+        'Q5' => getQ3KeyboardEn(),
         'Q6' => array('0%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', 'uncertain'),
-        'Q7' => getQ3Keyboard(),
+        'Q7' => getQ3KeyboardEn(),
         'Q8' => array('👌 Yes, that is it', '🚫 No, I need to choose again.'),
-        'Q9' => getSuperPartyKeyboard(),
+        'Q9' => getSuperPartyKeyboardEn(),
         'Q10' => array('0%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', 'uncertain'),
-        'Q11' => getSuperPartyKeyboard(),
+        'Q11' => getSuperPartyKeyboardEn(),
         'Q12' => array('👌 Yes, that is it', '🚫 No, I need to choose again'),
         'Q13' => array('under 18', '18-25', '26-50', '51-75', '76-98', 'I don\'t want to disclose'),
         'Q14' => array('Managers and administrators',
@@ -89,7 +89,7 @@ Please come back and vote again on 1st of June, and you can also check out the l
         'PARTY_NO_SECOND_CHOICE' => 'No second choice'
     ); 
     
-function getQ3Keyboard(){
+function getQ3KeyboardEn(){
     return array(
         0 => array('Democratic Alliance for the Betterment and Progress of HK (CHUNG Shu Kun)',
                     'Democratic Alliance for the Betterment and Progress of HK (List 2)',
@@ -179,7 +179,7 @@ function getQ3Keyboard(){
     );
 }
 
-function getQ2Keyboard(){
+function getQ2KeyboardEn(){
     return array(
        0 => 'Hong Kong Island',
        1 => 'Kowloon East',
@@ -189,7 +189,7 @@ function getQ2Keyboard(){
     );
 }
 
-function getSuperPartyKeyboard(){
+function getSuperPartyKeyboardEn(){
     return array('Democratic Alliance for the Betterment and Progress of HK  (List 1)',
                 'Democratic Alliance for the Betterment and Progress of HK  (List 2)',
                 'HK Federation of Trade Unions ',
