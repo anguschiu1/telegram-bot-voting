@@ -85,6 +85,12 @@ class QuestionService{
             case 13:
                 $this->question->q13 = $answer;
                 break;
+            case 14:
+                $this->question->q14 = $answer;
+                break;
+            case 15:
+                $this->question->q15 = $answer;
+                break;
         }
         $this->question = QuestionDao::save($this->question);
         return true;
@@ -128,6 +134,14 @@ class QuestionService{
 
     public function addQ13($answer){
         return $this->setQuestion(13, $answer);
+    }
+
+    public function addQ14($answer){
+        return $this->setQuestion(14, $answer);
+    }
+
+    public function addQ15($answer){
+        return $this->setQuestion(15, $answer);
     }
 }
 ?>

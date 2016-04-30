@@ -120,6 +120,12 @@ function processMessage($message) {
             case Stage::Q13:
                 handleStageQ13($user, $questionService, $text);
                 break;
+            case Stage::Q14:
+                handleStageQ14($user, $questionService, $text);
+                break;
+            case Stage::Q15:
+                handleStageQ15($user, $questionService, $text);
+                break;
             case Stage::RESTART:
                 handleStageRestart($user, $questionService, $text, $message_id);
                 break;

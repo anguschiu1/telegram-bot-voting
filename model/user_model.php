@@ -62,10 +62,6 @@ class User{
         return $this->changeStage(Stage::Q2);
     }
     
-    public function changeStageToQ2Confirm(){
-        return $this->changeStage(Stage::Q2_CONFIRM);
-    }
-    
     public function changeStageToQ3(){
         return $this->changeStage(Stage::Q3);
     }
@@ -108,6 +104,14 @@ class User{
     
     public function changeStageToQ13(){
         return $this->changeStage(Stage::Q13);
+    }
+    
+    public function changeStageToQ14(){
+        return $this->changeStage(Stage::Q14);
+    }
+    
+    public function changeStageToQ15(){
+        return $this->changeStage(Stage::Q15);
     }
     
     public function changeStageToRestart(){
