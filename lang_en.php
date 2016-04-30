@@ -10,13 +10,10 @@
         'INVITE_ALREAY_GENERATED' => "You already have an invitation link\n",
         'INVITATION_MSG' => 'Thanks for casting your vote. Now, you can simply copy the message below to invite your friends (who are also supporting the non-establishment camp) via Telegram, WhatsApp or Facebook.  Each link can only invite a maximum of 10 different friends to vote. 
 👇👇',
-        'INVITATION_LINK' => "How Votsonar Works:
-1. Download Telegram
-2. Click the “invitation” link
-[%1$s][%1$s]
+        'INVITATION_LINK' => "How Votsonar Works:\n1. Download Telegram\n2. Click the “invitation” link\n".'[%1$s](%1$s)
 3. Vote for the candidate you vow to support at this point of time
 4. Check the real-time poll results.
-5. Polling will start again in the beginning of each month.  You are welcome to check the latest poll results anytime.",
+5. Polling will start again in the beginning of each month.  You are welcome to check the latest poll results anytime.',
         'SURVEY_NOT_START' => '你還未開始投票，請使用 /start 開始。',
         'SURVEY_Q1_NOT_AGREE' => 'I am sorry, we need your consent to continue the survey. Please kindly reconsider!',
         'SURVEY_Q2' => 'Which candidate did you vote for in LegCo Election 2012?',
@@ -42,7 +39,7 @@ May I have your age?',
         'SURVEY_THANKS_REMIND' => "Thank you for your participation!
 Please come back and vote again on 1st of June, and you can also check out the latest survey results. Civic Data HK will remind you by push notifications around that period.",
         'SURVEY_RESULT' => "Here it is the real time survey result of `%s` in May. Currently %d people have voted.\n\n",
-        'SURVEY_RESULT_MORE' => 'and more ',
+        'SURVEY_RESULT_MORE' => 'and more',
         'SURVEY_RESULT_LINK' => '([Detailed result](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
         'INVALID_INPUT' => 'Sorry, I do not understand',
@@ -93,7 +90,7 @@ function getQ3KeyboardEn(){
     return array(
         0 => array('Democratic Alliance for the Betterment and Progress of HK (CHUNG Shu Kun)',
                     'Democratic Alliance for the Betterment and Progress of HK (List 2)',
-                    'HK Federation of Trade Unions ',
+                    'HK Federation of Trade Unions',
                     'Business and Professionals Alliance for HK',
                     'New People\'s Party (Regina IP LAU Suk-yee)',
                     'Liberal Party',
@@ -107,11 +104,11 @@ function getQ3KeyboardEn(){
                     'Youngspiration (Baggio LEUNG Chung-heng)',
                     'Civic Passion (Alvin CHENG Kam-mun)'),
         1 => array('Democratic Alliance for the Betterment and Progress of HK  ( CHAN Kam Lam)',
-                    'HK Federation of Trade Unions ',
+                    'HK Federation of Trade Unions',
                     'Business and Professionals Alliance for HK',
                     'New People\'s Party',
                     'Liberal Party',
-                    'Paul TSE Wai-chun ',
+                    'Paul TSE Wai-chun',
                     'Path of Democracy',
                     'Third Side',
                     'Democratic Party (WU Chi-wai)',
@@ -139,12 +136,12 @@ function getQ3KeyboardEn(){
                     'Civic Passion ( WONG Yuk-man)'),
         3 => array('Democratic Alliance for the Betterment and Progress of HK  (CHAN Hak Kan)',
                     'Democratic Alliance for the Betterment and Progress of HK  (Elizabeth QUAT)',
-                    'HK Federation of Trade Unions ',
+                    'HK Federation of Trade Unions',
                     'Business and Professionals Alliance for HK',
                     'New People\'s Party',
                     'New Territories Progressive Alliance',
                     'Liberal Party',
-                    'Christine FONG Kwok Shan ',
+                    'Christine FONG Kwok Shan',
                     'Path of Democracy',
                     'Third Side',
                     'Democratic Party (LAM Cheuk-ting)',
@@ -161,7 +158,7 @@ function getQ3KeyboardEn(){
                     'Democratic Alliance for the Betterment and Progress of HK  ( TAM Yiu Chung)',
                     'HK Federation of Trade Unions (MAK Mei-kuen)',
                     'Business and Professionals Alliance for HK',
-                    'New People\'s Party (Michael TIEN Puk-sun) ',
+                    'New People\'s Party (Michael TIEN Puk-sun)',
                     'New Territories Progressive Alliance',
                     'Liberal Party', 
                     'Path of Democracy',
@@ -192,7 +189,7 @@ function getQ2KeyboardEn(){
 function getSuperPartyKeyboardEn(){
     return array('Democratic Alliance for the Betterment and Progress of HK  (List 1)',
                 'Democratic Alliance for the Betterment and Progress of HK  (List 2)',
-                'HK Federation of Trade Unions ',
+                'HK Federation of Trade Unions',
                 'Another Establishment Camp List',
                 'Democratic Party (James TO Kun-sun )',
                 'Democratic Party (KWONG Chun-yu)',
@@ -211,6 +208,7 @@ function getVoter2012KeyboardAllEn(){
             array_push($ret, "[$district] $voter");
         }
     }
+    array_push($ret, 'I was not a voter', 'I was a voter but did not vote');
     return $ret;
 }
 function getVoter2012KeyboardEn(){
@@ -230,7 +228,7 @@ function getVoter2012KeyboardEn(){
             'TSANG YOK SING JASPER',
             'LAU KIN YEE MIRIAM',
             'NG MAN YUEN AVERY',
-            'I was not a voter', 'I was a voter but did not vote'
+            //'I was not a voter', 'I was a voter but did not vote'
         ),
         1 => array(
             'LEONG KAH KIT ALAN',
@@ -242,7 +240,7 @@ function getVoter2012KeyboardEn(){
             'TSE WAI CHUN PAUL',
             'WONG YEUNG TAT',
             'TAM HEUNG MAN',
-            'I was not a voter', 'I was a voter but did not vote'
+            //'I was not a voter', 'I was a voter but did not vote'
         ),
         2 => array(
             'WONG YEE HIM',
@@ -254,7 +252,7 @@ function getVoter2012KeyboardEn(){
             'LAM YI LAI',
             'LEUNG MEI FUN',
             'MO MAN CHING CLAUDIA',
-            'I was not a voter', 'I was a voter but did not vote'
+            //'I was not a voter', 'I was a voter but did not vote'
         ),
         3 => array(
             'LEUNG KWOK HUNG',
@@ -276,7 +274,7 @@ function getVoter2012KeyboardEn(){
             'PONG YAT MING',
             'FONG KWOK SHAN CHRISTINE',
             'CHAN KWOK KEUNG',
-            'I was not a voter', 'I was a voter but did not vote'
+            //'I was not a voter', 'I was a voter but did not vote'
         ),
         4 => array(
             'LEUNG CHE CHEUNG',
@@ -295,7 +293,7 @@ function getVoter2012KeyboardEn(){
             'LEE WING TAT',
             'LEE CHEUK YAN',
             'TAM YIU CHUNG',
-            'I was not a voter', 'I was a voter but did not vote'
+            //'I was not a voter', 'I was a voter but did not vote'
         )
         );
 }

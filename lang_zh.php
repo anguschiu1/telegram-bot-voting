@@ -43,7 +43,7 @@
         'SURVEY_THANKS' => '多謝投票。',
         'SURVEY_THANKS_REMIND' => "多謝你既參與！\n請於下個月6月1號再番黎投票，同時睇最新投票結果。公民數據到時會send提示俾你。",
         'SURVEY_RESULT' => "「`%s`」 選區的結果 (共 %d 票)：\n\n",
-        'SURVEY_RESULT_MORE' => '還有其他 ',
+        'SURVEY_RESULT_MORE' => '還有其他',
         'SURVEY_RESULT_LINK' => '([詳細的結果](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
         'INVALID_INPUT' => '對不起，我不明白',
@@ -112,7 +112,7 @@ function getQ3Keyboard(){
                     '東九龍社區關注組（陳澤滔）',
                     '熱血公民（黃洋達）'),
         2 => array('民建聯（蔣麗芸）',
-                    '工聯會 ',
+                    '工聯會',
                     '經民聯（梁美芬）',
                     '新民黨',
                     '自由黨',
@@ -121,7 +121,7 @@ function getQ3Keyboard(){
                     '民主黨（黃碧雲）',
                     '公民黨（毛孟靜）',
                     '工黨 （趙仕信）',
-                    '民協 ',
+                    '民協',
                     '社民連（吳文遠）',
                     '香港列陣（岑敖輝）',
                     '青年新政（游蕙禎）',
@@ -133,7 +133,7 @@ function getQ3Keyboard(){
                     '新民黨',
                     '新進步聯盟',
                     '自由黨',
-                    '方國珊 ',
+                    '方國珊',
                     '民主思路',
                     '新思維',
                     '民主黨（林卓庭）',
@@ -158,7 +158,7 @@ function getQ3Keyboard(){
                     '民主黨 （尹兆堅）',
                     '公民黨（郭家麒）',
                     '工黨（李卓人）',
-                    '民協 ',
+                    '民協',
                     '新民主同盟 （譚凱邦）',
                     '街工',
                     '社民連/人民力量（黃浩銘/陳偉業）',
@@ -201,6 +201,7 @@ function getVoter2012KeyboardAll(){
             array_push($ret, "[$district] $voter");
         }
     }
+    array_push($ret, '我未係選民', '我合資格但沒有投票');
     return $ret;
 }
 function getVoter2012Keyboard(){
