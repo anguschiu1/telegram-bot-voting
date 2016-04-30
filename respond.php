@@ -59,6 +59,10 @@ function respondWithKeyboard($chat_id, $message, $keyboardOptions){
 
 function respondWelcomeMessage($chat_id){
     respondWithMessage($chat_id, $GLOBALS['WORD']['WELCOME']);
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['CHOOSE_LANGUAGE'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['LANGUAGE'], 2));
+}
+
+function respondTermsAgree($chat_id){
     respondWithMessage($chat_id, $GLOBALS['WORD']['WELCOME_TERMS']);
     respondWithKeyboard($chat_id, $GLOBALS['WORD']['WELCOME_TERMS_AGREE'], array(array_values($GLOBALS['ANSWER_KEYBOARD']['Q1'])));
 }

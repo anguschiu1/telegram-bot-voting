@@ -74,6 +74,9 @@ function processMessage($message) {
             case Stage::AUTHORIZED:
                 handleStageAuthorized($user, $questionService, $text);
                 break;
+            case Stage::LANG:
+                handleStageLang($user, $questionService, $text);
+                break;
             case Stage::Q1:
                 handleStageQ1($user, $questionService, $text);
                 break;

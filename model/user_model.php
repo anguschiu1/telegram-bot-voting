@@ -50,6 +50,10 @@ class User{
         return $this->changeStage(Stage::AUTHORIZED);
     }
     
+    public function changeStageToLang(){
+        return $this->changeStage(Stage::LANG);
+    }
+    
     public function changeStageToQ1(){
         return $this->changeStage(Stage::Q1);
     }

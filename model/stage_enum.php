@@ -2,6 +2,7 @@
 abstract class Stage{
     const UNAUTHORIZED = 'UNAUTHORIZED';
     const AUTHORIZED = 'AUTHORIZED';
+    const LANG = 'LANG';
     const Q1 = 'Q1';
     const Q2 = 'Q2';
     const Q2_CONFIRM = 'Q2_CONFIRM';
@@ -15,8 +16,11 @@ abstract class Stage{
             case Stage::AUTHORIZED:
                 $okay = ($current == Stage::UNAUTHORIZED);
                 break;
-            case Stage::Q1:
+            case Stage::LANG:
                 $okay = ($current == Stage::AUTHORIZED);
+                break;
+            case Stage::Q1:
+                $okay = ($current == Stage::LANG);
                 break;
             case Stage::Q2:
                 $okay = ($current == Stage::Q1 || $current == Stage::Q2_CONFIRM);

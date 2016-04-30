@@ -45,11 +45,38 @@ function handleStageUnauthorized($user, $text){
 }
 
 function handleStageAuthorized($user, $questionService, $text){
+    $aryAgreeText = array($GLOBALS['ANSWER_KEYBOARD']['LANGUAGE'][0]);
+    $aryDisagreeText = array($GLOBALS['ANSWER_KEYBOARD']['LANGUAGE'][1]);
+    
+    if($user->changeStageToLang()){
+        $lang = '';
+        if(in_array($text, $aryAgreeText)){
+            $lang = 'tc';
+        }
+        else if(in_array($text, $aryDisagreeText)){
+            $lang = 'en';
+        }
+
+        if('' === $lang){
+            respondWelcomeMessage($user->chat_id);
+        }
+        else{
+            $user->lang = $lang;
+            UserDao::save($user);
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondWelcomeMessage($user->chat_id);   
+    }
+}
+
+function handleStageLang($user, $questionService, $text){
     $aryAgreeText = array('agree', 'ok', 'yes', $GLOBALS['ANSWER_KEYBOARD']['Q1_AGREE']);
     $aryDisagreeText = array('not agree', 'no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q1_DISAGREE']);
     
     if(in_array($text, $aryAgreeText)){
-        if($user->changeStageToQ1()){
+        if($user->changeStageToLang()){
             if($questionService->addQ1(ANSWER_YES)){
                 respondQ1($user->chat_id);
                 UserDao::save($user);
