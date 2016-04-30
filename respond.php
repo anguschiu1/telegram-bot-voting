@@ -75,22 +75,116 @@ function respondLinkQuotaUsedUp($chat_id){
     respondWithMessage($chat_id, $GLOBALS['WORD']['LINK_QUOTA_USED_UP']);
 }
 
-function respondQ1($chat_id){
+function respondQ2($chat_id){
     //which district?
-    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q1'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 3));
+    respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q2'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 3));
 }
 
-function respondQ2($chat_id, $question){
+function respondQ3($chat_id, $questionObj){
     //which party?
-    $district = $GLOBALS['ANSWER_KEYBOARD']['Q2'][$question->q2];
+    $district = $GLOBALS['ANSWER_KEYBOARD']['Q2'][$questionObj->q2];
     
-    $option = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$question->q2];
+    $option = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$questionObj->q2];
     shuffle($option);
-    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2'], $district), array_chunk($option, 1));
+    respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q3'], $district), array_chunk($option, 1));
 }
 
-function respondQ2Confirm($chat_id, $choice){
+function respondQ3Confirm($chat_id, $choice){
     respondWithKeyboard($chat_id, sprintf($GLOBALS['WORD']['SURVEY_Q2_CONFIRM'], $choice), array($GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM']));
 }
+
+function respondQ4($chat_id, $questionObj){
+    $name = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$questionObj->q2][$questionObj->q3];
+
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q4'], $name);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q4'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 2));
+}
+
+function respondQ5($chat_id, $questionObj){
+    $question = $GLOBALS['WORD']['SURVEY_Q5'];
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$questionObj->q2];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+}
+
+
+function respondQ6($chat_id, $questionObj){
+    $districtKey = $questionObj->q2;
+    $q3answer = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$districtKey][$questionObj->q3];
+    $q4answer = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$questionObj->q4];
+    $q5answer = $GLOBALS['ANSWER_KEYBOARD']['Q5'][$districtKey][$questionObj->q5];
+
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q6'], $q3answer, $q4answer, $q5answer);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q6'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 2));
+}
+
+
+function respondQ7($chat_id, $questionObj){
+    $districtKey = $questionObj->q2;
+    $question = $GLOBALS['WORD']['SURVEY_Q7'];
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+}
+
+
+function respondQ8($chat_id, $questionObj){
+    $districtKey = $questionObj->q2;
+    $name = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey][$questionObj->q7];
+
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q8'], $name);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q8'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 2));
+}
+
+
+function respondQ9($chat_id, $questionObj){
+    $districtKey = $questionObj->q2;
+    $question = $GLOBALS['WORD']['SURVEY_Q9'];
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q9'][$districtKey];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+}
+
+
+function respondQ10($chat_id, $questionObj){
+    $districtKey = $questionObj->q2;
+    $q7answer = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey][$questionObj->q7];
+    $q8answer = $GLOBALS['ANSWER_KEYBOARD']['Q8'][$questionObj->q8];
+    $q9answer = $GLOBALS['ANSWER_KEYBOARD']['Q9'][$districtKey][$questionObj->q9];
+
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q10'], $q7answer, $q8answer, $q9answer);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q10'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 2));
+}
+
+function respondQ11($chat_id, $questionObj){
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q11'], $name);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q11'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 3));
+}
+
+function respondQ12($chat_id, $questionObj){
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q12'], $name);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q12'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+}
+
+
+function respondQ13($chat_id, $questionObj){
+    $question = sprintf($GLOBALS['WORD']['SURVEY_Q13'], $name);
+    $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q13'];
+
+    respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
+}
+
 
 ?>

@@ -80,7 +80,7 @@ function handleStageLang($user, $questionService, $text){
     if(in_array($text, $aryAgreeText)){
         if($user->changeStageToQ1()){
             if($questionService->addQ1(ANSWER_YES)){
-                respondQ1($user->chat_id);
+                respondQ2($user->chat_id);
                 UserDao::save($user);
             }
         }
@@ -103,33 +103,250 @@ function handleStageQ1($user, $questionService, $text){
     if (false !== $key){
         if($user->changeStageToQ2()){
             if($questionService->addQ2($key)){
-                respondQ2($user->chat_id, $questionService->question);
-                
                 UserDao::save($user);
+                respondQ3($user->chat_id, $questionService->question);
             }
         }
     }
     else{
         respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        respondQ1($user->chat_id);
+        respondQ2($user->chat_id);
     }
 }
 
-function handleStageQ2($user, $questionService, $text, $message_id){
+function handleStageQ2($user, $questionService, $text){
     $districtKey = $questionService->question->q2;
     $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q3'][$districtKey]);
     
-    if($key){
-        if($user->changeStageToQ2Confirm()){
+    if(false !== $key){
+        if($user->changeStageToQ3()){
             if($questionService->addQ3($key)){
-                respondQ2Confirm($user->chat_id, $text);
-                UserDao::save($user);
+                if($text === $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE']){
+                    $user->changeStageToQ4();
+                    UserDao::save($user);
+                    respondQ5($user->chat_id, $questionService->question);
+                }
+                else{
+                    UserDao::save($user);
+                    respondQ4($user->chat_id, $questionService->question);
+                }
             }
         }
     }
     else{
         respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        respondQ2($user->chat_id, $questionService->question);
+        respondQ3($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ3($user, $questionService, $text){
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q4']);
+
+    if(false !== $key){
+        if($user->changeStageToQ4()){
+            if($questionService->addQ4($key)){
+                UserDao::save($user);
+                respondQ5($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ4($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ4($user, $questionService, $text){
+    $districtKey = $questionService->question->q2;
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q5'][$districtKey]);
+    
+    if(false !== $key){
+        if($user->changeStageToQ5()){
+            if($questionService->addQ5($key)){
+                UserDao::save($user);
+                respondQ6($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ5($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ5($user, $questionService, $text){
+    $aryAgreeText = array('agree', 'ok', 'yes', $GLOBALS['ANSWER_KEYBOARD']['Q6'][0]);
+    $aryDisagreeText = array('not agree', 'no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q6'][1]);
+    
+    if(in_array($text, $aryAgreeText)){
+        if($user->changeStageToQ6()){
+            if($questionService->addQ1(ANSWER_YES)){
+                UserDao::save($user);
+                respondQ7($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else if(in_array($text, $aryDisagreeText)){
+        if($user->changeStageToQ2()){
+            UserDao::save($user);
+            respondQ3($user->chat_id, $questionService->question);
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ6($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ6($user, $questionService, $text){
+    $districtKey = $questionService->question->q2;
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey]);
+    
+    print 'Q6';
+    if(false !== $key){
+        if($user->changeStageToQ7()){
+            if($questionService->addQ7($key)){
+                if($text === $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE']){
+                    $questionService->addQ8(null);
+                    if($user->changeStageToQ8()){
+                        UserDao::save($user);
+                        print ' SKIP '.$user->stage;
+                        respondQ9($user->chat_id, $questionService->question);
+                    }
+                }
+                else{
+                    UserDao::save($user);
+                    respondQ8($user->chat_id, $questionService->question);
+                }
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ7($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ7($user, $questionService, $text){
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q8']);
+    
+    if(false !== $key){
+        if($user->changeStageToQ8()){
+            if($questionService->addQ8($key)){
+                UserDao::save($user);
+                respondQ9($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ8($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ8($user, $questionService, $text){
+    $districtKey = $questionService->question->q2;
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q9'][$districtKey]);
+    
+    if(false !== $key){
+        if($user->changeStageToQ9()){
+            if($questionService->addQ9($key)){
+                UserDao::save($user);
+                respondQ10($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ9($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ9($user, $questionService, $text){
+    $aryAgreeText = array('agree', 'ok', 'yes', $GLOBALS['ANSWER_KEYBOARD']['Q10'][0]);
+    $aryDisagreeText = array('not agree', 'no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q10'][1]);
+
+
+    if(in_array($text, $aryAgreeText)){
+        if($user->changeStageToQ10()){
+            if($questionService->addQ10(ANSWER_YES)){
+                UserDao::save($user);
+                respondQ11($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else if(in_array($text, $aryDisagreeText)){
+        if($user->changeStageToQ6()){
+            UserDao::save($user);
+            respondQ7($user->chat_id, $questionService->question);
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ10($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ10($user, $questionService, $text){
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q11']);
+    
+    if(false !== $key){
+        if($user->changeStageToQ11()){
+            if($questionService->addQ11($key)){
+                UserDao::save($user);
+                respondQ12($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ11($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ11($user, $questionService, $text){
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q12']);
+    
+    if(false !== $key){
+        if($user->changeStageToQ12()){
+            if($questionService->addQ12($key)){
+                UserDao::save($user);
+                respondQ13($user->chat_id, $questionService->question);
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ12($user->chat_id, $questionService->question);
+    }
+}
+
+function handleStageQ12($user, $questionService, $text){
+    $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q13']);
+    
+    if(false !== $key){
+        if($user->changeStageToQ13()){
+            if($questionService->addQ13($key)){
+                UserDao::save($user);
+                //end, show result and invitation
+                respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
+                respondPollingResult($user->chat_id, $questionService->question->q2);
+                respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
+                
+
+                $invitationService = new InvitationService($user);
+                
+                if(!$invitationService->hasGenerated() && $invitationService->canGenerate()){
+                    $invitation = $invitationService->getInvitation();
+                    respondWithMessage($user->chat_id, sprintf($GLOBALS['WORD']['INVITATION_MSG'], $invitation->quota));
+                    respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
+                }
+            }
+        }
+    }
+    else{
+        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
+        respondQ13($user->chat_id, $questionService->question);
     }
 }
 
@@ -156,7 +373,7 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
     }
     else if(in_array($text, $aryDisagreeText)){
         if($user->changeStageToQ2()){
-            respondQ2($user->chat_id, $questionService->question);
+            respondQ3($user->chat_id, $questionService->question);
             UserDao::save($user);
         }
     }
@@ -166,7 +383,7 @@ function handleStageQ2Confirm($user, $questionService, $text, $message_id){
         respondQ2Confirm($user->chat_id, $partyArray[$questionService->question->q3]);
     }
 }
-function handleStageQ3($user, $questionService, $text){
+function handleStageQ13($user, $questionService, $text){
     $ary = array('/vote');
     if(in_array($text, $ary)){
         if($user->changeStageToRestart()){

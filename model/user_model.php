@@ -70,6 +70,46 @@ class User{
         return $this->changeStage(Stage::Q3);
     }
     
+    public function changeStageToQ4(){
+        return $this->changeStage(Stage::Q4);
+    }
+    
+    public function changeStageToQ5(){
+        return $this->changeStage(Stage::Q5);
+    }
+    
+    public function changeStageToQ6(){
+        return $this->changeStage(Stage::Q6);
+    }
+    
+    public function changeStageToQ7(){
+        return $this->changeStage(Stage::Q7);
+    }
+    
+    public function changeStageToQ8(){
+        return $this->changeStage(Stage::Q8);
+    }
+    
+    public function changeStageToQ9(){
+        return $this->changeStage(Stage::Q9);
+    }
+    
+    public function changeStageToQ10(){
+        return $this->changeStage(Stage::Q10);
+    }
+    
+    public function changeStageToQ11(){
+        return $this->changeStage(Stage::Q11);
+    }
+    
+    public function changeStageToQ12(){
+        return $this->changeStage(Stage::Q12);
+    }
+    
+    public function changeStageToQ13(){
+        return $this->changeStage(Stage::Q13);
+    }
+    
     public function changeStageToRestart(){
         return $this->changeStage(Stage::RESTART);
     }

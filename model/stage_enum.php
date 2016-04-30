@@ -7,6 +7,18 @@ abstract class Stage{
     const Q2 = 'Q2';
     const Q2_CONFIRM = 'Q2_CONFIRM';
     const Q3 = 'Q3';
+    const Q4 = 'Q4';
+    const Q5 = 'Q5';
+    const Q6 = 'Q6';
+    const Q7 = 'Q7';
+    const Q8 = 'Q8';
+    const Q9 = 'Q9';
+    const Q10 = 'Q10';
+    const Q11 = 'Q11';
+    const Q12 = 'Q12';
+    const Q13 = 'Q13';
+    const Q14 = 'Q14';
+    const Q15 = 'Q15';
     const RESTART = 'RESTART';
     const DELETED = 'DELETED';
     
@@ -23,13 +35,46 @@ abstract class Stage{
                 $okay = ($current == Stage::LANG);
                 break;
             case Stage::Q2:
-                $okay = ($current == Stage::Q1 || $current == Stage::Q2_CONFIRM);
+                $okay = ($current == Stage::Q1 || $current == Stage::Q5);
                 break;
             case Stage::Q2_CONFIRM:
                 $okay = ($current == Stage::Q2 || $current == Stage::RESTART);
                 break;
             case Stage::Q3:
-                $okay = ($current == Stage::Q2_CONFIRM);
+                $okay = ($current == Stage::Q2);
+                break;
+            case Stage::Q4:
+                $okay = ($current == Stage::Q3);
+                break;
+            case Stage::Q5:
+                $okay = ($current == Stage::Q4 || $current == Stage::Q3);
+                break;
+            case Stage::Q6:
+                $okay = ($current == Stage::Q5 || $current == Stage::Q9);
+                break;
+            case Stage::Q7:
+                $okay = ($current == Stage::Q6);
+                break;
+            case Stage::Q8:
+                $okay = ($current == Stage::Q7);
+                break;
+            case Stage::Q9:
+                $okay = ($current == Stage::Q8 || $current == Stage::Q7);
+                break;
+            case Stage::Q10:
+                $okay = ($current == Stage::Q9);
+                break;
+            case Stage::Q11:
+                $okay = ($current == Stage::Q10);
+                break;
+            case Stage::Q12:
+                $okay = ($current == Stage::Q11);
+                break;
+            case Stage::Q13:
+                $okay = ($current == Stage::Q12);
+                break;
+            case Stage::Q14:
+                $okay = ($current == Stage::Q13);
                 break;
             case Stage::RESTART:
                 $okay = ($current == Stage::Q3);

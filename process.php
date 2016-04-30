@@ -67,6 +67,7 @@ function processMessage($message) {
         
         processLang($user->lang);
         
+        print "Stage $user->stage<br>\n";
         switch($user->stage){
             case Stage::UNAUTHORIZED:
                 handleStageUnauthorized($user, $text);
@@ -88,6 +89,36 @@ function processMessage($message) {
                 break;
             case Stage::Q3:
                 handleStageQ3($user, $questionService, $text);
+                break;
+            case Stage::Q4:
+                handleStageQ4($user, $questionService, $text);
+                break;
+            case Stage::Q5:
+                handleStageQ5($user, $questionService, $text);
+                break;
+            case Stage::Q6:
+                handleStageQ6($user, $questionService, $text);
+                break;
+            case Stage::Q7:
+                handleStageQ7($user, $questionService, $text);
+                break;
+            case Stage::Q8:
+                handleStageQ8($user, $questionService, $text);
+                break;
+            case Stage::Q9:
+                handleStageQ9($user, $questionService, $text);
+                break;
+            case Stage::Q10:
+                handleStageQ10($user, $questionService, $text);
+                break;
+            case Stage::Q11:
+                handleStageQ11($user, $questionService, $text);
+                break;
+            case Stage::Q12:
+                handleStageQ12($user, $questionService, $text);
+                break;
+            case Stage::Q13:
+                handleStageQ13($user, $questionService, $text);
                 break;
             case Stage::RESTART:
                 handleStageRestart($user, $questionService, $text, $message_id);
