@@ -58,11 +58,13 @@ function handleStageAuthorized($user, $questionService, $text){
         }
 
         if('' === $lang){
+            respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
             respondWelcomeMessage($user->chat_id);
         }
         else{
             $user->lang = $lang;
             UserDao::save($user);
+            respondTermsAgree($user->chat_id);
         }
     }
     else{
@@ -76,7 +78,7 @@ function handleStageLang($user, $questionService, $text){
     $aryDisagreeText = array('not agree', 'no', 'nope', $GLOBALS['ANSWER_KEYBOARD']['Q1_DISAGREE']);
     
     if(in_array($text, $aryAgreeText)){
-        if($user->changeStageToLang()){
+        if($user->changeStageToQ1()){
             if($questionService->addQ1(ANSWER_YES)){
                 respondQ1($user->chat_id);
                 UserDao::save($user);
@@ -87,12 +89,12 @@ function handleStageLang($user, $questionService, $text){
         if($questionService->addQ1(ANSWER_NO)){
             //tell them not agree can't do anything
             respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_Q1_NOT_AGREE']);
-            respondWelcomeMessage($user->chat_id);   
+            respondTermsAgree($user->chat_id);   
         }
     }
     else{
         respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        respondWelcomeMessage($user->chat_id);   
+        respondTermsAgree($user->chat_id);   
     }
 }
 
