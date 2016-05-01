@@ -3,6 +3,7 @@
 $cycle_volume=1500;
 $batch_volume=29;
 $batch_wait=200000;
+$SLIENT=false;
 
 $batch_count=$batch_volumn;
 
@@ -33,7 +34,7 @@ while($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
         }
 
         if ( $media["media_status"] == 3 ) {
-                $stmt3 = $db->prepare("update `bulk` set status=:status, last_modified_date=CURRENT_TIMESTAMP where bulk_id=:bulk_id and chat_id=:chat_id");
+                $stmt3 = $db->prepare("update `bulk` set status=:status, response=:response, last_modified_date=CURRENT_TIMESTAMP where bulk_id=:bulk_id and chat_id=:chat_id");
                 $stmt3->bindValue(1, 2);
                 $stmt3->bindValue(2, NULL);
                 $stmt3->bindValue(3, $row["bulk_id"]);
@@ -42,7 +43,11 @@ while($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
 
                 $content = bind_vars($media["media_content"], array('count'=>$batch_count));
 
-                $response=sendMessage($row["chat_id"], $content, BOT_TOKEN, !midnight());
+                if ($SLIENT) {
+                        $response=sendMessage($row["chat_id"], $content, BOT_TOKEN, false);
+                } else {
+                        $response=sendMessage($row["chat_id"], $content, BOT_TOKEN, !midnight());
+                }
                 $stmt3->bindValue(2, $response);
                 $result = json_decode($response, true);
                 if ( $result["ok"] ) {

@@ -28,7 +28,7 @@ function bind_vars($format_string, $values) {
 
 function midnight() {
         $t=new DateTime();
-        $h->format("H");
+        $h=$t->format("H");
         return ($h < "09");
 }
 

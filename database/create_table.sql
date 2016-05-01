@@ -55,21 +55,23 @@ create table bulk (
     lang varchar(2) not null default 'tc',
     status int(1) not null default 1, -- 0=Done, 1=Create, 2=Processing, 3=Error
     response varchar(500), -- Storing telegram response message
-    last_modified_date timestamp not null default CURRENT_TIMESTAMP
+    last_modified_date timestamp not null default CURRENT_TIMESTAMP,
+  primary key (bulk_id, chat_id)    
 );
 
 create table media_content (
     bulk_id int not null,
+    lang varchar(2) not null default '*', -- * means all languages
     media_type int(1) not null default 1,
         -- 1=Text Message, 2=Photo, 3=Audio, 4=Document, 5=Sticker, 6=Video, 7=Voice, 8=Venue, 9=Contact, 10=ChatAction
         -- Please don't declare multiple type in same bulk_id
-    lang varchar(2) not null default '*', -- * means all languages
     media_content varchar(5000),
-    media_status int not null default 1
+    media_status int not null default 1,
         -- 0=DISABLED, 1=INIT, 2=SAMPLE, 3=APPROVED
         --      INIT - Ready for sending sample for review
         --      SAMPLE - After sample sendout
         --      APPROVED - Available for bulk sending
         --      DISABLED - Bulk sending job will ignore the record, any status can change to DISABLED
         -- Media Lifecycle: INIT --> SAMPLE --> APPROVED
+  primary key (bulk_id, lang)
 );
