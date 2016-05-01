@@ -11,7 +11,7 @@ function getDb(){
 }
 
 
-function getResult($districtKey){
+function getDistrictResult($districtKey){
     $db = getDb();
     $stmt = $db->prepare("SELECT q5 as party, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage in ('Q12', 'Q13', 'Q14')
                          and q4 = ? and q12 is not null GROUP BY q5 ORDER BY q5");

@@ -7,7 +7,7 @@ function respondPollingResult($chat_id, $questionObj){
 }
 
 function respondDistrictPollingResult($chat_id, $districtKey){
-    $result = getResult($districtKey);
+    $result = getDistrictResult($districtKey);
     
     $total = array_sum($result);
     
