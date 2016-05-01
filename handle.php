@@ -358,8 +358,6 @@ function handleStageQ13($user, $questionService, $text){
             if($questionService->addQ14($key)){
                 UserDao::save($user);
                 //end, show result and invitation
-                respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
-                respondPollingResult($user->chat_id, $questionService->question);
                 respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
                 
 
@@ -379,39 +377,6 @@ function handleStageQ13($user, $questionService, $text){
     }
 }
 
-function handleStageQ2Confirm($user, $questionService, $text, $message_id){
-    $aryAgreeText = $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_YES_ANSWERS'];
-    $aryDisagreeText = $GLOBALS['ANSWER_KEYBOARD']['Q2_CONFIRM_NO_ANSWERS'];
-    
-    if(in_array($text, $aryAgreeText)){
-        if($user->changeStageToQ3()){
-            UserDao::save($user); //save user first, for calculate the result correctly
-            respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
-            respondPollingResult($user->chat_id, $questionService->question);
-            respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS_REMIND']);
-            
-
-            $invitationService = new InvitationService($user);
-            
-            if(!$invitationService->hasGenerated() && $invitationService->canGenerate()){
-                $invitation = $invitationService->getInvitation();
-                respondWithMessage($user->chat_id, sprintf($GLOBALS['WORD']['INVITATION_MSG'], $invitation->quota));
-                respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
-            }
-        }
-    }
-    else if(in_array($text, $aryDisagreeText)){
-        if($user->changeStageToQ2()){
-            respondQ3($user->chat_id, $questionService->question);
-            UserDao::save($user);
-        }
-    }
-    else{
-        respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVALID_INPUT']);
-        $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q3'][$questionService->question->q2];
-        respondQ2Confirm($user->chat_id, $partyArray[$questionService->question->q3]);
-    }
-}
 function handleStageQ14($user, $questionService, $text){
     $ary = array('/vote');
     if(in_array($text, $ary)){
