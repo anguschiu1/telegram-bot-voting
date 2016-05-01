@@ -25,11 +25,11 @@ function respondPollingResult($chat_id, $questionObj){
         $res .= ' *'.floor($count * 10)."%*\n\n";
         $row++;
         if($row == 5){
-            $res .= $GLOBALS['WORD']['SURVEY_RESULT_MORE'];
+            //res .= $GLOBALS['WORD']['SURVEY_RESULT_MORE'];
             break;
         }
     }
-    $res .= $GLOBALS['WORD']['SURVEY_RESULT_LINK'];
+    //$res .= $GLOBALS['WORD']['SURVEY_RESULT_LINK'];
     $res .= $GLOBALS['WORD']['SURVEY_RESULT_RESTART_INSTRUCTION'];
     respondWithMessage($chat_id, $res);
 }
