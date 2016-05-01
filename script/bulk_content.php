@@ -3,9 +3,7 @@
 $cycle_volume=1500;
 $batch_volume=29;
 $batch_wait=200000;
-$SLIENT=false;
-
-$batch_count=$batch_volumn;
+$SLIENT=true;
 
 require('../php/inc.php');
 require('module.php');
@@ -16,7 +14,7 @@ $db = getDb();
 $stmt1 = $db->prepare("select * from bulk where status = 1 order by bulk_id, lang limit :cycle_volume");
 $stmt1->execute(array($cycle_volume));
 
-$batch_count=0;
+$batch_count=$batch_volume;
 $i_bulk_id=null;
 $i_lang=null;
 while($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
@@ -60,11 +58,10 @@ while($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
                         $stmt3->execute();
                 }
 
-                if ( $batch_count == 0 ) {
+                $batch_count--;
+                if ( $batch_count <= 0 ) {
                         usleep($batch_wait);
                         $batch_count=$batch_volume;
-                } else {
-                        $batch_count--;
                 }
 
         } else {
