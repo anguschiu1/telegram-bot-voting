@@ -64,6 +64,7 @@ function handleStageAuthorized($user, $questionService, $text){
         else{
             $user->lang = $lang;
             UserDao::save($user);
+            processLang($lang);
             respondTermsAgree($user->chat_id);
         }
     }
@@ -313,7 +314,7 @@ function handleStageQ11($user, $questionService, $text){
                 UserDao::save($user);
                 respondWithMessage($user->chat_id, $GLOBALS['WORD']['SURVEY_THANKS']);
                 respondPollingResult($user->chat_id, $questionService->question);
-                
+
                 respondQ13($user->chat_id, $questionService->question);
             }
         }
