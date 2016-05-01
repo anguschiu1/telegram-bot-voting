@@ -6,6 +6,7 @@ require('lang_zh.php');
 require('lang_en.php');
 require('db.php');
 require('api.php');
+require('func.php');
 require('dao/invitation_dao.php');
 require('dao/invitation_user_dao.php');
 require('dao/user_dao.php');

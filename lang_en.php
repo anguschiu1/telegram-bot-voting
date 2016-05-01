@@ -31,7 +31,8 @@ Apart from *"%2$s"*, your second most preferable choice is *"%4$s"*.'."\nAre you
 Apart from *"%1$s"*, your second most preferable choice is *"%3$s"*
 Are you sure?',
         'SURVEY_Q13' => 'To help improve our analysis, we would like to know more about your personal information.
-May I have your age?',
+
+May I have your age? (Please enter into the text box and round up to year value)',
         'SURVEY_Q14' => 'May I know your occupation?',
         'SURVEY_Q15' => '',
         'SURVEY_Q2_CONFIRM' => '確認投給「%s」？',

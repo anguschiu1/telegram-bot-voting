@@ -334,10 +334,11 @@ function handleStageQ11($user, $questionService, $text){
 function handleStageQ12($user, $questionService, $text){
     $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q13']);
     
-    if(false !== $key){
+    if(false !== $key || isValidAge($text)) {
         if($user->changeStageToQ13()){
-            $user->age = $key;
-            if($questionService->addQ13($key)){
+            $age = (false !== $key)?$GLOBALS['ANSWER_KEYBOARD']['Q13'][$key]:$text;
+            $user->age = $age;
+            if($questionService->addQ13($age)){
                 UserDao::save($user);
                 respondQ14($user->chat_id, $questionService->question);
             }
