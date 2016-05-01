@@ -1,26 +1,27 @@
 <?php
 
 function respondPollingResult($chat_id, $questionObj){
-    foreach($GLOBALS['ANSWER_KEYBOARD']['Q4'] as $districtKey => $distrct){
-        respondDistrictPollingResult($chat_id, $districtKey);
+    foreach($GLOBALS['ANSWER_KEYBOARD']['Q4'] as $districtKey => $district){
+        $resultArray = getDistrictResult($districtKey);
+        $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey];
+        respondOnePollingResult($chat_id, $resultArray, $district, $partyArray);
     }
+    $resultArray = getSuperDistrictResult();
+    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q9'];
+    respondOnePollingResult($chat_id, $resultArray, $GLOBALS['ANSWER_KEYBOARD']['PARTY_SUPER'], $partyArray);
+
 }
 
-function respondDistrictPollingResult($chat_id, $districtKey){
-    $result = getDistrictResult($districtKey);
-    
-    $total = array_sum($result);
-    
-    $district = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$districtKey];
-    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey];
+function respondOnePollingResult($chat_id, $resultArray, $district, $partyArray){
+    $total = array_sum($resultArray);
 
     array_push($partyArray, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
     
     $res = sprintf($GLOBALS['WORD']['SURVEY_RESULT'], $district, $total);
     
-    arsort($result);
+    arsort($resultArray);
     $row = 0;
-    foreach($result as $key => $val) {
+    foreach($resultArray as $key => $val) {
         $res .= $partyArray[$key].": $val\n";
         $count = ($val/$total * 10);
         

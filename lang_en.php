@@ -83,7 +83,8 @@ Please come back and vote again on 1st of June, and you can also check out the l
                         'Others (Including unemployed, retired and other non-occupied workers)',
                         'I don\'t want to disclose.'),
         'PARTY_NOT_YET_DECIDE' => 'Not yet decide',
-        'PARTY_NO_SECOND_CHOICE' => 'No second choice'
+        'PARTY_NO_SECOND_CHOICE' => 'No second choice',
+        'PARTY_SUPER' => 'District Council (Second) of Functional Constituency Area',
     ); 
     
 function getQ3KeyboardEn(){

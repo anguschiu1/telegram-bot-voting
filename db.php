@@ -26,4 +26,20 @@ function getDistrictResult($districtKey){
     
     return $ret;
 }
+
+function getSuperDistrictResult(){
+    $db = getDb();
+    $stmt = $db->prepare("SELECT q10 as party, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage in ('Q12', 'Q13', 'Q14')
+                         and q12 is not null GROUP BY q10 ORDER BY q10");
+    $stmt->execute();
+
+    $ret = array();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $ret[$row['party']] = $row['total'];
+    }
+    
+    $db = null;
+    
+    return $ret;
+}
 ?>

@@ -43,7 +43,7 @@
         'SURVEY_Q2_CONFIRM' => '確認投給「%s」？',
         'SURVEY_THANKS' => '多謝投票。',
         'SURVEY_THANKS_REMIND' => "多謝你既參與！\n請於下個月6月1號再番黎投票，同時睇最新投票結果。公民數據到時會send提示俾你。",
-        'SURVEY_RESULT' => "「`%s`」 選區的結果 (共 %d 票)：\n\n",
+        'SURVEY_RESULT' => "下面係「`%s`」 5 月最新民調結果，現時總共 %d 人揀咗名單。\n\n",
         'SURVEY_RESULT_MORE' => '還有其他',
         'SURVEY_RESULT_LINK' => '([詳細的結果](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
@@ -76,7 +76,8 @@
         'Q13' => array('18歲以下', '18-25', '26-50', '51-75', '76-98', '唔想講'),
         'Q14' => array('經理及行政人員', '專業人員', '輔助專業人員', '文員', '服務工作及商店銷售人員', '漁農業熟練工人', '手工藝及有關人員', '機台及機器操作員及裝配員', '非技術工人', '學生', '家庭主婦', '不能辨別', '其他(包括失業、巳退休、及其他非在職者)', '唔想講'),
         'PARTY_NOT_YET_DECIDE' => '未決定',
-        'PARTY_NO_SECOND_CHOICE' => '沒有第二選擇'
+        'PARTY_NO_SECOND_CHOICE' => '沒有第二選擇',
+        'PARTY_SUPER' => '區議會（第二）功能組別',
     ); 
     
 function getQ3Keyboard(){
