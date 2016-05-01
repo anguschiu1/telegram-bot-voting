@@ -20,15 +20,15 @@
         'SURVEY_Q3' => 'Are you an eligible voter in LegCo 2016?',
         'SURVEY_Q4' => 'Which of the geographical constituency do you live in?',
         'SURVEY_Q5' => 'If tomorrow is the voting day of the LegCo Election, which one of the following lists will you vote for in Geographical Constituency Areas (the name in the bracket is the possible candidate representing the political group)?',
-        'SURVEY_Q6' => 'What do you think about the winning chance of "%s" in 4-Sep LegCo election?',
+        'SURVEY_Q6' => 'What do you think about the winning chance of *"%s"* in 4-Sep LegCo election?',
         'SURVEY_Q7' => 'Apart from the above candidate list, do you have a second choice?',
-        'SURVEY_Q8' => 'In LegCo Election 2012, you voted "%1$s". In the coming election, you will choose "%2$s", and you think that list has "%3$s" chance to win. 
-Apart from "%2$s", your second most preferable choice is "%4$s".'."\nAre you sure?",
+        'SURVEY_Q8' => 'In LegCo Election 2012, you voted *"%1$s"*. In the coming election, you will choose *"%2$s"*, and you think that list has *"%3$s"* chance to win. 
+Apart from *"%2$s"*, your second most preferable choice is *"%4$s"*.'."\nAre you sure?",
         'SURVEY_Q9' => 'If tomorrow is the voting day of the LegCo Election, which one of the following lists will you vote for in District Council (Second) of Functional Constituency Area (the name in bracket is the possible candidate representing the political group)?',
-        'SURVEY_Q10' => 'What do you think about the winning chance of "%s" in the coming LegCo election?',
+        'SURVEY_Q10' => 'What do you think about the winning chance of *"%s"* in the coming LegCo election?',
         'SURVEY_Q11' => 'Apart from the above candidate, do you have a second choice?',
-        'SURVEY_Q12' => 'In the coming election, you will choose "%1$s", and you think that s/he has "%2$s" chance to win. 
-Apart from "%1$s", your second most preferable choice is "%3$s"
+        'SURVEY_Q12' => 'In the coming election, you will choose *"%1$s"*, and you think that s/he has *"%2$s"* chance to win. 
+Apart from *"%1$s"*, your second most preferable choice is *"%3$s"*
 Are you sure?',
         'SURVEY_Q13' => 'To help improve our analysis, we would like to know more about your personal information.
 May I have your age?',

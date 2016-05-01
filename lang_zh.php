@@ -3,7 +3,7 @@
         'NOT_AUTHORIZED' => "對唔住,你既邀請連結無效。請檢查你的連結是否完整。如繼續出現問題,請短訊至@CivicDataHK",
         'LINK_QUOTA_USED_UP' => "對唔住,你既邀請連結限額已經用完。你仲有無朋友玩緊公民聲吶?不如叫佢地邀請你?\n\n如有問題,請短訊至@CivicDataHK",
         'WELCOME_CHOOSE_LANGUAGE' => '請選擇語言：',
-        'WELCOME' => "公民數據以滾動投票方式讓支持民主的選民即時投票同睇結果。選民每月一號投票及查看各政團的最新支持度，以求在九月四號的立法會選，讓你做更明智既投票決定。",
+        'WELCOME' => "公民數據以滾動投票方式讓支持民主的選民即時投票同睇結果。選民每月一號投票及查看各政團的最新支持度，以求在九月四號的立法會選，讓你做更明智既投票決定。\n\nVotsonar lets voters vote and see polling results in real time. Participants get to vote on the 1st of every month, see the latest polling data of all parties and candidates, and be able to make a wiser choice in the Legislature Council (LegCo) Election on September 4th, 2016.",
         'WELCOME_TERMS' => "`「使用條款」`\n\n參加人士必須小心輸入所有資料，「確認」遞交後將不能作出任何修改。\n\n".
             '參加人士必須確保傳送的任何電子訊息，均不含任何病毒或可能影響此投票運作的元素，'.
             '又或對公民聲吶的資料或系統造成損害、干擾或刪減。電訊商可能會向發送使用者收取流動數據費用，'.
