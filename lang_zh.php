@@ -13,7 +13,8 @@
         'WELCOME_TERMS_AGREE' => '你同意以上使用條款嗎？',
         'INVITE_NO_PRIVILEGE' => '沒有權限',
         'INVITE_ALREAY_GENERATED' => "你已有邀請連結。\n",
-        'INVITATION_MSG' => '由於你是第一次投票，你可以邀請 %d 個支持民主的朋友來投票，請複製以下訊息給你 Telegram、WhatsApp 或 Facebook 上的朋友。',
+        'INVITATION_MSG' => '由於你是第一次投票，你可以邀請 %d 個`*你所熟識，而且支持民主的朋友*`來投票。請複製以下訊息給你 Telegram、WhatsApp、Line 或 Facebook Messenger上的朋友（但請不要放在公開場合，如facebook page上分享）。
+👇👇👇',
         'INVITATION_LINK' => "我誠意邀請你參與公民聲吶睇9月立法會選舉最新民意調查結果。\n\n".
                 "公民聲吶以滾動投票方式讓支持民主的選民即時投票和睇結果。你可查看各政團的最新支持度，以求在九月四號的立法會選舉，讓你做更明智的投票決定。\n\n".
                 "入公民數據睇最新投票調查結果\n1. 請下載 Telegram\n2. Click入這條link: ".'[%1$s](%1$s)'."\n".

@@ -8,8 +8,8 @@
         'WELCOME_TERMS_AGREE' => 'Do you agree with the above terms and conditions?',
         'INVITE_NO_PRIVILEGE' => 'No privileges',
         'INVITE_ALREAY_GENERATED' => "You already have an invitation link\n",
-        'INVITATION_MSG' => 'Thanks for casting your vote. Now, you can simply copy the message below to invite your friends (who are also supporting the non-establishment camp) via Telegram, WhatsApp or Facebook.  Each link can only invite a maximum of 10 different friends to vote. 
-👇👇',
+        'INVITATION_MSG' => 'Thanks for casting your vote. Now, you can simply copy the message below to invite your friends *(those who you are really know and is supporting the non-establishment camp)* via Telegram, WhatsApp, Line or Facebook Messenger (And please do NOT share via public domain, e.g. Facebook Page). Each link can invite a maximum of %d different friends to vote. 
+👇👇👇',
         'INVITATION_LINK' => "How Votsonar Works:\n1. Download Telegram\n2. Click the “invitation” link\n".'[%1$s](%1$s)
 3. Vote for the candidate you vow to support at this point of time
 4. Check the real-time poll results.
