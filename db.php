@@ -29,8 +29,8 @@ function getDistrictResult($districtKey){
 
 function getSuperDistrictResult(){
     $db = getDb();
-    $stmt = $db->prepare("SELECT q10 as party, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage in ('Q12', 'Q13', 'Q14')
-                         and q12 is not null GROUP BY q10 ORDER BY q10");
+    $stmt = $db->prepare("SELECT q9 as party, count(1) AS total FROM question q, voter v WHERE v.user_id = q.user_id and v.stage in ('Q12', 'Q13', 'Q14')
+                         and q12 is not null GROUP BY q9 ORDER BY q9");
     $stmt->execute();
 
     $ret = array();
