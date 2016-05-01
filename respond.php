@@ -1,13 +1,18 @@
 <?php
 
 function respondPollingResult($chat_id, $questionObj){
-    $districtIndex = $questionObj->q4;
-    $result = getResult($districtIndex);
+    foreach($GLOBALS['ANSWER_KEYBOARD']['Q4'] as $districtKey => $distrct){
+        respondDistrictPollingResult($chat_id, $districtKey);
+    }
+}
+
+function respondDistrictPollingResult($chat_id, $districtKey){
+    $result = getResult($districtKey);
     
     $total = array_sum($result);
     
-    $district = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$districtIndex];
-    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtIndex];
+    $district = $GLOBALS['ANSWER_KEYBOARD']['Q4'][$districtKey];
+    $partyArray = $GLOBALS['ANSWER_KEYBOARD']['Q7'][$districtKey];
 
     array_push($partyArray, $GLOBALS['ANSWER_KEYBOARD']['PARTY_NOT_YET_DECIDE'], $GLOBALS['ANSWER_KEYBOARD']['PARTY_NO_SECOND_CHOICE']);
     
