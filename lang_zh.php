@@ -193,7 +193,7 @@ function getSuperPartyKeyboard(){
                     '民協',
                     '新民主同盟（關永業）',
                     '街工（梁耀忠）',
-                    '司馬文 ');
+                    '司馬文');
 }
 
 
