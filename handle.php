@@ -461,7 +461,8 @@ function handleInvite($user , $text){
         
         if($invitationService->hasGenerated()){
             $invitation = $invitationService->getInvitation();
-            respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVITE_ALREAY_GENERATED'].formatInvitationMessage($invitation));
+            respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVITE_ALREAY_GENERATED']);
+            respondWithMessage($user->chat_id, formatInvitationMessage($invitation));
         }
         else{
             if($invitationService->canGenerate()){
