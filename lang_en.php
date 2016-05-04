@@ -14,8 +14,8 @@
 3. Vote for the candidate you vow to support at this point of time
 4. Check the real-time poll results.
 5. Polling will start again in the beginning of each month.  You are welcome to check the latest poll results anytime.',
-        'INVITATION_LINK_USED_NOTIFICATION' => '"%1$s" used your invitation link [%2$s](%2$s), it can used to invite another %3$d peoples.',
-        'INVITATION_QUOTA' => 'You can invite %d peoples with your invitation link',
+        'INVITATION_LINK_USED_NOTIFICATION' => '"%1$s" used your invitation link [%2$s](%2$s), it can used to invite another %3$d person(s).',
+        'INVITATION_QUOTA' => 'You can invite %d person(s) with your invitation link',
         'SURVEY_NOT_START' => '你還未開始投票，請使用 /start 開始。',
         'SURVEY_Q1_NOT_AGREE' => 'I am sorry, we need your consent to continue the survey. Please kindly reconsider!',
         'SURVEY_Q2' => 'Which candidate did you vote for in LegCo Election 2012?',
@@ -46,7 +46,7 @@ Please come back and vote again on 1st of June, and you can also check out the l
         'SURVEY_RESULT_LINK' => '([Detailed result](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
         'INVALID_INPUT' => 'Sorry, I do not understand',
-        'ALREADY_VOTE' => "You have already voted.  Please use `/result` to check the result",
+        'ALREADY_VOTE' => "You have already voted.  Please use `/result` to check the result, or press \"/\" button on the right for other options.",
     );
     
     

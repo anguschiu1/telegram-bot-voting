@@ -51,7 +51,7 @@
         'SURVEY_RESULT_LINK' => '([詳細的結果](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
         'INVALID_INPUT' => '對不起，我不明白',
-        'ALREADY_VOTE' => "你已投票了。你可以用 /result 查看投票結果。",
+        'ALREADY_VOTE' => "你已投票了。你可以用 /result 查看投票結果，或按右側「/」鍵選擇所需功能。",
     );
     
     
