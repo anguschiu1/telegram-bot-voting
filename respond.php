@@ -84,6 +84,10 @@ function respondLinkQuotaUsedUp($chat_id){
     respondWithMessage($chat_id, $GLOBALS['WORD']['LINK_QUOTA_USED_UP']);
 }
 
+function respondQuotaLeft($chat_id, $quota){
+    respondWithMessage($chat_id, sprintf($GLOBALS['WORD']['INVITATION_QUOTA'], $quota));
+}
+
 function respondQ2($chat_id){
     respondWithKeyboard($chat_id, $GLOBALS['WORD']['SURVEY_Q2'], array_chunk($GLOBALS['ANSWER_KEYBOARD']['Q2'], 1));
 }
@@ -195,14 +199,14 @@ function respondQ12($chat_id, $questionObj){
 }
 
 function respondQ13($chat_id, $questionObj){
-    $question = sprintf($GLOBALS['WORD']['SURVEY_Q13'], $name);
+    $question = $GLOBALS['WORD']['SURVEY_Q13'];
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q13'];
 
     respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 3));
 }
 
 function respondQ14($chat_id, $questionObj){
-    $question = sprintf($GLOBALS['WORD']['SURVEY_Q14'], $name);
+    $question = $GLOBALS['WORD']['SURVEY_Q14'];
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q14'];
 
     respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
@@ -210,7 +214,7 @@ function respondQ14($chat_id, $questionObj){
 
 
 function respondQ15($chat_id, $questionObj){
-    $question = sprintf($GLOBALS['WORD']['SURVEY_Q15'], $name);
+    $question = $GLOBALS['WORD']['SURVEY_Q15'];
     $keyboard = $GLOBALS['ANSWER_KEYBOARD']['Q15'];
 
     respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
