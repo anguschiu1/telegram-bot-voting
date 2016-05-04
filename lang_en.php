@@ -16,6 +16,7 @@
 5. Polling will start again in the beginning of each month.  You are welcome to check the latest poll results anytime.',
         'INVITATION_LINK_USED_NOTIFICATION' => '"%1$s" used your invitation link [%2$s](%2$s), it can used to invite another %3$d person(s).',
         'INVITATION_QUOTA' => 'You can invite %d person(s) with your invitation link',
+        'INVITATION_NO_LINK' => 'You do not have invitation link',
         'SURVEY_NOT_START' => '你還未開始投票，請使用 /start 開始。',
         'SURVEY_Q1_NOT_AGREE' => 'I am sorry, we need your consent to continue the survey. Please kindly reconsider!',
         'SURVEY_Q2' => 'Which candidate did you vote for in LegCo Election 2012?',

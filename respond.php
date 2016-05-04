@@ -84,8 +84,13 @@ function respondLinkQuotaUsedUp($chat_id){
     respondWithMessage($chat_id, $GLOBALS['WORD']['LINK_QUOTA_USED_UP']);
 }
 
-function respondQuotaLeft($chat_id, $quota){
-    respondWithMessage($chat_id, sprintf($GLOBALS['WORD']['INVITATION_QUOTA'], $quota));
+function respondQuotaLeft($chat_id, $invitation){
+    if(null != $invitation){
+        respondWithMessage($chat_id, sprintf($GLOBALS['WORD']['INVITATION_QUOTA'], $invitation->quota));
+    }
+    else{
+        respondWithMessage($chat_id, $GLOBALS['WORD']['INVITATION_NO_LINK']);
+    }
 }
 
 function respondQ2($chat_id){

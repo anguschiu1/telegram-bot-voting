@@ -395,12 +395,7 @@ function handleStageQ14($user, $questionService, $text){
     else if(strpos($text, '/quota') ===0){
         $invitationService = new InvitationService($user);
         $invitation = $invitationService->getInvitation();
-        if(null !== $invitation){
-            respondQuotaLeft($user->chat_id, $invitation->quota);
-        }
-        else{
-            respondWithMessage($user->chat_id, $GLOBALS['WORD']['INVITATION_QUOTA']);
-        }
+        respondQuotaLeft($user->chat_id, $invitation);
     }
     else{
         respondWithMessage($user->chat_id, $GLOBALS['WORD']['ALREADY_VOTE']);

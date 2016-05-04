@@ -21,6 +21,7 @@
                 "3. 揀你這一刻想支持的政黨或候選人\n4. 即時看最新投票結果\n5. 下個月同一時間再投，看最新民調結果！", 
         'INVITATION_LINK_USED_NOTIFICATION' => '「%1$s」 使用了你的邀請連結 [%2$s](%2$s)，此連結還可使用 %3$d 次。',
         'INVITATION_QUOTA' => '你還可邀請 %d 個朋友',
+        'INVITATION_NO_LINK' => '你沒有邀請連結',
         'SURVEY_NOT_START' => '你還未開始投票，請使用 /start 開始。',
         'SURVEY_Q1_NOT_AGREE' => '對不起，我們需要你的同意，才能繼續，懇請再考慮。',
         'SURVEY_Q2' => '請問你上屆2012立法會選舉，投左票俾邊張名單？',
