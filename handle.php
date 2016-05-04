@@ -334,7 +334,7 @@ function handleStageQ11($user, $questionService, $text){
 function handleStageQ12($user, $questionService, $text){
     $key = array_search($text, $GLOBALS['ANSWER_KEYBOARD']['Q13']);
     
-    if(false !== $key || isValidAge($text)) {
+    if(false !== $key || Func::isValidAge($text)) {
         if($user->changeStageToQ13()){
             $age = (false !== $key)?$GLOBALS['ANSWER_KEYBOARD']['Q13'][$key]:$text;
             $user->age = $age;

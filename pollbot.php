@@ -20,6 +20,7 @@ if (!$update) {
 }
 
 if (isset($update["message"])) {
+    Func::addAuditLog($content);
     processMessage($update["message"]);
 }
 
