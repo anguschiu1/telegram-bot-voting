@@ -28,9 +28,9 @@ function respondOnePollingResult($chat_id, $resultArray, $district, $partyArray)
         for($i=0; $i < $count; $i++){
             $res .= '✅';
         }
-        $res .= ' *'.floor($count * 10)."%*\n\n";
+        $res .= ' *'.floor($count * 10)."%*\n";
         $row++;
-        if($row == 5){
+        if($row == 10){
             //res .= $GLOBALS['WORD']['SURVEY_RESULT_MORE'];
             break;
         }
