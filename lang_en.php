@@ -46,6 +46,9 @@ Please come back and vote again on 1st of June, and you can also check out the l
         'SURVEY_RESULT_MORE' => 'and more',
         'SURVEY_RESULT_LINK' => '([Detailed result](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
+        'SURVEY_ENDED' => 'Thank you for your participation, VotSonar formal LEGCO election survey for May has been finished on 00:00, 11th of May. We will start to prepare the detail report for the survey, and we will inform you as soon as it is ready. The next formal LEGCO election survey will start on 1st of June, stay tuned!
+
+We cordially invite you to continue your support to VotSonar. It is important for us if you can invite more friends supporting non-establishment camp to join VotSonar. Let\'s vote together in the light of civic data!',
         'INVALID_INPUT' => 'Sorry, I do not understand',
         'ALREADY_VOTE' => "You have already voted.  Please use `/result` to check the result, or press \"/\" button on the right for other options.",
     );

@@ -474,4 +474,19 @@ function handleInvite($user , $text){
     return $ret;
 }
 
+function handleSurveyEnded($user, $text){
+    if(strpos($text, "/invite") === 0 && handleInvite($user, $text)){
+        
+    }
+    else if(strpos($text, '/quota') ===0){
+        $invitationService = new InvitationService($user);
+        $invitation = $invitationService->getInvitation();
+        respondQuotaLeft($user->chat_id, $invitation);
+    }
+    else{
+        respondSurveyEnded($user->chat_id);
+    }
+    die();
+}
+
 ?>

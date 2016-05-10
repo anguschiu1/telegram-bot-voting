@@ -225,5 +225,7 @@ function respondQ15($chat_id, $questionObj){
     respondWithKeyboard($chat_id, $question, array_chunk($keyboard, 1));
 }
 
-
+function respondSurveyEnded($chat_id){
+    respondWithMessage($chat_id, $GLOBALS['WORD']['SURVEY_ENDED']);
+}
 ?>

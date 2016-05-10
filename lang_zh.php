@@ -51,6 +51,10 @@
         'SURVEY_RESULT_MORE' => '還有其他',
         'SURVEY_RESULT_LINK' => '([詳細的結果](http://votsonar.civicdata.hk/result.html))',
         'SURVEY_RESULT_RESTART_INSTRUCTION' => "\n",
+        'SURVEY_ENDED' => '五月份正式民調已經係5月11日00:00完結，多謝大家參與！跟著我們將會準備民調較詳細分析報告，完成後將會立即通知大家。下一次的正式民調將會係6月1日舉行，敬請留意。
+
+希望你繼續努力推動公民聲吶民調。誠意邀請你同你一樣都係支持香港民主自決的朋友參加，一齊用數據打選戰！
+',
         'INVALID_INPUT' => '對不起，我不明白',
         'ALREADY_VOTE' => "你已投票了。你可以用 /result 查看投票結果，或按右側「/」鍵選擇所需功能。",
     );

@@ -66,6 +66,12 @@ function processMessage($message) {
         $questionService = new QuestionService($user, $question);
         
         processLang($user->lang);
+
+        //1462896000 = 2016-05-11 00:00:00 +8:00
+        if(time () > 1462896000){
+            handleSurveyEnded($user, $text);
+            die();
+        }
         
         print "Stage $user->stage<br>\n";
         switch($user->stage){
