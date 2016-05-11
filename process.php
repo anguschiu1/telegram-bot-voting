@@ -66,12 +66,6 @@ function processMessage($message) {
         $questionService = new QuestionService($user, $question);
         
         processLang($user->lang);
-
-        //1462896000 = 2016-05-11 00:00:00 +8:00
-        if(time () > 1462896000){
-            handleSurveyEnded($user, $text);
-            die();
-        }
         
         print "Stage $user->stage<br>\n";
         switch($user->stage){
@@ -79,8 +73,12 @@ function processMessage($message) {
                 handleStageUnauthorized($user, $text);
                 break;
             case Stage::AUTHORIZED:
-                handleStageAuthorized($user, $questionService, $text);
+                handleStageAuthorized($user, $text);
                 break;
+            default:
+                handleSurveyEnded($user, $text);
+                break;
+                /*
             case Stage::LANG:
                 handleStageLang($user, $questionService, $text);
                 break;
@@ -140,6 +138,7 @@ function processMessage($message) {
                 break;
             default:
                 break;
+                */
         }
     } else {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));

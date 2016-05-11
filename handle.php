@@ -44,7 +44,7 @@ function handleStageUnauthorized($user, $text){
     }
 }
 
-function handleStageAuthorized($user, $questionService, $text){
+function handleStageAuthorized($user, $text){
     $aryAgreeText = array($GLOBALS['ANSWER_KEYBOARD']['WELCOME_LANGUAGE'][0]);
     $aryDisagreeText = array($GLOBALS['ANSWER_KEYBOARD']['WELCOME_LANGUAGE'][1]);
     
