@@ -22,5 +22,6 @@ require('service/question_service.php');
 require('handle.php');
 require('respond.php');
 require('process.php');
+require('informal/informal_handler.php');
 
 ?>
