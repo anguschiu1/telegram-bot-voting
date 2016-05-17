@@ -23,5 +23,6 @@ require('handle.php');
 require('respond.php');
 require('process.php');
 require('informal/informal_handler.php');
+require('util/google_url_shortener_class.php');
 
 ?>
