@@ -10,7 +10,7 @@
         'INVITE_ALREAY_GENERATED' => "You already have an invitation link\n",
         'INVITATION_MSG' => 'Thanks for casting your vote. Now, you can simply copy the message below to invite your friends *(those who you are really know and is supporting the non-establishment camp)* via Telegram, WhatsApp, Line or Facebook Messenger (And please do NOT share via public domain, e.g. Facebook Page). Each link can invite a maximum of %d different friends to vote. 
 👇👇👇',
-        'INVITATION_LINK' => "How Votsonar Works:\n1. Download Telegram\n2. Click the “invitation link”\n".'  
+        'INVITATION_LINK' => "How Votsonar Works:\n1. Download Telegram\n2. Click the “invitation link”".'  
 3. Vote for the candidate you vow to support at this point of time
 4. Check the real-time poll results.
 5. Polling will start again in the beginning of each month.  You are welcome to check the latest poll results anytime.
