@@ -6,7 +6,7 @@ https://telegram.me/VotSonarBot
     const QUESTION1 = '非正式民調第一問（將會於 16-May 00:00 結束，距離完結還有 %s）：若果魔童在你的選區出選立法會，你會不會投票支持他？';
     const QUESTION2 = "你揀左「%s」，確定？";
     const NOT_AUTHORIZED = 'Please input "/start" to start';
-    const SURVEY_RESULT = '多謝你參加！下面係呢條問題的最新民調結果，現時總共 %d 人揀左。';
+    const SURVEY_RESULT = '多謝你參加！下面係「若果魔童在你的選區出選立法會，你會不會投票支持他？」的民調結果，現時總共 %d 人揀左。';
 
     private static $Q1_ANSWER_KEYBOARD = array('會', '不會', '考慮中', '唔想講');
     private static $Q2_ANSWER_KEYBOARD = array ('✔ 確定', '❌ 選錯了');
