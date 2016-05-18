@@ -1,6 +1,6 @@
 <?php
 class InformalHandler{
-    const WELCOME_MESSAGE = '公民聲吶會在未有正式民調既時間，推送不同的消息和進行有趣的非正式民調，重會即時將答案話番你聽。非正式民調**不需要**邀請連結，人人都玩得，快D叫朋友裝Telegram，然後用以下連結加入公民聲吶一齊玩啦！
+    const WELCOME_MESSAGE = '公民聲吶會在未有正式民調進行緊既時間，推送不同的消息和進行有趣的非正式民調，仲會即時將答案話番你聽。非正式民調**不需要**邀請連結，人人都玩得，快D叫朋友裝Telegram，然後用以下連結加入公民聲吶一齊玩啦！
 https://telegram.me/VotSonarBot
 你亦可以隨時番來，用/result睇最新結果！';
     const QUESTION1 = '非正式民調第一問（將會於 16-May 00:00 結束，距離完結還有 %s）：若果魔童在你的選區出選立法會，你會不會投票支持他？';
@@ -8,7 +8,7 @@ https://telegram.me/VotSonarBot
     const NOT_AUTHORIZED = 'Please input "/start" to start';
     const SURVEY_RESULT = '多謝你參加！下面係「若果魔童在你的選區出選立法會，你會不會投票支持他？」的民調結果，現時總共 %d 人揀左。';
 
-    private static $Q1_ANSWER_KEYBOARD = array('會', '不會', '考慮中', '唔想講');
+    private static $Q1_ANSWER_KEYBOARD = array('會', '不會', '考慮中', '唔想講'); 
     private static $Q2_ANSWER_KEYBOARD = array ('✔ 確定', '❌ 選錯了');
 
     public static function handleStageUnauthorized($user, $text){
