@@ -483,6 +483,9 @@ function handleSurveyEnded($user, $text){
         $invitation = $invitationService->getInvitation();
         respondQuotaLeft($user->chat_id, $invitation);
     }
+    else if(strpos($text, '/result') === 0){
+        InformalHandler::respondResult($user->chat_id);
+    }
     else{
         respondSurveyEnded($user->chat_id);
     }

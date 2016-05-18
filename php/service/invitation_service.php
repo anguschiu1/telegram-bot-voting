@@ -58,7 +58,13 @@ class InvitationService{
     }
 
     public static function getFullLink($invitation){
-        return INVITATION_LINK_PREFIX.$invitation->link;
+        $fullUrl = INVITATION_LINK_PREFIX.$invitation->link;
+        $o = new GoogleUrlShortener(GOOGLE_URL_SHORTENER_API_KEY);
+        $url = $o->request($fullUrl);
+        if($url === false){
+            return $fullUrl;
+        }
+        return $url;
     }
 
     public function createOneInivitationLink($member_type){

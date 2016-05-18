@@ -72,9 +72,6 @@ function processMessage($message) {
             case Stage::UNAUTHORIZED:
                 handleStageUnauthorized($user, $text);
                 break;
-            case Stage::AUTHORIZED:
-                handleStageAuthorized($user, $text);
-                break;
             default:
                 handleSurveyEnded($user, $text);
                 break;
